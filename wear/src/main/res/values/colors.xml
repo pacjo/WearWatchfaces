@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main Style Colors -->
+    <color name="background">#000000</color>
+    <color name="outline">#2D2D2D</color>
+
+    <!-- Ambient Style (used when wearable in ambient mode). -->
+    <color name="ambient_primary">#969696</color>
+    <color name="ambient_secondary">#707070</color>
+    <color name="ambient_tertiary">#3D3D3D</color>
+
+    <!-- Style 1 - Retro - https://coolors.co/bbdef0-00a6a6-6369d1-f49f0a-34435e -->
+    <color name="style1_primary">#F49F0A</color>
+    <color name="style1_secondary">#6369D1</color>
+    <color name="style1_tertiary">#00A6A6</color>
+
+    <!-- Style 2 - Alessandra - https://coolors.co/efbcd5-91171f-421820-abdae1-f7b267 -->
+    <color name="style2_primary">#91171F</color>
+    <color name="style2_secondary">#421820</color>
+    <color name="style2_tertiary">#EFBCD5</color>
+
+    <!-- Style 3 - Addie LaRue - https://coolors.co/556f44-344966-bfcc94-beb2c8-5a0001 -->
+    <color name="style3_primary">#556F44</color>
+    <color name="style3_secondary">#344966</color>
+    <color name="style3_tertiary">#BFCC94</color>
+
+    <!-- Style 4 - Vis un peu - https://coolors.co/9f7e69-522b47-507255-6eb257-c5e063 -->
+    <color name="style4_primary">#C5E063</color>
+    <color name="style4_secondary">#507255</color>
+    <color name="style4_tertiary">#6EB257</color>
+
+    <!-- Style 5 - Salmon - https://coolors.co/e8998d-eed2cc-003844-6c9a8b-f0c808 -->
+    <color name="style5_primary">#E8998D</color>
+    <color name="style5_secondary">#003844</color>
+    <color name="style5_tertiary">#EED2CC</color>
+
+    <!-- Style 6 - Hunger Games - https://coolors.co/e36397-bc8da7-5b8c5a-f3a738-f1d9a7 -->
+    <color name="style6_primary">#F3A738</color>
+    <color name="style6_secondary">#5B8C5A</color>
+    <color name="style6_tertiary">#F1D9A7</color>
+</resources>
+
