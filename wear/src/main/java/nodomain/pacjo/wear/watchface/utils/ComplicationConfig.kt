@@ -2,10 +2,8 @@ package nodomain.pacjo.wear.watchface.utils
 
 import android.graphics.RectF
 import android.os.Build
-import android.util.Log
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
-import androidx.wear.watchface.complications.ComplicationSlotBounds
 import androidx.wear.watchface.complications.data.ComplicationType
 
 const val TOP_LEFT_COMPLICATION_ID = 100
@@ -75,7 +73,9 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
             ComplicationType.SHORT_TEXT,
             ComplicationType.LONG_TEXT,
             ComplicationType.SMALL_IMAGE,
-            ComplicationType.GOAL_PROGRESS
+            ComplicationType.PHOTO_IMAGE,
+            ComplicationType.GOAL_PROGRESS,
+            ComplicationType.WEIGHTED_ELEMENTS
         ),
         RectF(
             0.62f,
@@ -89,11 +89,13 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object Bottom: ComplicationConfig(
         BOTTOM_COMPLICATION_ID,
-        listOf(         // TODO: maybe add WEIGHTED_ELEMENTS also shouldn't PHOTO_IMAGE be LARGE_IMAGE instead?
+        listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.LONG_TEXT,
             ComplicationType.SMALL_IMAGE,
-            ComplicationType.GOAL_PROGRESS
+            ComplicationType.PHOTO_IMAGE,
+            ComplicationType.GOAL_PROGRESS,
+            ComplicationType.WEIGHTED_ELEMENTS
         ),
         RectF(
             0.62f,
