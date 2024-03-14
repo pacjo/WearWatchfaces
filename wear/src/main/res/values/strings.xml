@@ -23,6 +23,8 @@
 
     <string name="style6_name">Hunger Games</string>
 
+    <string name="style7_name">Azur</string>
+
     <!-- ============ Time ring configuration ============ -->
     <string name="time_ring_setting">Time ring</string>
 
@@ -32,9 +34,10 @@
     <string name="time_ring_radius">Corner radius</string>
     <string name="time_ring_radius_description">Allows changing corner radius of seconds ring</string>
 
-    <!-- ============ Misc configuration ============ -->
-    <string name="misc_setting">Complications</string>
+    <!-- ============ Complication configuration ============ -->
+    <string name="complication_setting">Complications</string>
 
+    <!-- ============ Misc configuration ============ -->
     <string name="misc_complications_on_aod">Show complications on AOD</string>
     <string name="misc_complications_on_aod_description">Changes the visibility of complications on AOD</string>
 </resources>

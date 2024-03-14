@@ -38,5 +38,9 @@
     <color name="style6_primary">#F3A738</color>
     <color name="style6_secondary">#5B8C5A</color>
     <color name="style6_tertiary">#F1D9A7</color>
-</resources>
 
+    <!--- Style 7 - Azur - https://coolors.co/e63946-f1faee-a8dadc-457b9d-1d3557 -->
+    <color name="style7_primary">#A8DADC</color>
+    <color name="style7_secondary">#1D3557</color>
+    <color name="style7_tertiary">#457B9D</color>
+</resources>

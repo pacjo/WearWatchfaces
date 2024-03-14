@@ -31,6 +31,9 @@ private val STYLE5_COLOR_STYLE_NAME_RESOURCE_ID = R.string.style5_name
 const val STYLE6_COLOR_STYLE_ID = "style6_id"
 private val STYLE6_COLOR_STYLE_NAME_RESOURCE_ID = R.string.style6_name
 
+const val STYLE7_COLOR_STYLE_ID = "style7_id"
+private val STYLE7_COLOR_STYLE_NAME_RESOURCE_ID = R.string.style7_name
+
 /**
  * Represents watch face color style options the user can select (includes the unique id, the
  * complication style resource id, and general watch face color style resource ids).
@@ -109,6 +112,16 @@ enum class ColorStyleIdAndResourceIds(
         backgroundColorId = R.color.background
     ),
 
+    STYLE7(
+        id = STYLE7_COLOR_STYLE_ID,
+        nameResourceId = STYLE7_COLOR_STYLE_NAME_RESOURCE_ID,
+        primaryColorId = R.color.style7_primary,
+        secondaryColorId = R.color.style7_secondary,
+        tertiaryColorId = R.color.style7_tertiary,
+        outlineColorId = R.color.outline,
+        backgroundColorId = R.color.background
+    ),
+
     AMBIENT(
         id = AMBIENT_COLOR_STYLE_ID,
         nameResourceId = AMBIENT_COLOR_STYLE_NAME_RESOURCE_ID,
@@ -131,6 +144,7 @@ enum class ColorStyleIdAndResourceIds(
                 STYLE4.id -> STYLE4
                 STYLE5.id -> STYLE5
                 STYLE6.id -> STYLE6
+                STYLE7.id -> STYLE7
                 AMBIENT.id -> AMBIENT
                 else -> STYLE1
             }
