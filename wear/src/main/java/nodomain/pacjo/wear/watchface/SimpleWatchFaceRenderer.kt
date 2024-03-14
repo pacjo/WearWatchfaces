@@ -34,12 +34,22 @@ import java.time.ZonedDateTime
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
 
 // https://stackoverflow.com/a/24969713
-fun drawTextCentred(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
+fun drawTextCentredVertically(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
     val textBounds = Rect()
 
     paint.getTextBounds(text, 0, text.length, textBounds)
     // canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint) // center hor and ver
     canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint) // center ver only
+}
+
+fun drawTextCentredBoth(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
+    val textBounds = Rect()
+
+    paint.getTextBounds(text, 0, text.length, textBounds)
+    // canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint) // center hor and ver
+    canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint.apply {
+        textAlign = Paint.Align.CENTER
+    })
 }
 
 class SimpleWatchCanvasRenderer(
@@ -288,11 +298,16 @@ class SimpleWatchCanvasRenderer(
         val hours = zonedDateTime.hour.toString().padStart(2, '0')
         val minutes = zonedDateTime.minute.toString().padStart(2, '0')
 
-        val timeXSpacing = bounds.height() * 0.04f
-
         // draw time
-        drawTextCentred(canvas, timePaint, hours, timeXSpacing, bounds.centerY() / 2f + bounds.height() * 0.03f)
-        drawTextCentred(canvas, timePaint, minutes, timeXSpacing, bounds.centerY() * (3/2f) - bounds.height() * 0.03f)
+        if (renderParameters.drawMode == DrawMode.AMBIENT && !watchFaceData.drawComplicationsInAmbient) {
+            val centerTimeXSpacing = bounds.width() * 0.5f
+            drawTextCentredBoth(canvas, timePaint, hours, centerTimeXSpacing, bounds.centerY() / 2f + bounds.height() * 0.03f)
+            drawTextCentredBoth(canvas, timePaint, minutes, centerTimeXSpacing, bounds.centerY() * (3/2f) - bounds.height() * 0.03f)
+        } else {
+            val timeXSpacing = bounds.width() * 0.04f
+            drawTextCentredVertically(canvas, timePaint, hours, timeXSpacing, bounds.centerY() / 2f + bounds.height() * 0.03f)
+            drawTextCentredVertically(canvas, timePaint, minutes, timeXSpacing, bounds.centerY() * (3/2f) - bounds.height() * 0.03f)
+        }
     }
 
         companion object {
