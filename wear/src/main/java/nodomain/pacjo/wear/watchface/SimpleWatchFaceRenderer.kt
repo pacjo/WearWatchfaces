@@ -265,16 +265,23 @@ class SimpleWatchCanvasRenderer(
             textSize = maxTextSize
             isAntiAlias = true
             when (renderParameters.drawMode) {
-                DrawMode.AMBIENT -> color = watchFaceColors.ambientPrimaryColor     // maybe change to outline only (https://stackoverflow.com/questions/9132781/paint-bordered-text-in-a-canvas-android)
-                else -> shader = LinearGradient(
+                DrawMode.AMBIENT -> {
+                    color = watchFaceColors.ambientPrimaryColor
+                    style = Paint.Style.STROKE
+                    strokeWidth = 4f
+                }
+                else -> {
+                    shader = LinearGradient(
                         0f,
                         0f,
-                        bounds.width().toFloat(),   // it should be `/ maxTextWidth` but current looks better
+                        bounds.width()
+                            .toFloat(),   // it should be `/ maxTextWidth` but current looks better
                         bounds.height().toFloat(),
                         watchFaceColors.activePrimaryColor,
                         watchFaceColors.activeSecondaryColor,
                         Shader.TileMode.CLAMP
-                )
+                    )
+                }
             }
         }
 
