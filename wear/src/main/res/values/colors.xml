@@ -14,10 +14,10 @@
     <color name="style1_secondary">#6369D1</color>
     <color name="style1_tertiary">#00A6A6</color>
 
-    <!-- Style 2 - Alessandra - https://coolors.co/efbcd5-91171f-421820-abdae1-f7b267 -->
-    <color name="style2_primary">#91171F</color>
-    <color name="style2_secondary">#421820</color>
-    <color name="style2_tertiary">#EFBCD5</color>
+    <!-- Style 2 - Alessandra - https://coolors.co/a4161a-ff4747-e5383b-ff6b6b-ff8686 -->
+    <color name="style2_primary">#A4161A</color>
+    <color name="style2_secondary">#FF4747</color>
+    <color name="style2_tertiary">#E5383B</color>
 
     <!-- Style 3 - Addie LaRue - https://coolors.co/556f44-344966-bfcc94-beb2c8-5a0001 -->
     <color name="style3_primary">#556F44</color>
