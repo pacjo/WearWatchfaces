@@ -38,6 +38,7 @@ import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
@@ -60,10 +61,14 @@ class WatchFaceConfigActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val context = LocalContext.current
+
             val uiState = watchFacePreview(stateHolder)
             val bitmap = uiState?.previewImage?.asImageBitmap()
 
-            val context = LocalContext.current
+            val currentTheme = context.resources.getString(
+                uiState?.colorStyleId?.let { getColorStyleConfig(it).nameResourceId } ?: R.string.colors_style_setting
+            )
 
             val navController = rememberSwipeDismissableNavController()
 
@@ -105,7 +110,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                 state = horizontalPagerState
                             ) { currentPage ->
                                 when (currentPage) {
-                                    0 -> CategorySelectButton(context, context.resources.getString(R.string.colors_style_setting)) {
+                                    0 -> CategorySelectButton(context, currentTheme) {
                                             navController.navigate(
                                                 "colors"
                                             )
@@ -115,11 +120,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                                 "time_ring"
                                             )
                                         }
-                                    2 -> CategorySelectButton(context, context.resources.getString(R.string.complication_setting)) {
-                                            navController.navigate(
-                                                "complications"
-                                            )
-                                        }
+                                    2 -> ComplicationConfigScreen(stateHolder)
                                     3 -> MiscConfigScreen(context, stateHolder, uiState!!)
                                 }
                             }
@@ -127,13 +128,10 @@ class WatchFaceConfigActivity : ComponentActivity() {
                     }
                 }
                 composable("colors") {
-                    ColorSelectScreen(context, stateHolder)
+                    ColorSelectScreen(context, stateHolder, navController)
                 }
                 composable("time_ring") {
                     TimeRingSettingsScreen(context, stateHolder, uiState!!)
-                }
-                composable("complications") {
-                    ComplicationConfigScreen(stateHolder)
                 }
             }
         }

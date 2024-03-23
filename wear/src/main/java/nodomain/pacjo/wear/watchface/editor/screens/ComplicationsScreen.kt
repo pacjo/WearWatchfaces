@@ -31,14 +31,6 @@ fun ComplicationConfigScreen(stateHolder: WatchFaceConfigStateHolder) {
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
-    // get background, TODO: remake
-    val uiState = watchFacePreview(stateHolder)
-    val bitmap = uiState?.previewImage?.asImageBitmap()
-
-    if (bitmap != null) {
-        Image(bitmap = bitmap, contentDescription = null)
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
         for (complication in ComplicationConfig.getAll<ComplicationConfig>()) {
             val left = complication.bounds.left * screenWidth
@@ -77,7 +69,7 @@ fun CanvasOutline(
     Canvas(modifier = Modifier.fillMaxSize()) {
         drawIntoCanvas { canvas ->
             val outlinePaint = Paint().apply {
-                color = Color.Red
+                color = Color.DarkGray
                 alpha = 100f
                 isAntiAlias = true
                 strokeWidth = 5f

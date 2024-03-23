@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.Button
@@ -30,7 +31,7 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 @Composable
-fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder) {
+fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, navController: NavController) {
     val listState = rememberScalingLazyListState()
 
     Scaffold (
@@ -62,6 +63,7 @@ fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder)
                                     context
                                 )[index].toString()
                             )
+                            navController.popBackStack()
                         },
                         modifier = Modifier
                             .fillMaxWidth(),
