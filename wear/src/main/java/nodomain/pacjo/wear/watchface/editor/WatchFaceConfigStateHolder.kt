@@ -1,6 +1,7 @@
 package nodomain.pacjo.wear.watchface.editor
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -121,11 +122,10 @@ class WatchFaceConfigStateHolder(
             RenderParameters(
                 DrawMode.INTERACTIVE,
                 WatchFaceLayer.ALL_WATCH_FACE_LAYERS,
-                // this adds a highlight effect to the complication slots, we don't need it right now
 //                RenderParameters.HighlightLayer(
 //                    RenderParameters.HighlightedElement.AllComplicationSlots,
-//                    Color.RED, // Red complication highlight.
-//                    Color.argb(128, 0, 0, 0) // Darken everything else.
+//                    Color.TRANSPARENT,                              // complication highlight color
+//                    Color.argb(128, 0, 0, 0)  // Darken everything else.
 //                )
             ),
             // or we could use `editorSession.previewReferenceInstant` for default
@@ -217,9 +217,6 @@ class WatchFaceConfigStateHolder(
         Log.d(TAG, "\tuserStyleSetting: $userStyleSetting")
         Log.d(TAG, "\tuserStyleOption: $userStyleOption")
 
-        // TODO: As of watchface 1.0.0-beta01 We can't use MutableStateFlow.compareAndSet, or
-        //       anything that calls through to that (like MutableStateFlow.update) because
-        //       MutableStateFlow.compareAndSet won't properly update the user style.
         val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
         mutableUserStyle[userStyleSetting] = userStyleOption
         editorSession.userStyle.value = mutableUserStyle.toUserStyle()

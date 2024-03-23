@@ -150,8 +150,6 @@ class SimpleWatchCanvasRenderer(
             }
         }
 
-        // TODO: add, update other settings too
-
         // Only updates if something changed.
         if (watchFaceData != newWatchFaceData) {
             watchFaceData = newWatchFaceData
