@@ -1,5 +1,7 @@
 package nodomain.pacjo.wear.watchface
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.LinearGradient
@@ -7,8 +9,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Shader
+import android.util.FloatProperty
+import android.util.IntProperty
 import android.util.Log
 import android.view.SurfaceHolder
+import android.view.animation.AnimationUtils
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.Renderer
@@ -67,6 +72,55 @@ class SimpleWatchCanvasRenderer(
     FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
 ) {
+    private var drawProperties = DrawProperties()
+
+    private val ambientExitAnimator =
+        AnimatorSet().apply {
+            val linearOutSlow =
+                AnimationUtils.loadInterpolator(
+                    context,
+                    android.R.interpolator.accelerate_decelerate
+                )
+            playTogether(
+                ObjectAnimator.ofInt(drawProperties, DrawProperties.TRANSPARENCY_SCALE, 255)
+                    .apply {
+                        duration = MODE_TRANSITION_MS
+                        interpolator = linearOutSlow
+                        setAutoCancel(true)
+                    },
+                ObjectAnimator.ofFloat(drawProperties, DrawProperties.SECONDS_SCALE, 1.0f)
+                .apply {
+                    duration = TIME_RING_TRANSITION_MS
+                    interpolator = linearOutSlow
+                    setAutoCancel(true)
+                }
+            )
+        }
+
+    // Animation played when entering ambient mode.
+    private val ambientEnterAnimator =
+        AnimatorSet().apply {
+            val fastOutLinearIn =
+                AnimationUtils.loadInterpolator(
+                    context,
+                    android.R.interpolator.fast_out_linear_in
+                )
+            playTogether(
+                ObjectAnimator.ofInt(drawProperties, DrawProperties.TRANSPARENCY_SCALE, 255)
+                    .apply {
+                        duration = MODE_TRANSITION_MS
+                        interpolator = fastOutLinearIn
+                        setAutoCancel(true)
+                    },
+                ObjectAnimator.ofFloat(drawProperties, DrawProperties.SECONDS_SCALE, 0.0f)
+                    .apply {
+                        duration = TIME_RING_TRANSITION_MS
+                        interpolator = fastOutLinearIn
+                        setAutoCancel(true)
+                    }
+            )
+        }
+
     class SimpleSharedAssets: SharedAssets {
         override fun onDestroy() {
             // TODO: why is this empty?
@@ -97,7 +151,22 @@ class SimpleWatchCanvasRenderer(
                 updateWatchFaceData(userStyle)
             }
         }
+        // Listen for ambient state changes.
+        scope.launch {
+            watchState.isAmbient.collect { isAmbient ->
+                if (isAmbient!!) {
+                    ambientEnterAnimator.start()
+                } else {
+                    ambientExitAnimator.start()
+                }
+            }
+        }
     }
+
+//    override fun shouldAnimate(): Boolean {
+//        // Make sure we keep animating while ambientEnterAnimator is running.
+//        return ambientEnterAnimator.isRunning || super.shouldAnimate()
+//    }
 
     override suspend fun createSharedAssets(): SimpleSharedAssets {
         return SimpleSharedAssets()
@@ -246,8 +315,11 @@ class SimpleWatchCanvasRenderer(
             }
         )
 
+        // avoid flickering is we animate seconds close to 60
+        val currentSeconds = (zonedDateTime.second + zonedDateTime.nano/1000000000f) * (if (zonedDateTime.second + 2 < 60) drawProperties.secondsScale else 1f)
+
         val startAngle = -90f // Start angle for the arc (12 o'clock position)
-        val sweepAngle = (60 - (zonedDateTime.second + zonedDateTime.nano/1000000000f)) / 60f * 360f // Sweep angle based on seconds (0-60 as 0-100%)
+        val sweepAngle = (60 - currentSeconds * drawProperties.secondsScale) / 60f * 360f // Sweep angle based on seconds (0-60 as 0-100%)
 
         canvas.drawArc(
             RectF(bounds.right * -1f, bounds.bottom * -1f, bounds.right * 2f, bounds.bottom * 2f),
@@ -291,6 +363,7 @@ class SimpleWatchCanvasRenderer(
                     )
                 }
             }
+//            alpha = drawProperties.transparencyScale
         }
 
         val hours = zonedDateTime.hour.toString().padStart(2, '0')
@@ -308,13 +381,38 @@ class SimpleWatchCanvasRenderer(
         }
     }
 
+    private class DrawProperties(
+        var transparencyScale: Int = 0,
+        var secondsScale: Float = 0f
+    ) {
         companion object {
+            val TRANSPARENCY_SCALE =
+                object : IntProperty<DrawProperties>("transparencyScale") {
+                    override fun setValue(obj: DrawProperties, value: Int) {
+                        obj.transparencyScale = value
+                    }
+
+                    override fun get(obj: DrawProperties): Int {
+                        return obj.transparencyScale
+                    }
+                }
+            val SECONDS_SCALE =
+                object : FloatProperty<DrawProperties>("secondsScale") {
+                    override fun setValue(obj: DrawProperties, value: Float) {
+                        obj.secondsScale = value
+                    }
+
+                    override fun get(obj: DrawProperties): Float {
+                        return obj.secondsScale
+                    }
+                }
+        }
+    }
+
+    companion object {
         private const val TAG = "SimpleWatchCanvasRenderer"
 
-//        // Painted between pips on watch face for hour marks.
-//        private val HOUR_MARKS = arrayOf("3", "6", "9", "12")
-//
-//        // Used to canvas.scale() to scale watch hands in proper bounds. This will always be 1.0.
-//        private const val WATCH_HAND_SCALE = 1.0f
+        private const val TIME_RING_TRANSITION_MS = 750L
+        private const val MODE_TRANSITION_MS = 500L
     }
 }
