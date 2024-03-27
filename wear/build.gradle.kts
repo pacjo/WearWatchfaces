@@ -26,6 +26,20 @@ android {
             )
         }
     }
+
+    flavorDimensions += "default"
+    productFlavors {
+        create("simpleDigital") {
+            applicationIdSuffix = ".simpleDigital"
+        }
+    }
+
+    sourceSets {
+        getByName("simpleDigital") {
+            setRoot("src/simpledigital/src")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_19
         targetCompatibility = JavaVersion.VERSION_19
