@@ -57,14 +57,14 @@ fun drawTextCentredBoth(canvas: Canvas, paint: Paint, text: String, cx: Float, c
     })
 }
 
-class SimpleWatchCanvasRenderer(
+class WatchCanvasRenderer(
     private val context: Context,
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
     private val complicationSlotsManager: ComplicationSlotsManager,
     currentUserStyleRepository: CurrentUserStyleRepository,
     canvasType: Int
-): Renderer.CanvasRenderer2<SimpleWatchCanvasRenderer.SimpleSharedAssets>(
+): Renderer.CanvasRenderer2<WatchCanvasRenderer.SimpleSharedAssets>(
     surfaceHolder,
     currentUserStyleRepository,
     watchState,

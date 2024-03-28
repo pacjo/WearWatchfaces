@@ -1,7 +1,5 @@
 package nodomain.pacjo.wear.watchface.data.watchface
 
-const val COLOR_STYLE_DEFAULT = "style1_id"
-
 const val CORNER_RADIUS_DEFAULT = 60f
 
 const val DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT = true

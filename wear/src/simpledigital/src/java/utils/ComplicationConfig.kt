@@ -4,6 +4,8 @@ import android.graphics.RectF
 import android.os.Build
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
+import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
+import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
 
 const val TOP_LEFT_COMPLICATION_ID = 100
@@ -20,7 +22,7 @@ const val BOTTOM_COMPLICATION_ID = 300
 // Cause me to suffer all day long
 
 @Keep
-sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>, val bounds: RectF) {
+sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>, val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy, val bounds: RectF) {
 
     companion object {
         inline fun <reified T : ComplicationConfig> getAll(): List<T> {
@@ -40,6 +42,10 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
             ComplicationType.SMALL_IMAGE,
             ComplicationType.RANGED_VALUE
         ),
+        DefaultComplicationDataSourcePolicy(
+                SystemDataSources.DATA_SOURCE_DATE,
+            ComplicationType.SHORT_TEXT
+        ),
         RectF(
             0.62f,
             0.07f,
@@ -55,6 +61,10 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
             ComplicationType.SMALL_IMAGE,
+            ComplicationType.RANGED_VALUE
+        ),
+        DefaultComplicationDataSourcePolicy(
+            SystemDataSources.DATA_SOURCE_WATCH_BATTERY,
             ComplicationType.RANGED_VALUE
         ),
         RectF(
@@ -77,6 +87,10 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
             ComplicationType.GOAL_PROGRESS,
             ComplicationType.WEIGHTED_ELEMENTS
         ),
+        DefaultComplicationDataSourcePolicy(
+            SystemDataSources.DATA_SOURCE_STEP_COUNT,
+            ComplicationType.SHORT_TEXT
+        ),
         RectF(
             0.62f,
             0.38f,
@@ -96,6 +110,10 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
             ComplicationType.PHOTO_IMAGE,
             ComplicationType.GOAL_PROGRESS,
             ComplicationType.WEIGHTED_ELEMENTS
+        ),
+        DefaultComplicationDataSourcePolicy(
+            SystemDataSources.DATA_SOURCE_NEXT_EVENT,
+            ComplicationType.LONG_TEXT
         ),
         RectF(
             0.62f,

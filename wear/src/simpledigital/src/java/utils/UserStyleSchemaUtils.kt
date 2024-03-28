@@ -5,7 +5,6 @@ import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.COLOR_STYLE_DEFAULT
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
 import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_DEFAULT
