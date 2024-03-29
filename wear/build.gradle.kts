@@ -29,14 +29,20 @@ android {
 
     flavorDimensions += "default"
     productFlavors {
-        create("simpleDigital") {
-            applicationIdSuffix = ".simpleDigital"
+        create("simpledigital") {
+            applicationIdSuffix = ".simpledigital"
+        }
+        create("digitalinformer") {
+            applicationIdSuffix = ".digitalinformer"
         }
     }
 
     sourceSets {
-        getByName("simpleDigital") {
+        getByName("simpledigital") {
             setRoot("src/simpledigital/src")
+        }
+        getByName("digitalinformer") {
+            setRoot("src/digitalinformer/src")
         }
     }
 
