@@ -33,29 +33,12 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
+import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
+import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
 import java.time.ZonedDateTime
 
 // Default for how long each frame is displayed at expected frame rate.
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
-
-// https://stackoverflow.com/a/24969713
-fun drawTextCentredVertically(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
-    val textBounds = Rect()
-
-    paint.getTextBounds(text, 0, text.length, textBounds)
-    // canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint) // center hor and ver
-    canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint) // center ver only
-}
-
-fun drawTextCentredBoth(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
-    val textBounds = Rect()
-
-    paint.getTextBounds(text, 0, text.length, textBounds)
-    // canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint) // center hor and ver
-    canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint.apply {
-        textAlign = Paint.Align.CENTER
-    })
-}
 
 class WatchCanvasRenderer(
     private val context: Context,

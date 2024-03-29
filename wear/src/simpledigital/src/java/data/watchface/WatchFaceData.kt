@@ -1,7 +1,5 @@
 package nodomain.pacjo.wear.watchface.data.watchface
 
-const val CORNER_RADIUS_DEFAULT = 60f
-
 const val DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT = true
 
 const val TIME_RING_CORNER_RADIUS_DEFAULT = 60f

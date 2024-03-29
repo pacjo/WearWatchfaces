@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">WearWatchfaces</string>
 
-    <!-- Name of watchface [CHAR LIMIT=20] -->
-    <string name="simple_watch_face_name" translatable="false">Square Daily</string>
+    <!-- Names of watchfaces [CHAR LIMIT=20] -->
+    <string name="simple_digital_watch_face_name" translatable="false">Square Daily</string>
+    <string name="digital_informer_watch_face_name" translatable="false">Digital Informer</string>
 
     <!-- ============ Colors / Style / Theme configuration ============ -->
     <string name="colors_style_setting">Colors</string>
     <string name="colors_style_setting_description">Allows selecting color scheme</string>
 
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
+    <!-- Names of watchface style [CHAR LIMIT=20] -->
     <string name="ambient_style_name">Ambient Style</string>
 
     <string name="style1_name">Retro</string>

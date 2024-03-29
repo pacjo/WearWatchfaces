@@ -13,7 +13,7 @@
             android:name=".WatchFaceService"
             android:directBootAware="true"
             android:exported="true"
-            android:label="@string/simple_watch_face_name"
+            android:label="@string/simple_digital_watch_face_name"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />

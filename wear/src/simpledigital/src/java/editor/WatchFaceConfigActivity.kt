@@ -1,29 +1,18 @@
 package nodomain.pacjo.wear.watchface.editor
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -32,17 +21,17 @@ import androidx.wear.compose.material.HorizontalPageIndicator
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.PageIndicatorState
 import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.material.Text
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.TimeRingSettingsScreen
+import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
+import nodomain.pacjo.wear.watchface.utils.watchFacePreview
 
 class WatchFaceConfigActivity : ComponentActivity() {
     private lateinit var stateHolder: WatchFaceConfigStateHolder
@@ -134,42 +123,6 @@ class WatchFaceConfigActivity : ComponentActivity() {
                     TimeRingSettingsScreen(context, stateHolder, uiState!!)
                 }
             }
-        }
-    }
-}
-
-// TODO: finish
-@Composable
-fun watchFacePreview(stateHolder: WatchFaceConfigStateHolder): WatchFaceConfigStateHolder.UserStylesAndPreview? {     // TODO: change name
-    val uiState by stateHolder.uiState.collectAsState()
-
-    return when (val state = uiState) {
-        is WatchFaceConfigStateHolder.EditWatchFaceUiState.Success -> {
-            state.userStylesAndPreview
-        }
-        else -> null
-    }
-}
-
-@Composable
-fun CategorySelectButton(context: Context, text: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 16.dp),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    Color(context.getColor(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text)
         }
     }
 }
