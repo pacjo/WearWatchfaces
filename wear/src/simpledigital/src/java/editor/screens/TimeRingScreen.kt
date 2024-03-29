@@ -26,6 +26,8 @@ import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MINIMUM
 import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_STEP
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
+// TODO: move to common
+
 @Composable
 fun TimeRingSettingsScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, uiState: WatchFaceConfigStateHolder.UserStylesAndPreview) {
     val listState = rememberScalingLazyListState()

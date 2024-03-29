@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">WearWatchfaces</string>
 
-    <!-- Names of watchfaces [CHAR LIMIT=20] -->
-    <string name="simple_digital_watch_face_name" translatable="false">Square Daily</string>
-    <string name="digital_informer_watch_face_name" translatable="false">Digital Informer</string>
-
     <!-- ============ Colors / Style / Theme configuration ============ -->
     <string name="colors_style_setting">Colors</string>
     <string name="colors_style_setting_description">Allows selecting color scheme</string>
@@ -25,15 +21,6 @@
     <string name="style6_name">Hunger Games</string>
 
     <string name="style7_name">Azur</string>
-
-    <!-- ============ Time ring configuration ============ -->
-    <string name="time_ring_setting">Time ring</string>
-
-    <string name="time_ring_width">Width</string>
-    <string name="time_ring_width_description">Allows changing width of seconds ring</string>
-
-    <string name="time_ring_radius">Corner radius</string>
-    <string name="time_ring_radius_description">Allows changing corner radius of seconds ring</string>
 
     <!-- ============ Complication configuration ============ -->
     <string name="complication_setting">Complications</string>
