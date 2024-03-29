@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Name of the watchface [CHAR LIMIT=20] -->
+    <string name="simple_digital_watch_face_name" translatable="false">Simple Digital</string>
+
+    <!-- ============ Time ring configuration ============ -->
+    <string name="time_ring_setting">Time ring</string>
+
+    <string name="time_ring_width">Width</string>
+    <string name="time_ring_width_description">Allows changing width of seconds ring</string>
+
+    <string name="time_ring_radius">Corner radius</string>
+    <string name="time_ring_radius_description">Allows changing corner radius of seconds ring</string>
+</resources>
