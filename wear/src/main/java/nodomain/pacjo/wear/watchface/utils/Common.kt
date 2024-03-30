@@ -18,8 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import androidx.wear.watchface.ComplicationSlotsManager
+import androidx.wear.watchface.RenderParameters
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
+import java.time.ZonedDateTime
 
 // constants
 const val DEFAULT_CORNER_RADIUS = 60f
@@ -42,6 +45,14 @@ fun drawTextCentredBoth(canvas: Canvas, paint: Paint, text: String, cx: Float, c
     canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint.apply {
         textAlign = Paint.Align.CENTER
     })
+}
+
+fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime, renderParameters: RenderParameters, complicationSlotsManager: ComplicationSlotsManager) {
+    for ((_, complication) in complicationSlotsManager.complicationSlots) {
+        if (complication.enabled) {
+            complication.render(canvas, zonedDateTime, renderParameters)
+        }
+    }
 }
 
 // Composables
