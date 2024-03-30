@@ -35,14 +35,6 @@ fun ComplicationConfigScreen(stateHolder: WatchFaceConfigStateHolder) {
             val right = complication.bounds.right * screenWidth
             val bottom = complication.bounds.bottom * screenHeight
 
-            // draw outline
-            CanvasOutline(
-                complication.bounds.left,
-                complication.bounds.top,
-                complication.bounds.right,
-                complication.bounds.bottom
-            )
-
             // create clickable area
             Box(
                 modifier = Modifier
@@ -51,35 +43,6 @@ fun ComplicationConfigScreen(stateHolder: WatchFaceConfigStateHolder) {
                     .clickable {
                         stateHolder.setComplication(complication.id)
                     }
-            )
-        }
-    }
-}
-
-@Composable
-fun CanvasOutline(
-    left: Float,
-    top: Float,
-    right: Float,
-    bottom: Float
-) {
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        drawIntoCanvas { canvas ->
-            val outlinePaint = Paint().apply {
-                color = Color.DarkGray
-                alpha = 100f
-                isAntiAlias = true
-                strokeWidth = 5f
-            }
-
-            canvas.drawRoundRect(
-                left * size.width,
-                top * size.height,
-                right * size.width,
-                bottom * size.height,
-                DEFAULT_CORNER_RADIUS,
-                DEFAULT_CORNER_RADIUS,
-                outlinePaint
             )
         }
     }

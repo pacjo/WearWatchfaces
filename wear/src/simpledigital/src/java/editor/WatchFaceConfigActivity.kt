@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +26,8 @@ import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import androidx.wear.watchface.RenderParameters
+import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
@@ -31,6 +35,8 @@ import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.TimeRingSettingsScreen
 import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
+import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
+import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview
 
 class WatchFaceConfigActivity : ComponentActivity() {
@@ -82,6 +88,23 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                     get() = horizontalPagerState.currentPage
                                 override val pageCount: Int
                                     get() = horizontalPagerState.pageCount
+                            }
+                        }
+                        LaunchedEffect(horizontalPagerState) {
+                            snapshotFlow { horizontalPagerState.currentPage }.collect { page ->
+                                when (page) {
+                                    1 -> stateHolder.setHighlightedElement(
+                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(TIME_RING_WIDTH_SETTING))
+                                    )
+                                    2 -> stateHolder.setHighlightedElement(
+                                        RenderParameters.HighlightedElement.AllComplicationSlots
+                                    )
+                                    // set to unused value, to dim whole face
+                                    3 -> stateHolder.setHighlightedElement(
+                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING))
+                                    )
+                                    else -> stateHolder.setHighlightedElement(null)
+                                }
                             }
                         }
 

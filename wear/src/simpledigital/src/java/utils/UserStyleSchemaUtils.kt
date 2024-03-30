@@ -21,6 +21,7 @@ const val COLOR_STYLE_SETTING = "color_style_setting"
 const val DRAW_COMPLICATIONS_IN_AMBIENT_SETTING = "draw_complications_in_ambient_setting"
 const val TIME_RING_CORNER_RADIUS_SETTING = "time_ring_corner_radius_setting"
 const val TIME_RING_WIDTH_SETTING = "time_ring_width_setting"
+const val USELESS_SETTING_USED_FOR_PREVIEW_SETTING = "useless_setting_used_for_preview"
 
 /*
  * Creates user styles in the settings activity associated with the watch face, so users can
@@ -77,12 +78,23 @@ fun createUserStyleSchema(context: Context): UserStyleSchema {
         TIME_RING_WIDTH_DEFAULT.toDouble()
     )
 
+    val uselessSettingUsedForUpdatingPreview = UserStyleSetting.BooleanUserStyleSetting(
+        UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING),
+        context.resources,
+        R.string.misc_complications_on_aod,                             // TODO: change
+        R.string.misc_complications_on_aod_description,        // TODO: change
+        null,
+        listOf(WatchFaceLayer.BASE),
+        true            // TODO: change
+    )
+
     return UserStyleSchema(
         listOf(
             colorStyleSetting,
             drawComplicationsInAmbientSetting,
             timeRingWidthSetting,
-            timeRingCornerRadiusSetting
+            timeRingCornerRadiusSetting,
+            uselessSettingUsedForUpdatingPreview
         )
     )
 }

@@ -29,7 +29,9 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
+import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 /**
  * Maintains the [WatchFaceConfigActivity] state, i.e., handles reads and writes to the
@@ -59,6 +61,9 @@ class WatchFaceConfigStateHolder(
     private lateinit var drawComplicationsInAmbientKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var timeRingWidthKey: UserStyleSetting.DoubleRangeUserStyleSetting
     private lateinit var timeRingCornerRadiusKey: UserStyleSetting.DoubleRangeUserStyleSetting
+    private lateinit var uselessSettingUsedForUpdatingPreviewKey: UserStyleSetting.BooleanUserStyleSetting
+
+    private var highlightedElementKey: RenderParameters.HighlightedElement? = null
 
     val uiState: StateFlow<EditWatchFaceUiState> =
         flow<EditWatchFaceUiState> {
@@ -105,8 +110,15 @@ class WatchFaceConfigStateHolder(
                 TIME_RING_CORNER_RADIUS_SETTING -> {
                     timeRingCornerRadiusKey = setting as UserStyleSetting.DoubleRangeUserStyleSetting
                 }
+
+                USELESS_SETTING_USED_FOR_PREVIEW_SETTING -> {
+                    uselessSettingUsedForUpdatingPreviewKey = setting as UserStyleSetting.BooleanUserStyleSetting
+                }
             }
         }
+        // TODO: change!
+        // make sane default
+        highlightedElementKey = RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(COLOR_STYLE_SETTING))
     }
 
     /* Creates a new bitmap render of the updated watch face and passes it along (with all the other
@@ -122,25 +134,28 @@ class WatchFaceConfigStateHolder(
             RenderParameters(
                 DrawMode.INTERACTIVE,
                 WatchFaceLayer.ALL_WATCH_FACE_LAYERS,
-//                RenderParameters.HighlightLayer(
-//                    RenderParameters.HighlightedElement.AllComplicationSlots,
-//                    Color.TRANSPARENT,                              // complication highlight color
-//                    Color.argb(128, 0, 0, 0)  // Darken everything else.
-//                )
+                highlightedElementKey?.let {
+                    RenderParameters.HighlightLayer(
+                        it,
+                        Color.TRANSPARENT,                              // highlight color
+                        Color.argb(128, 0, 0, 0)  // darken everything else.
+                    )
+                }
             ),
             // or we could use `editorSession.previewReferenceInstant` for default
-            Instant.now().plusSeconds(30 - Instant.now().epochSecond % 60),
+            Instant.now().truncatedTo(ChronoUnit.MINUTES).plusSeconds(59).plusMillis(999),
             complicationsPreviewData
         )
 
         val colorStyle =
-            userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
+            userStyle[colorStyleKey]
+                as UserStyleSetting.ListUserStyleSetting.ListOption
         val complicationsInAmbient =
             userStyle[drawComplicationsInAmbientKey]
                 as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
         val timeRingWidth =
             userStyle[timeRingWidthKey]
-                    as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
+                as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
         val timeRingCornerRadius =
             userStyle[timeRingCornerRadiusKey]
                 as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
@@ -161,6 +176,13 @@ class WatchFaceConfigStateHolder(
         scope.launch(Dispatchers.Main.immediate) {
             editorSession.openComplicationDataSourceChooser(complicationLocation)
         }
+    }
+
+    fun setHighlightedElement(element: RenderParameters.HighlightedElement?) {
+        highlightedElementKey = element
+
+        // TODO: this needs to be changed
+        forceUpdatePreview()
     }
 
     fun setColorStyle(newColorStyleId: String) {
@@ -203,6 +225,16 @@ class WatchFaceConfigStateHolder(
         setUserStyleOption(
             timeRingCornerRadiusKey,
             UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption(radius.toDouble())
+        )
+    }
+
+    private fun forceUpdatePreview() {
+        val currentValue = editorSession.userStyle.value[uselessSettingUsedForUpdatingPreviewKey]
+                as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+
+        setUserStyleOption(
+            uselessSettingUsedForUpdatingPreviewKey,
+            UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(!currentValue.value)
         )
     }
 

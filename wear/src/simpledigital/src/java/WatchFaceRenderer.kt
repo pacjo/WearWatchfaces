@@ -16,6 +16,7 @@ import android.view.SurfaceHolder
 import android.view.animation.AnimationUtils
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
+import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -33,6 +34,7 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
+import nodomain.pacjo.wear.watchface.utils.drawComplications
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
 import java.time.ZonedDateTime
@@ -228,7 +230,7 @@ class WatchCanvasRenderer(
         }
 
         if (renderParameters.drawMode != DrawMode.AMBIENT || (renderParameters.drawMode == DrawMode.AMBIENT && watchFaceData.drawComplicationsInAmbient)) {
-            drawComplications(canvas, zonedDateTime)
+            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager)
         }
 
         if (renderParameters.watchFaceLayers.contains(WatchFaceLayer.COMPLICATIONS_OVERLAY)) {
@@ -249,17 +251,17 @@ class WatchCanvasRenderer(
                 complication.renderHighlightLayer(canvas, zonedDateTime, renderParameters)
             }
         }
-    }
 
-    // ----- All drawing functions -----
-    private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {
-        for ((_, complication) in complicationSlotsManager.complicationSlots) {
-            if (complication.enabled) {
-                complication.render(canvas, zonedDateTime, renderParameters)
-            }
+        if (renderParameters.highlightLayer!!.highlightedElement in
+            listOf(
+                RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(TIME_RING_CORNER_RADIUS_SETTING)),
+                RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(TIME_RING_WIDTH_SETTING)))
+            ) {
+            drawTimeRing(canvas, bounds, zonedDateTime)
         }
     }
 
+    // ----- All drawing functions -----
     private fun drawTimeRing(
         canvas: Canvas,
         bounds: Rect,
@@ -269,33 +271,18 @@ class WatchCanvasRenderer(
             color = watchFaceColors.activeTertiaryColor
             alpha = 100
             isAntiAlias = true
+            style = Paint.Style.STROKE
+            strokeWidth = watchFaceData.timeRingWidth / 2
         }
 
-        val borderRect = RectF(
-            bounds.left + watchFaceData.timeRingWidth / 2,
-            bounds.top + watchFaceData.timeRingWidth / 2,
-            bounds.right - watchFaceData.timeRingWidth / 2,
-            bounds.bottom - watchFaceData.timeRingWidth / 2
-        )
-
         canvas.drawRoundRect(
-            bounds.left.toFloat(),
-            bounds.top.toFloat(),
-            bounds.right.toFloat(),
-            bounds.bottom.toFloat(),
+            bounds.left + watchFaceData.timeRingWidth / 4,
+            bounds.top + watchFaceData.timeRingWidth / 4,
+            bounds.right - watchFaceData.timeRingWidth / 4,
+            bounds.bottom - watchFaceData.timeRingWidth / 4,
             watchFaceData.timeRingCornerRadius,
             watchFaceData.timeRingCornerRadius,
             ringPaint
-        )
-
-        canvas.drawRoundRect(
-            borderRect,
-            watchFaceData.timeRingCornerRadius,
-            watchFaceData.timeRingCornerRadius,
-            Paint().apply {
-                color = watchFaceColors.backgroundColor
-                isAntiAlias = true
-            }
         )
 
         // avoid flickering is we animate seconds close to 60
