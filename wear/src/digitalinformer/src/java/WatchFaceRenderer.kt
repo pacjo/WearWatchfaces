@@ -15,6 +15,7 @@ import android.view.SurfaceHolder
 import android.view.animation.AnimationUtils
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
+import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -30,6 +31,7 @@ import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
+import nodomain.pacjo.wear.watchface.utils.drawComplications
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
 import java.time.ZonedDateTime
@@ -190,7 +192,7 @@ class WatchCanvasRenderer(
         canvas.drawColor(watchFaceColors.backgroundColor)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT || (renderParameters.drawMode == DrawMode.AMBIENT && watchFaceData.drawComplicationsInAmbient)) {
-            drawComplications(canvas, zonedDateTime)        // TODO: probably should be reversed
+            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager)        // TODO: probably should be reversed
             drawComplicationsBackground(canvas, bounds)
         }
 
@@ -213,14 +215,6 @@ class WatchCanvasRenderer(
     }
 
     // ----- All drawing functions -----
-    private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {
-        for ((_, complication) in complicationSlotsManager.complicationSlots) {
-            if (complication.enabled) {
-                complication.render(canvas, zonedDateTime, renderParameters)
-            }
-        }
-    }
-
     private fun drawClock(
         canvas: Canvas,
         bounds: Rect,

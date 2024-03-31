@@ -1,6 +1,7 @@
 package nodomain.pacjo.wear.watchface.editor
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,6 +27,7 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.yield
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
+import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import java.time.Instant
 
 /**
@@ -54,6 +56,9 @@ class WatchFaceConfigStateHolder(
     // Keys from Watch Face Data Structure
     private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
     private lateinit var drawComplicationsInAmbientKey: UserStyleSetting.BooleanUserStyleSetting
+    private lateinit var uselessSettingUsedForUpdatingPreviewKey: UserStyleSetting.BooleanUserStyleSetting
+
+    private var highlightedElementKey: RenderParameters.HighlightedElement? = null
 
     val uiState: StateFlow<EditWatchFaceUiState> =
         flow<EditWatchFaceUiState> {
@@ -92,8 +97,15 @@ class WatchFaceConfigStateHolder(
                 DRAW_COMPLICATIONS_IN_AMBIENT_SETTING -> {
                     drawComplicationsInAmbientKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
+
+                USELESS_SETTING_USED_FOR_PREVIEW_SETTING -> {
+                    uselessSettingUsedForUpdatingPreviewKey = setting as UserStyleSetting.BooleanUserStyleSetting
+                }
             }
         }
+        // TODO: change!
+        // make sane default
+        highlightedElementKey = RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(COLOR_STYLE_SETTING))
     }
 
     /* Creates a new bitmap render of the updated watch face and passes it along (with all the other
@@ -109,11 +121,13 @@ class WatchFaceConfigStateHolder(
             RenderParameters(
                 DrawMode.INTERACTIVE,
                 WatchFaceLayer.ALL_WATCH_FACE_LAYERS,
-//                RenderParameters.HighlightLayer(
-//                    RenderParameters.HighlightedElement.AllComplicationSlots,
-//                    Color.TRANSPARENT,                              // complication highlight color
-//                    Color.argb(128, 0, 0, 0)  // Darken everything else.
-//                )
+                highlightedElementKey?.let {
+                    RenderParameters.HighlightLayer(
+                        it,
+                        Color.TRANSPARENT,                              // highlight color
+                        Color.argb(200, 0, 0, 0)  // darken everything else.
+                    )
+                }
             ),
             // or we could use `editorSession.previewReferenceInstant` for default
             Instant.now().plusSeconds(30 - Instant.now().epochSecond % 60),
@@ -139,6 +153,13 @@ class WatchFaceConfigStateHolder(
         scope.launch(Dispatchers.Main.immediate) {
             editorSession.openComplicationDataSourceChooser(complicationLocation)
         }
+    }
+
+    fun setHighlightedElement(element: RenderParameters.HighlightedElement?) {
+        highlightedElementKey = element
+
+        // TODO: this needs to be changed
+        forceUpdatePreview()
     }
 
     fun setColorStyle(newColorStyleId: String) {
@@ -167,6 +188,16 @@ class WatchFaceConfigStateHolder(
         setUserStyleOption(
             drawComplicationsInAmbientKey,
             UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(enabled)
+        )
+    }
+
+    private fun forceUpdatePreview() {
+        val currentValue = editorSession.userStyle.value[uselessSettingUsedForUpdatingPreviewKey]
+                as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+
+        setUserStyleOption(
+            uselessSettingUsedForUpdatingPreviewKey,
+            UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(!currentValue.value)
         )
     }
 
