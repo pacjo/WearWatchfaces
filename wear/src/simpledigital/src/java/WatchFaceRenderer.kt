@@ -160,8 +160,6 @@ class WatchCanvasRenderer(
     private fun updateWatchFaceData(userStyle: UserStyle) {
         Log.d(TAG, "updateWatchFace(): $userStyle")
 
-        Log.i("pacjodebug", "updateWatchFaceData: userStyle: $userStyle")
-
         var newWatchFaceData: WatchFaceData = watchFaceData
 
         // Loops through user style and applies new values to watchFaceData.

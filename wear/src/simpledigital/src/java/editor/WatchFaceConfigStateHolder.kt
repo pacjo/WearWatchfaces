@@ -138,7 +138,7 @@ class WatchFaceConfigStateHolder(
                     RenderParameters.HighlightLayer(
                         it,
                         Color.TRANSPARENT,                              // highlight color
-                        Color.argb(128, 0, 0, 0)  // darken everything else.
+                        Color.argb(200, 0, 0, 0)  // darken everything else.
                     )
                 }
             ),

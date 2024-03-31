@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,9 +76,23 @@ class WatchFaceConfigActivity : ComponentActivity() {
             ) {
                 composable("category_select") {
                     MaterialTheme {
-                        // background
-                        if (bitmap != null) {
-                            Image(bitmap = bitmap, contentDescription = null)
+                        // background with animation
+                        Crossfade(
+                            targetState = bitmap,
+                            modifier = Modifier.fillMaxSize(),
+                            animationSpec = tween(
+                                durationMillis = 500,
+                                easing = LinearEasing
+                            ),
+                            label = "watchface_preview_change"
+                        ) { currentBitmap ->
+                            if (currentBitmap != null) {
+                                Image(
+                                    bitmap = currentBitmap,
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
                         }
 
                         // settings pages
