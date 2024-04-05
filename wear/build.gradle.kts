@@ -35,6 +35,9 @@ android {
         create("digitalinformer") {
             applicationIdSuffix = ".digitalinformer"
         }
+        create("alreadyLate") {
+            applicationIdSuffix = ".alreadylate"
+        }
     }
 
     sourceSets {
@@ -43,6 +46,9 @@ android {
         }
         getByName("digitalinformer") {
             setRoot("src/digitalinformer/src")
+        }
+        getByName("alreadyLate") {
+            setRoot("src/alreadylate/src")
         }
     }
 
@@ -85,4 +91,6 @@ dependencies {
     implementation("androidx.wear.compose:compose-navigation:1.3.0")
 
     implementation(kotlin("reflect"))
+
+    implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 }
