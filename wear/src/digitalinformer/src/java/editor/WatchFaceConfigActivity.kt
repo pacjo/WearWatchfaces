@@ -36,6 +36,7 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.C
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
+import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview
@@ -140,7 +141,19 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                             )
                                         }
                                     1 -> ComplicationConfigScreen(stateHolder)
-                                    2 -> MiscConfigScreen(context, stateHolder, uiState!!)
+                                    2 -> MiscConfigScreen(
+                                        listOf {
+                                            PreferenceSwitch(
+                                                text = context.resources.getString(R.string.misc_complications_on_aod),
+                                                value = uiState!!.complicationsInAmbient,
+                                                onCheckedChange = { checked ->
+                                                    stateHolder.setDrawComplicationsInAmbient(
+                                                        checked
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    )
                                 }
                             }
                         }

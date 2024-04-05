@@ -36,6 +36,7 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.C
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
+import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.editor.screens.TimeRingSettingsScreen
 import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
@@ -150,7 +151,19 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                             )
                                         }
                                     2 -> ComplicationConfigScreen(stateHolder)
-                                    3 -> MiscConfigScreen(context, stateHolder, uiState!!)
+                                    3 -> MiscConfigScreen(
+                                        listOf {
+                                            PreferenceSwitch(
+                                                text = context.resources.getString(R.string.misc_complications_on_aod),
+                                                value = uiState!!.complicationsInAmbient,
+                                                onCheckedChange = { checked ->
+                                                    stateHolder.setDrawComplicationsInAmbient(
+                                                        checked
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    )
                                 }
                             }
                         }
