@@ -19,7 +19,7 @@ import androidx.wear.watchface.style.UserStyleSchema
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.createUserStyleSchema
 
-class WatchFaceService : WatchFaceService(){
+class AnalogWatchFaceService : WatchFaceService(){
     override fun createUserStyleSchema(): UserStyleSchema =
         createUserStyleSchema(context = applicationContext)
 
@@ -68,12 +68,13 @@ class WatchFaceService : WatchFaceService(){
         )
 
         return WatchFace(
-            watchFaceType = WatchFaceType.DIGITAL,
+            watchFaceType = WatchFaceType.ANALOG,
             renderer = renderer
         )
     }
 
     companion object {
-        const val TAG = "WatchFaceService"
+        // TODO: change
+        const val TAG = "AnalogWatchFaceService"
     }
 }

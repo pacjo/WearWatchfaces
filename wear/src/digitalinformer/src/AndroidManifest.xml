@@ -10,7 +10,7 @@
             android:value="true" />
 
         <service
-            android:name=".WatchFaceService"
+            android:name=".DigitalWatchFaceService"
             android:directBootAware="true"
             android:exported="true"
             android:label="@string/digital_informer_watch_face_name"
