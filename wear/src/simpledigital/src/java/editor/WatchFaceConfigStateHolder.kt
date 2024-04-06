@@ -33,23 +33,6 @@ import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETT
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-/**
- * Maintains the [WatchFaceConfigActivity] state, i.e., handles reads and writes to the
- * [EditorSession] which is basically the watch face data layer. This allows the user to edit their
- * watch face through [WatchFaceConfigActivity].
- *
- * Note: This doesn't use an Android ViewModel because the [EditorSession]'s constructor requires a
- * ComponentActivity and Intent (needed for the library's complication editing UI which is triggered
- * through the [EditorSession]). Generally, Activities and Views shouldn't be passed to Android
- * ViewModels, so this is named StateHolder to avoid confusion.
- *
- * Also, the scope is passed in and we recommend you use the of the lifecycleScope of the Activity.
- *
- * For the [EditorSession] itself, this class uses the keys, [UserStyleSetting], for each of our
- * user styles and sets their values [UserStyleSetting.Option]. After a new value is set, creates a
- * new image preview via screenshot class and triggers a listener (which creates new data for the
- * [StateFlow] that feeds back to the Activity).
- */
 class WatchFaceConfigStateHolder(
     private val scope: CoroutineScope,
     private val activity: ComponentActivity
@@ -137,7 +120,7 @@ class WatchFaceConfigStateHolder(
                 highlightedElementKey?.let {
                     RenderParameters.HighlightLayer(
                         it,
-                        Color.TRANSPARENT,                              // highlight color
+                        Color.TRANSPARENT,        // highlight color
                         Color.argb(200, 0, 0, 0)  // darken everything else.
                     )
                 }
@@ -270,19 +253,5 @@ class WatchFaceConfigStateHolder(
 
     companion object {
         private const val TAG = "WatchFaceConfigStateHolder"
-
-        // To convert the double representing the arm length to valid float value in the range the
-        // slider can support, we need to multiply the original value times 1,000.
-//        private const val MULTIPLE_FOR_SLIDER: Float = 1000f
-
-//        const val MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER =
-//            MINUTE_HAND_LENGTH_FRACTION_MINIMUM * MULTIPLE_FOR_SLIDER
-//
-//        const val MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER =
-//            MINUTE_HAND_LENGTH_FRACTION_MAXIMUM * MULTIPLE_FOR_SLIDER
-//
-//        const val MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER =
-//            MINUTE_HAND_LENGTH_FRACTION_DEFAULT * MULTIPLE_FOR_SLIDER
-
     }
 }

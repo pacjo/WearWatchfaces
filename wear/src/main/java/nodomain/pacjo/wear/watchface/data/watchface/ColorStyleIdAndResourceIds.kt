@@ -1,11 +1,8 @@
 package nodomain.pacjo.wear.watchface.data.watchface
 
 import android.content.Context
-import android.graphics.drawable.Icon
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.ui.platform.LocalContext
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.UserStyleSetting.ListUserStyleSetting
 import nodomain.pacjo.wear.watchface.R

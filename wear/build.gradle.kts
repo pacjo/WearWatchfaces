@@ -86,9 +86,9 @@ dependencies {
     implementation("androidx.wear.watchface:watchface-client:1.2.1")
 
     // Jetpack Compose
-    implementation("androidx.wear.compose:compose-foundation:1.3.0")
-    implementation("androidx.wear.compose:compose-material:1.3.0")
-    implementation("androidx.wear.compose:compose-navigation:1.3.0")
+    implementation("androidx.wear.compose:compose-foundation:1.3.1")
+    implementation("androidx.wear.compose:compose-material:1.3.1")
+    implementation("androidx.wear.compose:compose-navigation:1.3.1")
 
     implementation(kotlin("reflect"))
 

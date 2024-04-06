@@ -1,21 +1,15 @@
 package nodomain.pacjo.wear.watchface
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Shader
-import android.util.FloatProperty
-import android.util.IntProperty
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.animation.AnimationUtils
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
-import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -54,65 +48,20 @@ class WatchCanvasRenderer(
     FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
 ) {
-    private var drawProperties = DrawProperties()
-
-    private val ambientExitAnimator =
-        AnimatorSet().apply {
-            val linearOutSlow =
-                AnimationUtils.loadInterpolator(
-                    context,
-                    android.R.interpolator.accelerate_decelerate
-                )
-            playTogether(
-                ObjectAnimator.ofInt(drawProperties, DrawProperties.TRANSPARENCY_SCALE, 255)
-                    .apply {
-                        duration = MODE_TRANSITION_MS
-                        interpolator = linearOutSlow
-                        setAutoCancel(true)
-                    }
-            )
-        }
-
-    // Animation played when entering ambient mode.
-    private val ambientEnterAnimator =
-        AnimatorSet().apply {
-            val fastOutLinearIn =
-                AnimationUtils.loadInterpolator(
-                    context,
-                    android.R.interpolator.fast_out_linear_in
-                )
-            playTogether(
-                ObjectAnimator.ofInt(drawProperties, DrawProperties.TRANSPARENCY_SCALE, 255)
-                    .apply {
-                        duration = MODE_TRANSITION_MS
-                        interpolator = fastOutLinearIn
-                        setAutoCancel(true)
-                    }
-            )
-        }
-
     class SimpleSharedAssets: SharedAssets {
-        override fun onDestroy() {
-            // TODO: why is this empty?
-        }
+        override fun onDestroy() { }
     }
 
     private val scope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    // Represents all data needed to render the watch face. All value defaults are constants.
-    // Those changeable by user are saved in the watch face APIs and we update those here
-    // (in the renderer) through a Kotlin Flow.
     private var watchFaceData: WatchFaceData = WatchFaceData()
 
-    // Converts resource ids into Colors and ComplicationDrawable.
     private var watchFaceColors = convertToWatchFaceColorPalette(
         context,
         watchFaceData.activeColorStyle,
         watchFaceData.ambientColorStyle
     )
-
-    // TODO: more code goes here
 
     init {
         scope.launch {
@@ -120,22 +69,7 @@ class WatchCanvasRenderer(
                 updateWatchFaceData(userStyle)
             }
         }
-        // Listen for ambient state changes.
-        scope.launch {
-            watchState.isAmbient.collect { isAmbient ->
-                if (isAmbient!!) {
-                    ambientEnterAnimator.start()
-                } else {
-                    ambientExitAnimator.start()
-                }
-            }
-        }
     }
-
-//    override fun shouldAnimate(): Boolean {
-//        // Make sure we keep animating while ambientEnterAnimator is running.
-//        return ambientEnterAnimator.isRunning || super.shouldAnimate()
-//    }
 
     override suspend fun createSharedAssets(): SimpleSharedAssets {
         return SimpleSharedAssets()
@@ -170,11 +104,10 @@ class WatchCanvasRenderer(
             }
         }
 
-        // Only updates if something changed.
+        // Only update if something changed.
         if (watchFaceData != newWatchFaceData) {
             watchFaceData = newWatchFaceData
 
-            // Recreates Color and ComplicationDrawable from resource ids.
             watchFaceColors = convertToWatchFaceColorPalette(
                 context,
                 watchFaceData.activeColorStyle,
@@ -192,7 +125,7 @@ class WatchCanvasRenderer(
         canvas.drawColor(watchFaceColors.backgroundColor)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT || (renderParameters.drawMode == DrawMode.AMBIENT && watchFaceData.drawComplicationsInAmbient)) {
-            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager)        // TODO: probably should be reversed
+            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager)
             drawComplicationsBackground(canvas, bounds)
         }
 
@@ -214,13 +147,12 @@ class WatchCanvasRenderer(
         }
     }
 
-    // ----- All drawing functions -----
     private fun drawClock(
         canvas: Canvas,
         bounds: Rect,
         zonedDateTime: ZonedDateTime
     ) {
-        val maxTextWidth = bounds.width() / 2f
+        val maxTextWidth = bounds.width() / 2f      // TODO: fix
         val maxTextSize = maxTextWidth * 1.1f
 
         val timePaint = Paint().apply {
@@ -236,7 +168,7 @@ class WatchCanvasRenderer(
                     shader = LinearGradient(
                         0f,
                         0f,
-                        bounds.width().toFloat(),   // it should be `/ maxTextWidth` but current looks better
+                        bounds.width().toFloat(),
                         bounds.height() / 2f,
                         watchFaceColors.activePrimaryColor,
                         watchFaceColors.activeSecondaryColor,
@@ -244,7 +176,6 @@ class WatchCanvasRenderer(
                     )
                 }
             }
-//            alpha = drawProperties.transparencyScale
         }
 
         val hours = zonedDateTime.hour.toString().padStart(2, '0')
@@ -293,38 +224,8 @@ class WatchCanvasRenderer(
         )
     }
 
-    private class DrawProperties(
-        var transparencyScale: Int = 0,
-        var secondsScale: Float = 0f
-    ) {
-        companion object {
-            val TRANSPARENCY_SCALE =
-                object : IntProperty<DrawProperties>("transparencyScale") {
-                    override fun setValue(obj: DrawProperties, value: Int) {
-                        obj.transparencyScale = value
-                    }
-
-                    override fun get(obj: DrawProperties): Int {
-                        return obj.transparencyScale
-                    }
-                }
-            val SECONDS_SCALE =
-                object : FloatProperty<DrawProperties>("secondsScale") {
-                    override fun setValue(obj: DrawProperties, value: Float) {
-                        obj.secondsScale = value
-                    }
-
-                    override fun get(obj: DrawProperties): Float {
-                        return obj.secondsScale
-                    }
-                }
-        }
-    }
-
     companion object {
         private const val TAG = "WatchCanvasRenderer"
-
-        private const val MODE_TRANSITION_MS = 500L
 
         private const val COMPLICATIONS_BACKGROUND_CORNER_RADIUS = 40f
     }

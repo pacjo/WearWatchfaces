@@ -14,5 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "WearWatchfaces"
-include(":app")
 include(":wear")

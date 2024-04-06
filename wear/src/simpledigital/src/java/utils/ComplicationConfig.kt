@@ -10,7 +10,9 @@ import androidx.wear.watchface.complications.data.ComplicationType
 
 const val TOP_LEFT_COMPLICATION_ID = 100
 const val TOP_RIGHT_COMPLICATION_ID = 101
+
 const val MIDDLE_COMPLICATION_ID = 200
+
 const val BOTTOM_COMPLICATION_ID = 300
 
 // Why `@Keep` you ask?

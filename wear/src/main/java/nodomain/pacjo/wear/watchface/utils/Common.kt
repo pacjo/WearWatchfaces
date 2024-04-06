@@ -56,9 +56,9 @@ fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime, renderParame
 }
 
 // Composables
-// TODO: finish
+// TODO: finish and rename
 @Composable
-fun watchFacePreview(stateHolder: WatchFaceConfigStateHolder): WatchFaceConfigStateHolder.UserStylesAndPreview? {     // TODO: change name
+fun watchFacePreview(stateHolder: WatchFaceConfigStateHolder): WatchFaceConfigStateHolder.UserStylesAndPreview? {
     val uiState by stateHolder.uiState.collectAsState()
 
     return when (val state = uiState) {

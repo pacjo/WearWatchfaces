@@ -9,19 +9,11 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
 import nodomain.pacjo.wear.watchface.data.watchface.SMOOTH_SECONDS_HAND_DEFAULT
 
-// Keys to matched content in the  the user style settings. We listen for changes to these
-// values in the renderer and if new, we will update the database and update the watch face
-// being rendered.
 const val COLOR_STYLE_SETTING = "color_style_setting"
 const val DRAW_COMPLICATIONS_IN_AMBIENT_SETTING = "draw_complications_in_ambient_setting"
 const val SMOOTH_SECONDS_HAND_SETTING = "smooth_seconds_hand_setting"
 const val USELESS_SETTING_USED_FOR_PREVIEW_SETTING = "useless_setting_used_for_preview"
 
-/*
- * Creates user styles in the settings activity associated with the watch face, so users can
- * edit different parts of the watch face. In the renderer (after something has changed), the
- * watch face listens for a flow from the watch face API data layer and updates the watch face.
- */
 fun createUserStyleSchema(context: Context): UserStyleSchema {
     val colorStyleSetting =
         UserStyleSetting.ListUserStyleSetting(

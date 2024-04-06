@@ -74,7 +74,6 @@ class AnalogWatchFaceService : WatchFaceService(){
     }
 
     companion object {
-        // TODO: change
         const val TAG = "AnalogWatchFaceService"
     }
 }
