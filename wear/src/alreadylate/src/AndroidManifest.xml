@@ -3,7 +3,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/already_late_watch_face_name" >
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
