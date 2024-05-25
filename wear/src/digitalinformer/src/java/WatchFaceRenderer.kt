@@ -1,13 +1,18 @@
 package nodomain.pacjo.wear.watchface
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Shader
+import android.util.FloatProperty
 import android.util.Log
 import android.view.SurfaceHolder
+import android.view.animation.AnimationUtils
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.Renderer
@@ -26,12 +31,13 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.drawComplications
+import nodomain.pacjo.wear.watchface.utils.drawScrollingFragment
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
 import java.time.ZonedDateTime
 
 // Default for how long each frame is displayed at expected frame rate.
-private const val FRAME_PERIOD_MS_DEFAULT: Long = 32L
+private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
 
 class WatchCanvasRenderer(
     private val context: Context,
@@ -48,6 +54,61 @@ class WatchCanvasRenderer(
     FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
 ) {
+    private var drawProperties = DrawProperties()
+
+    private val secondsChangeAnimation =
+        ObjectAnimator.ofFloat(drawProperties, DrawProperties.SECONDS_OFFSET_SCALE, 0f, 1f)
+            .apply {
+                duration = TIME_TRANSITION_MS
+                interpolator =
+                    AnimationUtils.loadInterpolator(
+                        context,
+                        android.R.interpolator.accelerate_decelerate
+                    )
+
+                setAutoCancel(true)
+            }
+
+    private val minutesChangeAnimation =
+        ObjectAnimator.ofFloat(drawProperties, DrawProperties.MINUTES_OFFSET_SCALE, 0f, 1f)
+            .apply {
+                duration = TIME_TRANSITION_MS
+                interpolator =
+                    AnimationUtils.loadInterpolator(
+                        context,
+                        android.R.interpolator.accelerate_decelerate
+                    )
+
+                setAutoCancel(true)
+
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        // Reset the property to the starting value
+                        drawProperties.minutesOffsetScale = 0f
+                    }
+                })
+            }
+
+    private val hoursChangeAnimation =
+        ObjectAnimator.ofFloat(drawProperties, DrawProperties.HOURS_OFFSET_SCALE, 0f, 1f)
+            .apply {
+                duration = TIME_TRANSITION_MS
+                interpolator =
+                    AnimationUtils.loadInterpolator(
+                        context,
+                        android.R.interpolator.accelerate_decelerate
+                    )
+
+                setAutoCancel(true)
+
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        // Reset the property to the starting value
+                        drawProperties.hoursOffsetScale = 0f
+                    }
+                })
+            }
+
     class SimpleSharedAssets: SharedAssets {
         override fun onDestroy() { }
     }
@@ -129,7 +190,10 @@ class WatchCanvasRenderer(
             drawComplicationsBackground(canvas, bounds)
         }
 
-        drawClock(canvas, bounds, zonedDateTime)
+        if (renderParameters.drawMode != DrawMode.AMBIENT)
+            drawScrollingClock(canvas, bounds, zonedDateTime)
+        else
+            drawClock(canvas, bounds, zonedDateTime)
     }
 
     override fun renderHighlightLayer(
@@ -203,6 +267,87 @@ class WatchCanvasRenderer(
         }
     }
 
+    enum class ScrollingClockType {
+        SECONDS,
+        MINUTES,
+        HOURS_12,
+        HOURS_24
+    }
+
+    private fun drawScrollingClock(
+        canvas: Canvas,
+        bounds: Rect,
+        zonedDateTime: ZonedDateTime
+    ) {
+        // we multiply by 0.8 to slightly delay the transition,
+        // so it when it finishes, we won't start another animation,
+        // leading to visual glitches
+        if (zonedDateTime.nano <= 1_000_000_000 - TIME_TRANSITION_MS * 1_000_000 * 0.8) {
+            secondsChangeAnimation.start()
+
+            if (zonedDateTime.second == 59) {
+                minutesChangeAnimation.start()
+
+                if (zonedDateTime.minute == 59)
+                    hoursChangeAnimation.start()
+            }
+        }
+
+        val maxTextWidth = bounds.width() / 2f      // TODO: fix
+        val maxTextSize = maxTextWidth * 1.1f
+
+        val timePaint = Paint().apply {
+            textSize = maxTextSize
+            isAntiAlias = true
+            shader = LinearGradient(
+                0f,
+                0f,
+                bounds.width().toFloat(),
+                bounds.height() / 2f,
+                watchFaceColors.activePrimaryColor,
+                watchFaceColors.activeSecondaryColor,
+                Shader.TileMode.CLAMP
+            )
+        }
+
+        // hours
+        drawScrollingFragment(
+            canvas,
+            zonedDateTime,
+            timePaint,
+            bounds.width() * 0.35f,
+            bounds.height() / 2.85f,
+            drawProperties.hoursOffsetScale,
+            ScrollingClockType.HOURS_24
+        )
+
+        // minutes and seconds
+        timePaint.apply {
+            textSize /= 2.5f
+            strokeWidth = 2f
+        }
+
+        drawScrollingFragment(
+            canvas,
+            zonedDateTime,
+            timePaint,
+            bounds.width() * 0.8f,
+            bounds.height() / 3.75f,
+            drawProperties.minutesOffsetScale,
+            ScrollingClockType.MINUTES
+        )
+
+        drawScrollingFragment(
+            canvas,
+            zonedDateTime,
+            timePaint,
+            bounds.width() * 0.8f,
+            bounds.height() / 2.25f,
+            drawProperties.secondsOffsetScale,
+            ScrollingClockType.SECONDS
+        )
+    }
+
     private fun drawComplicationsBackground(canvas: Canvas, bounds: Rect) {
         val highlightPaint = Paint().apply {
             isAntiAlias = true
@@ -224,9 +369,50 @@ class WatchCanvasRenderer(
         )
     }
 
+    private class DrawProperties(
+        var secondsOffsetScale: Float = 0f,
+        var minutesOffsetScale: Float = 0f,
+        var hoursOffsetScale: Float = 0f
+    ) {
+        companion object {
+            val SECONDS_OFFSET_SCALE =
+                object : FloatProperty<DrawProperties>("secondsOffsetScale") {
+                    override fun setValue(obj: DrawProperties, value: Float) {
+                        obj.secondsOffsetScale = value
+                    }
+
+                    override fun get(obj: DrawProperties): Float {
+                        return obj.secondsOffsetScale
+                    }
+                }
+            val MINUTES_OFFSET_SCALE =
+                object : FloatProperty<DrawProperties>("minutesOffsetScale") {
+                    override fun setValue(obj: DrawProperties, value: Float) {
+                        obj.minutesOffsetScale = value
+                    }
+
+                    override fun get(obj: DrawProperties): Float {
+                        return obj.minutesOffsetScale
+                    }
+                }
+            val HOURS_OFFSET_SCALE =
+                object : FloatProperty<DrawProperties>("hoursOffsetScale") {
+                    override fun setValue(obj: DrawProperties, value: Float) {
+                        obj.hoursOffsetScale = value
+                    }
+
+                    override fun get(obj: DrawProperties): Float {
+                        return obj.hoursOffsetScale
+                    }
+                }
+        }
+    }
+
     companion object {
         private const val TAG = "WatchCanvasRenderer"
 
         private const val COMPLICATIONS_BACKGROUND_CORNER_RADIUS = 40f
+
+        private const val TIME_TRANSITION_MS = 350L
     }
 }
