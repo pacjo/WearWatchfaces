@@ -92,5 +92,5 @@ dependencies {
 
     implementation(kotlin("reflect"))
 
-    implementation("androidx.vectordrawable:vectordrawable:1.1.0")
+    implementation("androidx.vectordrawable:vectordrawable:1.2.0")
 }
