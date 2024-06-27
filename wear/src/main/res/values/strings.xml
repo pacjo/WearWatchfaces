@@ -22,6 +22,32 @@
 
     <string name="style7_name">Azur</string>
 
+    <!-- ============ Hands style configuration ============ -->
+    <string name="hands_style_setting">Hands</string>
+    <string name="hands_style_setting_description">Allows selecting hands style</string>
+
+    <!-- Names of hands style [CHAR LIMIT=20] -->
+    <string name="hands_style1_name">Modern</string>
+
+    <string name="hands_style2_name">Stolen</string>
+
+    <string name="hands_style3_name">Stolen filled</string>
+
+    <string name="hands_style4_name">Floating</string>
+
+    <string name="hands_style5_name">Floating filled</string>
+
+    <!-- ============ Background style configuration ============ -->
+    <string name="background_style_setting">Background</string>
+    <string name="background_style_setting_description">Allows selecting background style</string>
+
+    <!-- Names of background style [CHAR LIMIT=20] -->
+    <string name="background_style1_name">First</string>
+
+    <string name="background_style2_name">Second</string>
+
+    <string name="background_style3_name">Third</string>
+
     <!-- ============ Complication configuration ============ -->
     <string name="complication_setting">Complications</string>
 
