@@ -19,7 +19,7 @@ import androidx.wear.watchface.style.UserStyleSchema
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.createUserStyleSchema
 
-class DigitalWatchFaceService : WatchFaceService(){
+class DigitalWatchFaceService : WatchFaceService() {
     override fun createUserStyleSchema(): UserStyleSchema =
         createUserStyleSchema(context = applicationContext)
 

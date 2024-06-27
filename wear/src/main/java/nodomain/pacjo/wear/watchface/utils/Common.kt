@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.RenderParameters
-import nodomain.pacjo.wear.watchface.WatchCanvasRenderer
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import java.time.ZonedDateTime
@@ -32,6 +31,13 @@ import java.time.ZonedDateTime
 const val DEFAULT_CORNER_RADIUS = 60f
 
 // Renderer
+enum class AnimatedClockType {
+    SECONDS,
+    MINUTES,
+    HOURS_12,
+    HOURS_24
+}
+
 fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime, renderParameters: RenderParameters, complicationSlotsManager: ComplicationSlotsManager) {
     for ((_, complication) in complicationSlotsManager.complicationSlots) {
         if (complication.enabled) {
@@ -66,13 +72,13 @@ fun drawScrollingFragment(
     cx: Float,
     cy: Float,
     offset: Float,
-    type: WatchCanvasRenderer.ScrollingClockType
+    type: AnimatedClockType
 ) {
     // TODO: change or at least calculate properly
     val clip = RectF(
-        cx - paint.textSize / 2f,
+        cx - paint.textSize / 1.8f,
         cy - paint.textSize / 2.5f,
-        cx + paint.textSize / 2f,
+        cx + paint.textSize / 1.8f,
         cy + paint.textSize / 2.5f
     )
 
@@ -82,22 +88,22 @@ fun drawScrollingFragment(
 
     for (i in -1..1) {
         val time = when (type) {
-            WatchCanvasRenderer.ScrollingClockType.HOURS_12 -> TODO("implement (overall) 12 hour support")
-            WatchCanvasRenderer.ScrollingClockType.HOURS_24 -> {
+            AnimatedClockType.HOURS_12 -> TODO("implement (overall) 12 hour support")
+            AnimatedClockType.HOURS_24 -> {
                 // make sure we don't show 24
                 if (zonedDateTime.hour + i <= 23)
                     (zonedDateTime.hour + i).toString().padStart(2, '0')
                 else
                     "00"
             }
-            WatchCanvasRenderer.ScrollingClockType.MINUTES -> {
+            AnimatedClockType.MINUTES -> {
                 // make sure we don't show 60
                 if (zonedDateTime.minute + i <= 59)
                     (zonedDateTime.minute + i).toString().padStart(2, '0')
                 else
                     "00"
             }
-            WatchCanvasRenderer.ScrollingClockType.SECONDS -> {
+            AnimatedClockType.SECONDS -> {
                 // make sure we don't show 60
                 if (zonedDateTime.second + i <= 59)
                     (zonedDateTime.second + i).toString().padStart(2, '0')

@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +36,7 @@ import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, navController: NavController) {
     val listState = rememberScalingLazyListState()
 
-    Scaffold (
+    Scaffold(
         positionIndicator = {
             PositionIndicator(scalingLazyListState = listState)
         }
@@ -45,7 +47,7 @@ fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder,
         ) {
             item {
                 Text(
-                    text = context.resources.getString(R.string.colors_style_setting),
+                    text = stringResource(R.string.colors_style_setting),
                     modifier = Modifier.fillMaxWidth(),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -68,7 +70,7 @@ fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder,
                         modifier = Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(context.getColor(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId))
+                            backgroundColor = colorResource(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)
                         )
                     ) {
                         Row(
@@ -102,7 +104,7 @@ fun ColorSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder,
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = context.resources.getString(style.nameResourceId),
+                                text = stringResource(style.nameResourceId),
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )

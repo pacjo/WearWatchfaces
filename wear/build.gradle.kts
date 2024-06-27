@@ -29,26 +29,32 @@ android {
 
     flavorDimensions += "default"
     productFlavors {
-        create("simpledigital") {
-            applicationIdSuffix = ".simpledigital"
+        create("simpleDigital") {
+            applicationIdSuffix = ".simpleDigital"
         }
-        create("digitalinformer") {
-            applicationIdSuffix = ".digitalinformer"
+        create("digitalInformer") {
+            applicationIdSuffix = ".digitalInformer"
         }
         create("alreadyLate") {
-            applicationIdSuffix = ".alreadylate"
+            applicationIdSuffix = ".alreadyLate"
+        }
+        create("simpleSnoopy") {
+            applicationIdSuffix = ".simpleSnoopy"
         }
     }
 
     sourceSets {
-        getByName("simpledigital") {
-            setRoot("src/simpledigital/src")
+        getByName("simpleDigital") {
+            setRoot("src/simpleDigital/src")
         }
-        getByName("digitalinformer") {
-            setRoot("src/digitalinformer/src")
+        getByName("digitalInformer") {
+            setRoot("src/digitalInformer/src")
         }
         getByName("alreadyLate") {
-            setRoot("src/alreadylate/src")
+            setRoot("src/alreadyLate/src")
+        }
+        getByName("simpleSnoopy") {
+            setRoot("src/simpleSnoopy/src")
         }
     }
 
