@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.editor
+package editor
 
 import android.os.Build
 import android.os.Bundle
@@ -33,9 +33,9 @@ import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
+import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
-import nodomain.pacjo.wear.watchface.editor.screens.FontSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
@@ -96,7 +96,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                         }
 
                         // settings pages
-                        val horizontalPagerState = rememberPagerState { 4 }
+                        val horizontalPagerState = rememberPagerState { 3 }
                         val pageIndicatorState: PageIndicatorState = remember {
                             object : PageIndicatorState {
                                 override val pageOffset: Float
@@ -110,11 +110,11 @@ class WatchFaceConfigActivity : ComponentActivity() {
                         LaunchedEffect(horizontalPagerState) {
                             snapshotFlow { horizontalPagerState.currentPage }.collect { page ->
                                 when (page) {
-                                    2 -> stateHolder.setHighlightedElement(
+                                    1 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.AllComplicationSlots
                                     )
                                     // set to unused value, to dim whole face
-                                    3 -> stateHolder.setHighlightedElement(
+                                    2 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING))
                                     )
                                     else -> stateHolder.setHighlightedElement(null)
@@ -141,13 +141,8 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                                 "colors"
                                             )
                                         }
-                                    1 -> CategorySelectButton(context, currentTheme) {
-                                        navController.navigate(
-                                            "fonts"
-                                        )
-                                    }
-                                    2 -> ComplicationConfigScreen(stateHolder)
-                                    3 -> MiscConfigScreen(
+                                    1 -> ComplicationConfigScreen(stateHolder)
+                                    2 -> MiscConfigScreen(
                                         listOf {
                                             PreferenceSwitch(
                                                 text = context.resources.getString(R.string.misc_complications_on_aod),
@@ -167,9 +162,6 @@ class WatchFaceConfigActivity : ComponentActivity() {
                 }
                 composable("colors") {
                     ColorSelectScreen(context, stateHolder, navController)
-                }
-                composable("fonts") {
-                    FontSelectScreen(context, stateHolder, navController)
                 }
             }
         }

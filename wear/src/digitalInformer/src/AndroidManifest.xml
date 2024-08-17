@@ -43,7 +43,7 @@
         </service>
 
         <activity
-            android:name=".editor.WatchFaceConfigActivity"
+            android:name="editor.WatchFaceConfigActivity"
             android:exported="true"
             android:taskAffinity="nodomain.pacjo.wear.watchface">
 
