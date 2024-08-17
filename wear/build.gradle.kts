@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -16,6 +17,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -55,6 +59,11 @@ android {
         }
         getByName("simpleSnoopy") {
             setRoot("src/simpleSnoopy/src")
+
+            java.srcDirs(
+                handsDir,
+                backgroundsDir
+            )
         }
     }
 
@@ -96,7 +105,7 @@ dependencies {
     implementation("androidx.wear.compose:compose-material:1.3.1")
     implementation("androidx.wear.compose:compose-navigation:1.3.1")
 
-    implementation(kotlin("reflect"))
-
+    // others
     implementation("androidx.vectordrawable:vectordrawable:1.2.0")
+    implementation(kotlin("reflect"))
 }
