@@ -1,16 +1,11 @@
 package nodomain.pacjo.wear.watchface
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.util.FloatProperty
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.animation.AnimationUtils
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
@@ -23,18 +18,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
+import nodomain.pacjo.wear.watchface.utils.BACKGROUND_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.SMOOTH_SECONDS_HAND_SETTING
+import nodomain.pacjo.wear.watchface.utils.drawBackground
 import nodomain.pacjo.wear.watchface.utils.drawComplications
 import java.time.ZonedDateTime
-import kotlin.math.min
 
 // Default for how long each frame is displayed at expected frame rate.
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
@@ -54,25 +51,6 @@ class WatchCanvasRenderer(
     FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
 ) {
-    private var drawProperties = DrawProperties()
-
-    private val ambientExitAnimator =
-        AnimatorSet().apply {
-            val interpolation =
-                AnimationUtils.loadInterpolator(
-                    context,
-                    android.R.interpolator.accelerate_decelerate
-                )
-            playTogether(
-                ObjectAnimator.ofFloat(drawProperties, DrawProperties.HANDS_SCALE, 1.0f)
-                    .apply {
-                        duration = HANDS_ANIMATION_MS
-                        interpolator = interpolation
-                        setAutoCancel(true)
-                    }
-            )
-        }
-
     class SimpleSharedAssets: SharedAssets {
         override fun onDestroy() { }
     }
@@ -92,14 +70,6 @@ class WatchCanvasRenderer(
         scope.launch {
             currentUserStyleRepository.userStyle.collect { userStyle ->
                 updateWatchFaceData(userStyle)
-            }
-        }
-        // Listen for ambient state changes.
-        scope.launch {
-            watchState.isAmbient.collect { isAmbient ->
-                if (!isAmbient!!) {
-                    ambientExitAnimator.start()
-                }
             }
         }
     }
@@ -130,9 +100,18 @@ class WatchCanvasRenderer(
                     val listOption = options.value as
                             UserStyleSetting.ListUserStyleSetting.ListOption
 
-                    // TODO: check if this can stay
                     newWatchFaceData = newWatchFaceData.copy(
                         handsStyle = HandsStyles.getHandsStyleConfig(
+                            listOption.id.toString()
+                        )
+                    )
+                }
+                BACKGROUND_STYLE_SETTING -> {
+                    val listOption = options.value as
+                            UserStyleSetting.ListUserStyleSetting.ListOption
+
+                    newWatchFaceData = newWatchFaceData.copy(
+                        backgroundStyle = BackgroundStyles.getBackgroundStyleConfig(
                             listOption.id.toString()
                         )
                     )
@@ -174,9 +153,7 @@ class WatchCanvasRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: SimpleSharedAssets
     ) {
-        drawBackground(canvas, bounds)
-        // TODO: disable animations properly, or just do something else with this
-        drawProperties.handsScale = 1f
+        drawBackground(context, watchFaceData, renderParameters, canvas, bounds)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT || (renderParameters.drawMode == DrawMode.AMBIENT && watchFaceData.drawComplicationsInAmbient)) {
             drawComplicationsBackground(canvas, bounds)
@@ -204,6 +181,10 @@ class WatchCanvasRenderer(
             RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(HANDS_STYLE_SETTING))
             ) {
             drawHands(canvas, bounds, zonedDateTime)
+        } else if (renderParameters.highlightLayer!!.highlightedElement ==
+            RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(BACKGROUND_STYLE_SETTING))
+        ) {
+            drawBackground(context, watchFaceData, renderParameters, canvas, bounds)
         }
     }
 
@@ -212,32 +193,20 @@ class WatchCanvasRenderer(
         bounds: Rect,
         zonedDateTime: ZonedDateTime
     ) {
-        // TODO: don't stretch image
-        val hoursDegrees = ((zonedDateTime.hour + zonedDateTime.minute / 60f) / 12f) * 360 * drawProperties.handsScale
-        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, hoursDegrees)      // TODO: allow use drawable instead
+        val hoursDegrees = ((zonedDateTime.hour + zonedDateTime.minute / 60f) / 12f) * 360
+        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, hoursDegrees)
 
-        val minutesDegrees = ((zonedDateTime.minute + zonedDateTime.second / 60f) / 60f) * 360 * drawProperties.handsScale
-        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, minutesDegrees)      // TODO: allow use drawable instead
+        val minutesDegrees = ((zonedDateTime.minute + zonedDateTime.second / 60f) / 60f) * 360
+        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, minutesDegrees)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT) {
             val secondsDegrees = when (watchFaceData.smoothSecondsHand) {
                 false ->  zonedDateTime.second / 60f * 360
                 else -> ((zonedDateTime.second + zonedDateTime.nano / 1000000000f) / 60f) * 360
-            } * drawProperties.handsScale
+            }
 
-            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, secondsDegrees)      // TODO: allow use drawable instead
+            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, secondsDegrees)
         }
-    }
-
-    private fun drawBackground(
-        canvas: Canvas,
-        bounds: Rect
-    ) {
-        canvas.drawColor(watchFaceColors.backgroundColor)
-
-        val vectorBackground = VectorDrawableCompat.create(context.resources, R.drawable.background, null)
-        vectorBackground?.bounds = bounds
-        vectorBackground?.draw(canvas)
     }
 
     private fun drawComplicationsBackground(canvas: Canvas, bounds: Rect) {
@@ -258,27 +227,8 @@ class WatchCanvasRenderer(
         )
     }
 
-    private class DrawProperties(
-        var handsScale: Float = 0f
-    ) {
-        companion object {
-            val HANDS_SCALE =
-                object : FloatProperty<DrawProperties>("handsScale") {
-                    override fun setValue(obj: DrawProperties, value: Float) {
-                        obj.handsScale = value
-                    }
-
-                    override fun get(obj: DrawProperties): Float {
-                        return obj.handsScale
-                    }
-                }
-        }
-    }
-
     companion object {
         private const val TAG = "WatchCanvasRenderer"
-
-        private const val HANDS_ANIMATION_MS = 600L
 
         private const val COMPLICATIONS_BACKGROUND_CORNER_RADIUS = 40f
     }
