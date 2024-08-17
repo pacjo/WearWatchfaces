@@ -3,6 +3,7 @@ package nodomain.pacjo.wear.watchface.data.watchface
 import android.content.Context
 import android.graphics.*
 import androidx.annotation.StringRes
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
@@ -15,8 +16,10 @@ private const val HAND_WIDTH_SECOND = 2f
 private const val HAND_WIDTH_STOLEN = 6f
 private const val CIRCLE_RADIUS = 2f
 
-private const val HAND_FILL_ALPHA = 50
+private const val HAND_FILL_ALPHA = 50      // TODO: use this
 private const val HAND_ROUND_RADIUS = 6f
+
+private const val STOLEN_HANDS_COLOR = Color.WHITE
 
 const val STYLE1_HANDS_STYLE_ID = "style1_hands_id"
 private val STYLE1_HANDS_STYLE_RESOURCE_ID = R.string.hands_style1_name
@@ -98,69 +101,73 @@ private fun drawStolenHand(
     drawStandoff: Boolean = true,
     fillMode: HandFillMode = HandFillMode.DARKENED
 ) {
-    val handPaint = createPaint(
-        Color.DKGRAY,
-        Paint.Style.STROKE,
-        HAND_WIDTH_STOLEN
-    )
+    // Create paint for the outline
+    val outlinePaint = createPaint(Color.BLACK, Paint.Style.STROKE, 3f)
+    outlinePaint.strokeJoin = Paint.Join.ROUND
+    outlinePaint.strokeCap = Paint.Cap.ROUND
 
-    val standoffLength = length / 6f        // TODO: make const
+    val standoffLength = length / 6f  // TODO: make const
 
+    // Rotate canvas around the center of bounds
     canvas.rotate(
         angle,
         bounds.centerX().toFloat(),
         bounds.centerY().toFloat()
     )
 
+    // Create path for the hand shape
+    val handPath = Path()
+
+    // Calculate standoff position
+    val standoffX = bounds.centerX().toFloat()
+    val standoffY = bounds.centerY() - standoffLength
+
+    // Move to standoff position
+    handPath.moveTo(standoffX, standoffY)
+
+    // Draw the line to the hand position if drawStandoff is true
+    if (drawStandoff)
+        handPath.lineTo(
+            bounds.centerX().toFloat(),
+            bounds.centerY().toFloat()
+        )
+
+    // Add round rectangle for the hand shape
+    handPath.addRoundRect(
+        RectF(
+            bounds.centerX() - HAND_WIDTH_STOLEN,
+            bounds.centerY() - length,
+            bounds.centerX() + HAND_WIDTH_STOLEN,
+            bounds.centerY() - standoffLength
+        ),
+        HAND_ROUND_RADIUS,
+        HAND_ROUND_RADIUS,
+        Path.Direction.CW
+    )
+
+    // Draw the filled area of the hand shape if fillMode is not NONE
+    if (fillMode != HandFillMode.NONE) {
+        val fillPaint = createPaint(STOLEN_HANDS_COLOR, Paint.Style.FILL, HAND_WIDTH_STOLEN)
+        if (fillMode == HandFillMode.DARKENED) {
+            fillPaint.alpha = 50
+        }
+        canvas.drawPath(handPath, fillPaint)
+    }
+
+    // Draw the outline of the hand shape
+    canvas.drawPath(handPath, outlinePaint)
+
+    // Draw the circle at the hand position
     if (drawStandoff) {
-        canvas.drawLine(
+        canvas.drawCircle(
             bounds.centerX().toFloat(),
             bounds.centerY().toFloat(),
-            bounds.centerX().toFloat(),
-            bounds.centerY() - standoffLength,
-            handPaint
+            outlinePaint.strokeWidth,
+            createPaint(Color.GRAY, Paint.Style.FILL)
         )
     }
 
-    val handWidth = 6f      // TODO: make const
-    if (fillMode != HandFillMode.NONE) {
-        // TODO: fix this mess
-        val fillPaint = createPaint(Color.DKGRAY, Paint.Style.FILL, HAND_WIDTH_STOLEN)
-        if (fillMode == HandFillMode.DARKENED)
-            fillPaint.apply {
-                alpha = 50
-            }
-        canvas.drawRoundRect(
-            bounds.centerX() - handWidth,
-            bounds.centerY() - length,
-            bounds.centerX() + handWidth,
-            bounds.centerY() - standoffLength,
-            HAND_ROUND_RADIUS,
-            HAND_ROUND_RADIUS,
-            fillPaint
-        )
-    }
-
-    canvas.drawRoundRect(
-        bounds.centerX() - HAND_WIDTH_STOLEN,
-        bounds.centerY() - length,
-        bounds.centerX() + HAND_WIDTH_STOLEN,
-        bounds.centerY() - standoffLength,
-        HAND_ROUND_RADIUS,
-        HAND_ROUND_RADIUS,
-        handPaint
-    )
-
-    canvas.drawCircle(
-        bounds.centerX().toFloat(),
-        bounds.centerY().toFloat(),
-        handPaint.strokeWidth,
-        createPaint(
-            Color.GRAY,
-            Paint.Style.FILL
-        )
-    )
-
+    // Rotate canvas back to its original orientation
     canvas.rotate(-angle, bounds.centerX().toFloat(), bounds.centerY().toFloat())
 }
 
@@ -477,7 +484,7 @@ enum class HandsStyles(
                     context.resources,
                     style.nameResourceId,
                     style.nameResourceId,
-                    null        // we don't use icons
+                    null        // we don't use icons, TODO: we really should
                 )
             }
         }

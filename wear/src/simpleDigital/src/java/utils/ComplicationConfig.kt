@@ -24,7 +24,12 @@ const val BOTTOM_COMPLICATION_ID = 300
 // Cause me to suffer all day long
 
 @Keep
-sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>, val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy, val bounds: RectF) {
+sealed class ComplicationConfig(
+    val id: Int,
+    val supportedTypes: List<ComplicationType>,
+    val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
+    val bounds: RectF
+) {
 
     companion object {
         inline fun <reified T : ComplicationConfig> getAll(): List<T> {

@@ -53,6 +53,7 @@ fun HandsStyleSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
 
                 Button(
                     onClick = {
+//                        TODO("put back")
                         stateHolder.setHandsStyle(
                             HandsStyles.toOptionList(
                                 context
@@ -72,30 +73,7 @@ fun HandsStyleSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // TODO: replace with drawable?
-//                        Canvas(
-//                            modifier = Modifier
-//                                .fillMaxHeight()
-//                                .aspectRatio(1f)
-//                        ) {
-//                            val colorList = listOf(
-//                                Color(context.getColor(style.primaryColorId)),
-//                                Color(context.getColor(style.secondaryColorId)),
-//                                Color(context.getColor(style.tertiaryColorId))
-//                            )
-//
-//                            var startAngle = -180f       // 0f is 3 o'clock
-//                            val sweepAngles = floatArrayOf(180f, 90f, 90f)
-//                            for (i in 0 until 3) {
-//                                drawArc(
-//                                    color = colorList[i],
-//                                    startAngle = startAngle,
-//                                    sweepAngle = sweepAngles[i],
-//                                    useCenter = true,
-//                                )
-//                                startAngle += sweepAngles[i]
-//                            }
-//                        }
+                        // TODO: add preview (Which we'll also send to companion app)
 //                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = context.resources.getString(style.nameResourceId),

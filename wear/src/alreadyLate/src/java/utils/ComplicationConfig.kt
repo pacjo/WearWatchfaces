@@ -20,7 +20,12 @@ const val RIGHT_COMPLICATION_ID = 100
 
 @Keep
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>, val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy, val bounds: RectF) {
+sealed class ComplicationConfig(
+    val id: Int,
+    val supportedTypes: List<ComplicationType>,
+    val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
+    val bounds: RectF
+) {
 
     companion object {
         inline fun <reified T : ComplicationConfig> getAll(): List<T> {
@@ -36,10 +41,10 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
         RIGHT_COMPLICATION_ID,
         listOf(
             ComplicationType.SHORT_TEXT,
-            ComplicationType.MONOCHROMATIC_IMAGE,
-            ComplicationType.SMALL_IMAGE,
             ComplicationType.RANGED_VALUE,
-            ComplicationType.GOAL_PROGRESS
+            ComplicationType.GOAL_PROGRESS,
+            ComplicationType.SMALL_IMAGE,
+            ComplicationType.MONOCHROMATIC_IMAGE
         ),
         DefaultComplicationDataSourcePolicy(
             SystemDataSources.DATA_SOURCE_DATE,

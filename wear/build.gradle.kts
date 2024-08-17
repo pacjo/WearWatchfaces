@@ -47,15 +47,36 @@ android {
         }
     }
 
+    // to reduce code duplications we have additional source directories for specific features
+    // like complications or backgrounds. Most of the code needed to implement them is added
+    // to a productFlavour by specifying those directories in `java.srcDirs`
     sourceSets {
+        val complicationsDir = "src/opt/complications/java"
+        val handsDir = "src/opt/hands/java"
+        val backgroundsDir = "src/opt/backgrounds/java"
+
         getByName("simpleDigital") {
             setRoot("src/simpleDigital/src")
+
+            java.srcDirs(
+                complicationsDir
+            )
         }
         getByName("digitalInformer") {
             setRoot("src/digitalInformer/src")
+
+            java.srcDirs(
+                complicationsDir
+            )
         }
         getByName("alreadyLate") {
             setRoot("src/alreadyLate/src")
+
+            java.srcDirs(
+                complicationsDir,
+                handsDir,
+                backgroundsDir
+            )
         }
         getByName("simpleSnoopy") {
             setRoot("src/simpleSnoopy/src")
