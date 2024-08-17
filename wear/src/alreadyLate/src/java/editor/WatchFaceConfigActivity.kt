@@ -32,13 +32,16 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
+import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles.Companion.getBackgroundStyleConfig
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles.Companion.getHandsStyleConfig
+import nodomain.pacjo.wear.watchface.editor.screens.BackgroundSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.HandsStyleSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
+import nodomain.pacjo.wear.watchface.utils.BACKGROUND_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
@@ -74,6 +77,10 @@ class WatchFaceConfigActivity : ComponentActivity() {
                 uiState?.handsStyleId?.let { getHandsStyleConfig(it).nameResourceId } ?: R.string.hands_style_setting
             )
 
+            val currentBackgroundStyle = context.resources.getString(
+                uiState?.backgroundStyleId?.let { getBackgroundStyleConfig(it).nameResourceId } ?: R.string.hands_style_setting
+            )
+
             val navController = rememberSwipeDismissableNavController()
 
             SwipeDismissableNavHost(
@@ -102,7 +109,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                         }
 
                         // settings pages
-                        val horizontalPagerState = rememberPagerState { 4 }
+                        val horizontalPagerState = rememberPagerState { 5 }
                         val pageIndicatorState: PageIndicatorState = remember {
                             object : PageIndicatorState {
                                 override val pageOffset: Float
@@ -120,10 +127,13 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                         RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(HANDS_STYLE_SETTING))
                                     )
                                     2 -> stateHolder.setHighlightedElement(
+                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(BACKGROUND_STYLE_SETTING))
+                                    )
+                                    3 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.AllComplicationSlots
                                     )
                                     // set to unused value, to dim whole face
-                                    3 -> stateHolder.setHighlightedElement(
+                                    4 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING))
                                     )
                                     else -> stateHolder.setHighlightedElement(null)
@@ -155,8 +165,13 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                             "hands"
                                         )
                                     }
-                                    2 -> ComplicationConfigScreen(stateHolder)
-                                    3 -> MiscConfigScreen(
+                                    2 -> CategorySelectButton(context, currentBackgroundStyle) {
+                                        navController.navigate(
+                                            "background"
+                                        )
+                                    }
+                                    3 -> ComplicationConfigScreen(stateHolder)
+                                    4 -> MiscConfigScreen(
                                         listOf (
                                             {
                                                 PreferenceSwitch(
@@ -192,6 +207,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
                 }
                 composable("hands") {
                     HandsStyleSelectScreen(context, stateHolder, navController)
+                }
+                composable("background") {
+                    BackgroundSelectScreen(context, stateHolder, navController)
                 }
             }
         }

@@ -10,6 +10,7 @@ data class WatchFaceData(
     val activeColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.STYLE1,
     val ambientColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.AMBIENT,
     val handsStyle: HandsStyles = HandsStyles.MODERN,      // TODO: change default
+    val backgroundStyle: BackgroundStyles = BackgroundStyles.STYLE1,
     val drawComplicationsInAmbient: Boolean = DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT,
     val smoothSecondsHand: Boolean = SMOOTH_SECONDS_HAND_DEFAULT
 )

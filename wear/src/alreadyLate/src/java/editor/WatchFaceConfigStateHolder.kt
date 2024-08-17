@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.yield
+import nodomain.pacjo.wear.watchface.utils.BACKGROUND_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
@@ -41,6 +42,7 @@ class WatchFaceConfigStateHolder(
     // Keys from Watch Face Data Structure
     private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
     private lateinit var handsStyleKey: UserStyleSetting.ListUserStyleSetting
+    private lateinit var backgroundStyleKey: UserStyleSetting.ListUserStyleSetting
     private lateinit var drawComplicationsInAmbientKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var smoothSecondsHandKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var uselessSettingUsedForUpdatingPreviewKey: UserStyleSetting.BooleanUserStyleSetting
@@ -85,6 +87,10 @@ class WatchFaceConfigStateHolder(
                     handsStyleKey = setting as UserStyleSetting.ListUserStyleSetting
                 }
 
+                BACKGROUND_STYLE_SETTING -> {
+                    backgroundStyleKey = setting as UserStyleSetting.ListUserStyleSetting
+                }
+
                 DRAW_COMPLICATIONS_IN_AMBIENT_SETTING -> {
                     drawComplicationsInAmbientKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
@@ -119,7 +125,7 @@ class WatchFaceConfigStateHolder(
                 highlightedElementKey?.let {
                     RenderParameters.HighlightLayer(
                         it,
-                        Color.TRANSPARENT,        // highlight color
+                        Color.TRANSPARENT,                              // highlight color
                         Color.argb(200, 0, 0, 0)  // darken everything else.
                     )
                 }
@@ -133,6 +139,8 @@ class WatchFaceConfigStateHolder(
             userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
         val handsStyle =
             userStyle[handsStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
+        val backgroundStyle =
+            userStyle[backgroundStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
         val complicationsInAmbient =
             userStyle[drawComplicationsInAmbientKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
         val smoothSecondsHand =
@@ -143,6 +151,7 @@ class WatchFaceConfigStateHolder(
         return UserStylesAndPreview(
             colorStyleId = colorStyle.id.toString(),
             handsStyleId = handsStyle.id.toString(),
+            backgroundStyleId = backgroundStyle.id.toString(),
             complicationsInAmbient = complicationsInAmbient.value,
             smoothSecondsHand = smoothSecondsHand.value,
             previewImage = bitmap
@@ -163,21 +172,18 @@ class WatchFaceConfigStateHolder(
         forceUpdatePreview()
     }
 
-    fun setColorStyle(newColorStyleId: String) {
+    private fun setStyle(styleSettingId: UserStyleSetting.Id, newStyleId: String) {
         val userStyleSettingList = editorSession.userStyleSchema.rootUserStyleSettings
 
-        // Loops over all UserStyleSettings (basically the keys in the map) to find the setting for
-        // the color style (which contains all the possible options for that style setting).
+        // Loops over all UserStyleSettings to find the matching setting for the given style ID
         for (userStyleSetting in userStyleSettingList) {
-            if (userStyleSetting.id == UserStyleSetting.Id(COLOR_STYLE_SETTING)) {
-                val colorUserStyleSetting =
-                    userStyleSetting as UserStyleSetting.ListUserStyleSetting
+            if (userStyleSetting.id == styleSettingId) {
+                val listUserStyleSetting = userStyleSetting as UserStyleSetting.ListUserStyleSetting
 
-                // Loops over the UserStyleSetting.Option colors (all possible values for the key)
-                // to find the matching option, and if it exists, sets it as the color style.
-                for (colorOptions in colorUserStyleSetting.options) {
-                    if (colorOptions.id.toString() == newColorStyleId) {
-                        setUserStyleOption(colorStyleKey, colorOptions)
+                // Loops over the UserStyleSetting options to find the matching option
+                for (styleOption in listUserStyleSetting.options) {
+                    if (styleOption.id.toString() == newStyleId) {
+                        setUserStyleOption(listUserStyleSetting, styleOption)
                         return
                     }
                 }
@@ -185,26 +191,16 @@ class WatchFaceConfigStateHolder(
         }
     }
 
+    fun setColorStyle(newColorStyleId: String) {
+        setStyle(UserStyleSetting.Id(COLOR_STYLE_SETTING), newColorStyleId)
+    }
+
     fun setHandsStyle(newHandsStyleId: String) {
-        val userStyleSettingList = editorSession.userStyleSchema.rootUserStyleSettings
+        setStyle(UserStyleSetting.Id(HANDS_STYLE_SETTING), newHandsStyleId)
+    }
 
-        // Loops over all UserStyleSettings (basically the keys in the map) to find the setting for
-        // the color style (which contains all the possible options for that style setting).
-        for (userStyleSetting in userStyleSettingList) {
-            if (userStyleSetting.id == UserStyleSetting.Id(HANDS_STYLE_SETTING)) {
-                val handsStyleSetting =
-                    userStyleSetting as UserStyleSetting.ListUserStyleSetting
-
-                // Loops over the UserStyleSetting.Option colors (all possible values for the key)
-                // to find the matching option, and if it exists, sets it as the color style.
-                for (handStyles in handsStyleSetting.options) {
-                    if (handStyles.id.toString() == newHandsStyleId) {
-                        setUserStyleOption(handsStyleKey, handStyles)
-                        return
-                    }
-                }
-            }
-        }
+    fun setBackgroundsStyle(newBackgroundStyleId: String) {
+        setStyle(UserStyleSetting.Id(BACKGROUND_STYLE_SETTING), newBackgroundStyleId)
     }
 
     fun setDrawComplicationsInAmbient(enabled: Boolean) {
@@ -256,6 +252,7 @@ class WatchFaceConfigStateHolder(
     data class UserStylesAndPreview(
         val colorStyleId: String,
         val handsStyleId: String,
+        val backgroundStyleId: String,
         val complicationsInAmbient: Boolean,
         val smoothSecondsHand: Boolean,
         val previewImage: Bitmap

@@ -41,12 +41,7 @@
     <string name="background_style_setting">Background</string>
     <string name="background_style_setting_description">Allows selecting background style</string>
 
-    <!-- Names of background style [CHAR LIMIT=20] -->
-    <string name="background_style1_name">First</string>
-
-    <string name="background_style2_name">Second</string>
-
-    <string name="background_style3_name">Third</string>
+    <string name="background_style_preview_description">Background preview</string>
 
     <!-- ============ Complication configuration ============ -->
     <string name="complication_setting">Complications</string>
