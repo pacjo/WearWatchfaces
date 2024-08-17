@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names of watchfaces [CHAR LIMIT=20] -->
+    <string name="simple_snoopy_watch_face_name" translatable="false">Simple Snoopy</string>
+
+    <!-- Names of background style [CHAR LIMIT=20] -->
+    <string name="background_style1_name">Hearts</string>
+    <string name="background_style2_name">Hugging</string>
+    <string name="background_style3_name">Sleeping</string>
+    <string name="background_style4_name">Outdoors</string>
+
+    <!-- ============ Misc configuration ============ -->
+    <string name="misc_smooth_seconds_hand">Smooth seconds hand</string>
+    <string name="misc_smooth_seconds_hand_description">Make seconds hand movement smooth</string>
+</resources>
