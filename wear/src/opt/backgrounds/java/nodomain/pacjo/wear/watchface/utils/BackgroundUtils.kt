@@ -8,7 +8,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
-import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
+import data.watchface.WatchFaceData
 
 fun drawBackground(
     context: Context,

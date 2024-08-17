@@ -22,13 +22,13 @@ import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
+import data.watchface.WatchFaceData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
-import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
