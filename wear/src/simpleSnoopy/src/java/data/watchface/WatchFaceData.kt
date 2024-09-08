@@ -1,4 +1,4 @@
-package data.watchface
+package nodomain.pacjo.wear.watchface.data.watchface
 
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds

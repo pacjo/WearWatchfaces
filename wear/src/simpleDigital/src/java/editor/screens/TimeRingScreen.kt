@@ -17,13 +17,13 @@ import androidx.wear.compose.material.InlineSliderDefaults
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
-import data.watchface.TIME_RING_CORNER_RADIUS_MAXIMUM
-import data.watchface.TIME_RING_CORNER_RADIUS_MINIMUM
-import data.watchface.TIME_RING_CORNER_RADIUS_STEP
-import data.watchface.TIME_RING_WIDTH_MAXIMUM
-import data.watchface.TIME_RING_WIDTH_MINIMUM
-import data.watchface.TIME_RING_WIDTH_STEP
 import nodomain.pacjo.wear.watchface.R
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_MAXIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_MINIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_STEP
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MAXIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MINIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_STEP
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 // TODO: move to common

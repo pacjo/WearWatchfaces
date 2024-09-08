@@ -1,6 +1,4 @@
-package data.watchface
-
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+package nodomain.pacjo.wear.watchface.data.watchface
 
 const val DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT = true
 

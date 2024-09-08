@@ -14,6 +14,7 @@ import androidx.wear.watchface.complications.data.ComplicationType
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 sealed class ComplicationConfig(
     val id: Int,
+    val type: Int,
     val supportedTypes: List<ComplicationType>,
     val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
     val bounds: RectF

@@ -13,7 +13,6 @@ import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
-import data.watchface.WatchFaceData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -22,6 +21,7 @@ import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
+import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.BACKGROUND_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
@@ -141,7 +141,7 @@ class WatchCanvasRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: SimpleSharedAssets
     ) {
-        drawBackground(context, watchFaceData, renderParameters, canvas, bounds)
+        drawBackground(context, watchFaceData, canvas, bounds)
 
         drawHands(canvas, bounds, zonedDateTime)
     }
@@ -161,7 +161,7 @@ class WatchCanvasRenderer(
         } else if (renderParameters.highlightLayer!!.highlightedElement ==
             RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(BACKGROUND_STYLE_SETTING))
         ) {
-            drawBackground(context, watchFaceData, renderParameters, canvas, bounds)
+            drawBackground(context, watchFaceData, canvas, bounds)
         }
     }
 

@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import data.watchface.SMOOTH_SECONDS_HAND_DEFAULT
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
+import nodomain.pacjo.wear.watchface.data.watchface.SMOOTH_SECONDS_HAND_DEFAULT
 
 const val COLOR_STYLE_SETTING = "color_style_setting"
 const val HANDS_STYLE_SETTING = "hands_style_setting"

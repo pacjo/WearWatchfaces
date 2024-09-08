@@ -1,12 +1,15 @@
 package nodomain.pacjo.wear.watchface
 
+import android.graphics.Rect
 import android.os.Build
 import android.view.SurfaceHolder
 import androidx.annotation.RequiresApi
 import androidx.wear.watchface.CanvasComplicationFactory
 import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.ComplicationSlot
+import androidx.wear.watchface.ComplicationSlotBoundsType
 import androidx.wear.watchface.ComplicationSlotsManager
+import androidx.wear.watchface.ComplicationTapFilter
 import androidx.wear.watchface.WatchFace
 import androidx.wear.watchface.WatchFaceService
 import androidx.wear.watchface.WatchFaceType
@@ -37,13 +40,45 @@ class DigitalWatchFaceService : WatchFaceService() {
             }
 
         val complicationSlots = ComplicationConfig.getAll<ComplicationConfig>().map { config ->
-            ComplicationSlot.createRoundRectComplicationSlotBuilder(
-                id = config.id,
-                canvasComplicationFactory = defaultCanvasComplicationFactory,
-                supportedTypes = config.supportedTypes,
-                defaultDataSourcePolicy = config.defaultDataSourcePolicy,
-                bounds = ComplicationSlotBounds(config.bounds)
-            ).build()
+            when (config.type) {
+                ComplicationSlotBoundsType.ROUND_RECT -> ComplicationSlot.createRoundRectComplicationSlotBuilder(
+                    id = config.id,
+                    canvasComplicationFactory = defaultCanvasComplicationFactory,
+                    supportedTypes = config.supportedTypes,
+                    defaultDataSourcePolicy = config.defaultDataSourcePolicy,
+                    bounds = ComplicationSlotBounds(config.bounds)
+                ) .build()
+
+                ComplicationSlotBoundsType.EDGE -> ComplicationSlot.createEdgeComplicationSlotBuilder(
+                    id = config.id,
+                    canvasComplicationFactory = defaultCanvasComplicationFactory,
+                    supportedTypes = config.supportedTypes,
+                    defaultDataSourcePolicy = config.defaultDataSourcePolicy,
+                    bounds = ComplicationSlotBounds(config.bounds),
+                    complicationTapFilter = object : ComplicationTapFilter {
+                        override fun hitTest(
+                            complicationSlot: ComplicationSlot,
+                            screenBounds: Rect,
+                            x: Int,
+                            y: Int,
+                            includeMargins: Boolean
+                        ): Boolean {
+                            // TODO: change, it can't stay like this
+                            return false
+                        }
+                    }
+                ).build()
+
+                ComplicationSlotBoundsType.BACKGROUND -> ComplicationSlot.createBackgroundComplicationSlotBuilder(
+                    id = config.id,
+                    canvasComplicationFactory = defaultCanvasComplicationFactory,
+                    supportedTypes = config.supportedTypes,
+                    defaultDataSourcePolicy = config.defaultDataSourcePolicy,
+                ).build()
+
+                else -> throw IllegalArgumentException("${config.type} not in list of possible values: ComplicationSlotBoundsType.(ROUND_RECT/EDGE/BACKGROUND)")
+            }
+
         }
 
         return ComplicationSlotsManager(

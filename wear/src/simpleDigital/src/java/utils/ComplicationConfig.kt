@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.os.Build
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
+import androidx.wear.watchface.ComplicationSlotBoundsType
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
@@ -23,9 +24,11 @@ const val BOTTOM_COMPLICATION_ID = 300
 // Errors impossible to find
 // Cause me to suffer all day long
 
+// type - one of ComplicationSlotBoundsType.(ROUND_RECT/EDGE/BACKGROUND)
 @Keep
 sealed class ComplicationConfig(
     val id: Int,
+    val type: Int,
     val supportedTypes: List<ComplicationType>,
     val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
     val bounds: RectF
@@ -43,6 +46,7 @@ sealed class ComplicationConfig(
     @Keep
     data object TopLeft: ComplicationConfig(
         TOP_LEFT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -64,6 +68,7 @@ sealed class ComplicationConfig(
     @Keep
     data object TopRight: ComplicationConfig(
         TOP_RIGHT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -86,6 +91,7 @@ sealed class ComplicationConfig(
     @Keep
     data object Middle: ComplicationConfig(
         MIDDLE_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.LONG_TEXT,
@@ -110,6 +116,7 @@ sealed class ComplicationConfig(
     @Keep
     data object Bottom: ComplicationConfig(
         BOTTOM_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.LONG_TEXT,

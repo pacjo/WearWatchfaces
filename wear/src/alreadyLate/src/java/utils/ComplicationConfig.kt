@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.os.Build
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
+import androidx.wear.watchface.ComplicationSlotBoundsType
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
@@ -18,10 +19,12 @@ const val RIGHT_COMPLICATION_ID = 100
 // Errors impossible to find
 // Cause me to suffer all day long
 
+// type - one of ComplicationSlotBoundsType.(ROUND_RECT/EDGE/BACKGROUND)
 @Keep
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 sealed class ComplicationConfig(
     val id: Int,
+    val type: Int,
     val supportedTypes: List<ComplicationType>,
     val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
     val bounds: RectF
@@ -39,6 +42,7 @@ sealed class ComplicationConfig(
     @Keep
     data object Right: ComplicationConfig(
         RIGHT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.RANGED_VALUE,

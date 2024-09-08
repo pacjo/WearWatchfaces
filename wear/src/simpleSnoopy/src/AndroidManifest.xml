@@ -15,6 +15,7 @@
             android:exported="true"
             android:label="@string/simple_snoopy_watch_face_name"
             android:permission="android.permission.BIND_WALLPAPER">
+
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
@@ -42,17 +43,6 @@
                 android:value="false" />
         </service>
 
-        <activity
-            android:name=".editor.WatchFaceConfigActivity"
-            android:exported="true"
-            android:taskAffinity="nodomain.pacjo.wear.watchface">
-
-            <intent-filter>
-                <action android:name="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
-
-                <category android:name="com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
+
 </manifest>

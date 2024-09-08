@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.os.Build
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
+import androidx.wear.watchface.ComplicationSlotBoundsType
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
@@ -28,9 +29,16 @@ const val RIGHT_INNER_COMPLICATION_ID = 303
 // Errors impossible to find
 // Cause me to suffer all day long
 
+// type - one of ComplicationSlotBoundsType.(ROUND_RECT/EDGE/BACKGROUND)
 @Keep
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>, val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy, val bounds: RectF) {
+sealed class ComplicationConfig(
+    val id: Int,
+    val type: Int,
+    val supportedTypes: List<ComplicationType>,
+    val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
+    val bounds: RectF
+) {
 
     companion object {
         inline fun <reified T : ComplicationConfig> getAll(): List<T> {
@@ -44,6 +52,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object TopHalfWideLeft: ComplicationConfig(
         TOP_HALF_WIDE_LEFT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.RANGED_VALUE,
@@ -65,6 +74,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object TopQuarterWideLeft: ComplicationConfig(
         TOP_QUARTER_WIDE_LEFT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.RANGED_VALUE,
@@ -85,6 +95,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object TopQuarterWideRight: ComplicationConfig(
         TOP_QUARTER_WIDE_RIGHT_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.RANGED_VALUE,
@@ -105,6 +116,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object MiddleWide: ComplicationConfig(
         MIDDLE_WIDE_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.RANGED_VALUE,
@@ -127,6 +139,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object LeftOuter: ComplicationConfig(
         LEFT_OUTER_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -149,6 +162,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object LeftInner: ComplicationConfig(
         LEFT_INNER_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -170,6 +184,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object RightInner: ComplicationConfig(
         RIGHT_INNER_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -191,6 +206,7 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
     @Keep
     data object RightOuter: ComplicationConfig(
         RIGHT_OUTER_COMPLICATION_ID,
+        ComplicationSlotBoundsType.ROUND_RECT,
         listOf(
             ComplicationType.SHORT_TEXT,
             ComplicationType.MONOCHROMATIC_IMAGE,

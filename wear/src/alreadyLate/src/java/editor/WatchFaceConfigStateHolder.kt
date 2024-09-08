@@ -219,7 +219,7 @@ class WatchFaceConfigStateHolder(
 
     private fun forceUpdatePreview() {
         val currentValue = editorSession.userStyle.value[uselessSettingUsedForUpdatingPreviewKey]
-                as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+            as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
 
         setUserStyleOption(
             uselessSettingUsedForUpdatingPreviewKey,

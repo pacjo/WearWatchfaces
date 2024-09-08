@@ -1,4 +1,4 @@
-package editor
+package nodomain.pacjo.wear.watchface.editor
 
 import android.os.Build
 import android.os.Bundle
@@ -8,16 +8,17 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,6 @@ import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
-import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
@@ -54,7 +54,6 @@ class WatchFaceConfigActivity : ComponentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +61,11 @@ class WatchFaceConfigActivity : ComponentActivity() {
             val context = LocalContext.current
 
             val uiState = watchFacePreview(stateHolder)
-            val bitmap = uiState?.previewImage?.asImageBitmap()
+            val currentBitmap = remember { mutableStateOf<ImageBitmap?>(null) }
+
+            LaunchedEffect(uiState) {
+                currentBitmap.value = uiState?.previewImage?.asImageBitmap()
+            }
 
             val currentTheme = context.resources.getString(
                 uiState?.colorStyleId?.let { getColorStyleConfig(it).nameResourceId } ?: R.string.colors_style_setting
@@ -78,17 +81,17 @@ class WatchFaceConfigActivity : ComponentActivity() {
                     MaterialTheme {
                         // background with animation
                         Crossfade(
-                            targetState = bitmap,
+                            targetState = currentBitmap.value,
                             modifier = Modifier.fillMaxSize(),
                             animationSpec = tween(
                                 durationMillis = 500,
                                 easing = LinearEasing
                             ),
                             label = "watchface_preview_change"
-                        ) { currentBitmap ->
-                            if (currentBitmap != null) {
+                        ) { bitmap ->
+                            if (bitmap != null) {
                                 Image(
-                                    bitmap = currentBitmap,
+                                    bitmap = bitmap,
                                     contentDescription = null,
                                     modifier = Modifier.fillMaxSize()
                                 )
@@ -161,7 +164,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                     }
                 }
                 composable("colors") {
-                    ColorSelectScreen(context, stateHolder, navController)
+                    ColorSelectScreen(stateHolder, navController)
                 }
             }
         }

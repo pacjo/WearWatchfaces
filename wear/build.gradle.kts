@@ -109,22 +109,24 @@ android {
 }
 
 dependencies {
+    val watchfaceVersion = "1.3.0-alpha03"
+
     // main watchface
-    implementation("androidx.wear.watchface:watchface:1.2.1")
+    implementation("androidx.wear.watchface:watchface:$watchfaceVersion")
 
     // complications
-    implementation("androidx.wear.watchface:watchface-complications-data-source:1.2.1")
-    implementation("androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1")
-    implementation("androidx.wear.watchface:watchface-complications-rendering:1.2.1")
+    implementation("androidx.wear.watchface:watchface-complications-data-source:$watchfaceVersion")
+    implementation("androidx.wear.watchface:watchface-complications-data-source-ktx:$watchfaceVersion")
+    implementation("androidx.wear.watchface:watchface-complications-rendering:$watchfaceVersion")
 
     // watchface style and complication editor
-    implementation("androidx.wear.watchface:watchface-editor:1.2.1")
-    implementation("androidx.wear.watchface:watchface-client:1.2.1")
+    implementation("androidx.wear.watchface:watchface-editor:$watchfaceVersion")
+    implementation("androidx.wear.watchface:watchface-client:$watchfaceVersion")
 
     // Jetpack Compose
-    implementation("androidx.wear.compose:compose-foundation:1.3.1")
-    implementation("androidx.wear.compose:compose-material:1.3.1")
-    implementation("androidx.wear.compose:compose-navigation:1.3.1")
+    implementation("androidx.wear.compose:compose-foundation:1.4.0")
+    implementation("androidx.wear.compose:compose-material:1.4.0")
+    implementation("androidx.wear.compose:compose-navigation:1.4.0")
 
     // others
     implementation("androidx.vectordrawable:vectordrawable:1.2.0")

@@ -4,15 +4,15 @@ import android.content.Context
 import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import data.watchface.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
-import data.watchface.TIME_RING_CORNER_RADIUS_DEFAULT
-import data.watchface.TIME_RING_CORNER_RADIUS_MAXIMUM
-import data.watchface.TIME_RING_CORNER_RADIUS_MINIMUM
-import data.watchface.TIME_RING_WIDTH_DEFAULT
-import data.watchface.TIME_RING_WIDTH_MAXIMUM
-import data.watchface.TIME_RING_WIDTH_MINIMUM
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_DEFAULT
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_MAXIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_CORNER_RADIUS_MINIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_DEFAULT
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MAXIMUM
+import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MINIMUM
 
 const val COLOR_STYLE_SETTING = "color_style_setting"
 const val DRAW_COMPLICATIONS_IN_AMBIENT_SETTING = "draw_complications_in_ambient_setting"

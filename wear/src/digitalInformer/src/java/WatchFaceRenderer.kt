@@ -26,7 +26,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
-import data.watchface.WatchFaceData
+import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.AnimatedClockType
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
