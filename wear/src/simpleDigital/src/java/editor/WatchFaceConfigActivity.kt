@@ -37,9 +37,9 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.C
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
-import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
+import nodomain.pacjo.wear.watchface.editor.components.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.editor.screens.TimeRingSettingsScreen
-import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
+import nodomain.pacjo.wear.watchface.editor.components.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
 import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview

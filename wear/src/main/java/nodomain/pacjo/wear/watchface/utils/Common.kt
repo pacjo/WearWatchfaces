@@ -7,20 +7,9 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Shader
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.Text
 import androidx.wear.watchface.ComplicationSlot
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.RenderParameters
@@ -28,11 +17,11 @@ import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawabl
 import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.complications.rendering.ComplicationStyle.Companion.BORDER_STYLE_NONE
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import java.time.ZonedDateTime
 
 // constants
+// TODO: what's using this?
 const val DEFAULT_CORNER_RADIUS = 60f
 
 // Renderer
@@ -163,8 +152,7 @@ fun drawScrollingFragment(
     canvas.drawRect(clip, vignettePaint)
 }
 
-// Composables
-// TODO: finish and rename
+// TODO: do something about this
 @Composable
 fun watchFacePreview(stateHolder: WatchFaceConfigStateHolder): WatchFaceConfigStateHolder.UserStylesAndPreview? {
     val uiState by stateHolder.uiState.collectAsState()
@@ -173,29 +161,7 @@ fun watchFacePreview(stateHolder: WatchFaceConfigStateHolder): WatchFaceConfigSt
         is WatchFaceConfigStateHolder.EditWatchFaceUiState.Success -> {
             state.userStylesAndPreview
         }
-        else -> null
-    }
-}
 
-@Composable
-fun CategorySelectButton(context: Context, text: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 16.dp),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    Color(context.getColor(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text)
-        }
+        else -> null
     }
 }
