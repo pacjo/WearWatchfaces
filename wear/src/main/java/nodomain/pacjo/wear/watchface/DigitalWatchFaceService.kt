@@ -102,10 +102,16 @@ class DigitalWatchFaceService : WatchFaceService() {
             canvasType = CanvasType.HARDWARE
         )
 
-        return WatchFace(
+        val watchFace = WatchFace(
             watchFaceType = WatchFaceType.DIGITAL,
             renderer = renderer
         )
+
+        // not every renderer implements TapListener
+        if (renderer is WatchFace.TapListener)
+            watchFace.setTapListener(renderer)
+
+        return watchFace
     }
 
     companion object {
