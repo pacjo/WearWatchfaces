@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,10 +28,12 @@ import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_MINIMUM
 import nodomain.pacjo.wear.watchface.data.watchface.TIME_RING_WIDTH_STEP
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
-// TODO: move to common
-
 @Composable
-fun TimeRingSettingsScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, uiState: WatchFaceConfigStateHolder.UserStylesAndPreview) {
+fun TimeRingSettingsScreen(
+    context: Context,
+    stateHolder: WatchFaceConfigStateHolder,
+    uiState: WatchFaceConfigStateHolder.UserStylesAndPreview
+) {
     val listState = rememberScalingLazyListState()
 
     Scaffold (
@@ -78,7 +82,15 @@ fun TimeRingSettingsScreen(context: Context, stateHolder: WatchFaceConfigStateHo
 }
 
 @Composable
-fun PreferenceSlider(text: String, value: Float, steps: Int, range: ClosedFloatingPointRange<Float>, onValueChange: (Float) -> Unit) {
+fun PreferenceSlider(
+    text: String,
+    value: Float,
+    steps: Int,
+    range: ClosedFloatingPointRange<Float>,
+    onValueChange: (Float) -> Unit
+) {
+    val sliderValue = remember(value) { mutableFloatStateOf(value) }
+
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -87,8 +99,11 @@ fun PreferenceSlider(text: String, value: Float, steps: Int, range: ClosedFloati
             text = text
         )
         InlineSlider(
-            value = value,
-            onValueChange = onValueChange,
+            value = sliderValue.floatValue,
+            onValueChange = { newValue ->
+                onValueChange(newValue)
+                sliderValue.floatValue = newValue
+            },
             steps = steps,
             decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") },
             increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
