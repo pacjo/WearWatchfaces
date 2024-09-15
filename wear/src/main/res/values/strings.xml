@@ -22,6 +22,8 @@
 
     <string name="style7_name">Azur</string>
 
+    <string name="style8_name">Nuance</string>
+
     <!-- ============ Hands style configuration ============ -->
     <string name="hands_style_setting">Hands</string>
     <string name="hands_style_setting_description">Allows selecting hands style</string>

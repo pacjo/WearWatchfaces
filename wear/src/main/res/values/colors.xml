@@ -43,4 +43,9 @@
     <color name="style7_primary">#A8DADC</color>
     <color name="style7_secondary">#1D3557</color>
     <color name="style7_tertiary">#457B9D</color>
+
+    <!--- Style 7 - Nuance - https://coolors.co/fafaff-808080-525252-1c1c1c-000000 -->
+    <color name="style8_primary">#FAFAFF</color>
+    <color name="style8_secondary">#525252</color>
+    <color name="style8_tertiary">#808080</color>
 </resources>
