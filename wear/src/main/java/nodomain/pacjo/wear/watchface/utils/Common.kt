@@ -21,8 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import androidx.wear.watchface.ComplicationSlot
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.RenderParameters
+import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawable
+import androidx.wear.watchface.complications.rendering.ComplicationDrawable
+import androidx.wear.watchface.complications.rendering.ComplicationStyle.Companion.BORDER_STYLE_NONE
+import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import java.time.ZonedDateTime
@@ -38,11 +43,27 @@ enum class AnimatedClockType {
     HOURS_24
 }
 
-fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime, renderParameters: RenderParameters, complicationSlotsManager: ComplicationSlotsManager) {
-    for ((_, complication) in complicationSlotsManager.complicationSlots) {
-        if (complication.enabled) {
-            complication.render(canvas, zonedDateTime, renderParameters)
-        }
+fun drawComplications(
+    canvas: Canvas,
+    zonedDateTime: ZonedDateTime,
+    renderParameters: RenderParameters,
+    complicationSlotsManager: ComplicationSlotsManager
+) {
+    for ((_, complicationSlot) in complicationSlotsManager.complicationSlots) {
+        if (complicationSlot.enabled)
+            complicationSlot.render(canvas, zonedDateTime, renderParameters)
+    }
+}
+
+fun ComplicationSlot.hideBorders(
+    context: Context,
+    complication: ComplicationSlot,
+) {
+    ComplicationDrawable.getDrawable(context, R.drawable.complication_drawable)!!.apply {
+        activeStyle.borderStyle = BORDER_STYLE_NONE
+        ambientStyle.borderStyle = BORDER_STYLE_NONE
+
+        (complication.renderer as CanvasComplicationDrawable).drawable = this
     }
 }
 

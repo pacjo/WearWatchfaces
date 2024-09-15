@@ -33,9 +33,9 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
-import nodomain.pacjo.wear.watchface.utils.drawComplications
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
+import nodomain.pacjo.wear.watchface.utils.hideBorders
 import java.time.ZonedDateTime
 
 // Default for how long each frame is displayed at expected frame rate.
@@ -205,6 +205,22 @@ class WatchCanvasRenderer(
 
         if (renderParameters.watchFaceLayers.contains(WatchFaceLayer.COMPLICATIONS_OVERLAY)) {
             drawClock(canvas, bounds, zonedDateTime)
+        }
+    }
+
+    // TODO: make it so that we don't need to have whole drawComplications method to disable borders
+    private fun drawComplications(
+        canvas: Canvas,
+        zonedDateTime: ZonedDateTime,
+        renderParameters: RenderParameters,
+        complicationSlotsManager: ComplicationSlotsManager
+    ) {
+        for ((_, complicationSlot) in complicationSlotsManager.complicationSlots) {
+            if (complicationSlot.enabled) {
+                complicationSlot.hideBorders(context, complicationSlot)
+
+                complicationSlot.render(canvas, zonedDateTime, renderParameters)
+            }
         }
     }
 
