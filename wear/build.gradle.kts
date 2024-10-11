@@ -109,7 +109,7 @@ android {
 }
 
 dependencies {
-    val watchfaceVersion = "1.3.0-alpha03"
+    val watchfaceVersion = "1.3.0-alpha04"
 
     // main watchface
     implementation("androidx.wear.watchface:watchface:$watchfaceVersion")
