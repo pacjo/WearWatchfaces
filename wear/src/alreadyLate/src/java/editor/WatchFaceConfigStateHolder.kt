@@ -16,6 +16,7 @@ import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,7 +31,6 @@ import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.SMOOTH_SECONDS_HAND_SETTING
-import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import java.time.Instant
 
 class WatchFaceConfigStateHolder(
@@ -45,9 +45,8 @@ class WatchFaceConfigStateHolder(
     private lateinit var backgroundStyleKey: UserStyleSetting.ListUserStyleSetting
     private lateinit var drawComplicationsInAmbientKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var smoothSecondsHandKey: UserStyleSetting.BooleanUserStyleSetting
-    private lateinit var uselessSettingUsedForUpdatingPreviewKey: UserStyleSetting.BooleanUserStyleSetting
 
-    private var highlightedElementKey: RenderParameters.HighlightedElement? = null
+    private val highlightedElementFlow = MutableStateFlow<RenderParameters.HighlightedElement?>(null)
 
     val uiState: StateFlow<EditWatchFaceUiState> =
         flow<EditWatchFaceUiState> {
@@ -60,11 +59,12 @@ class WatchFaceConfigStateHolder(
             emitAll(
                 combine(
                     editorSession.userStyle,
-                    editorSession.complicationsPreviewData
-                ) { userStyle, complicationsPreviewData ->
+                    editorSession.complicationsPreviewData,
+                    highlightedElementFlow
+                ) { userStyle, complicationsPreviewData, highlightedElement ->
                     yield()
                     EditWatchFaceUiState.Success(
-                        createWatchFacePreview(userStyle, complicationsPreviewData)
+                        createWatchFacePreview(userStyle, complicationsPreviewData, highlightedElement)
                     )
                 }
             )
@@ -98,15 +98,8 @@ class WatchFaceConfigStateHolder(
                 SMOOTH_SECONDS_HAND_SETTING -> {
                     smoothSecondsHandKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
-
-                USELESS_SETTING_USED_FOR_PREVIEW_SETTING -> {
-                    uselessSettingUsedForUpdatingPreviewKey = setting as UserStyleSetting.BooleanUserStyleSetting
-                }
             }
         }
-        // TODO: change!
-        // make sane default
-        highlightedElementKey = RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(COLOR_STYLE_SETTING))
     }
 
     /* Creates a new bitmap render of the updated watch face and passes it along (with all the other
@@ -114,7 +107,8 @@ class WatchFaceConfigStateHolder(
      */
     private fun createWatchFacePreview(
         userStyle: UserStyle,
-        complicationsPreviewData: Map<Int, ComplicationData>
+        complicationsPreviewData: Map<Int, ComplicationData>,
+        highlightedElement: RenderParameters.HighlightedElement?
     ): UserStylesAndPreview {
         Log.d(TAG, "updatesWatchFacePreview()")
 
@@ -122,7 +116,7 @@ class WatchFaceConfigStateHolder(
             RenderParameters(
                 DrawMode.INTERACTIVE,
                 WatchFaceLayer.ALL_WATCH_FACE_LAYERS,
-                highlightedElementKey?.let {
+                highlightedElement?.let {
                     RenderParameters.HighlightLayer(
                         it,
                         Color.TRANSPARENT,                              // highlight color
@@ -166,10 +160,7 @@ class WatchFaceConfigStateHolder(
     }
 
     fun setHighlightedElement(element: RenderParameters.HighlightedElement?) {
-        highlightedElementKey = element
-
-        // TODO: this needs to be changed
-        forceUpdatePreview()
+        highlightedElementFlow.value = element
     }
 
     private fun setStyle(styleSettingId: UserStyleSetting.Id, newStyleId: String) {
@@ -214,16 +205,6 @@ class WatchFaceConfigStateHolder(
         setUserStyleOption(
             smoothSecondsHandKey,
             UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(enabled)
-        )
-    }
-
-    private fun forceUpdatePreview() {
-        val currentValue = editorSession.userStyle.value[uselessSettingUsedForUpdatingPreviewKey]
-            as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
-
-        setUserStyleOption(
-            uselessSettingUsedForUpdatingPreviewKey,
-            UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(!currentValue.value)
         )
     }
 

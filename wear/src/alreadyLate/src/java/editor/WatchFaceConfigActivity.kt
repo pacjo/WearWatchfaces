@@ -36,16 +36,15 @@ import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles.Companion.getBackgroundStyleConfig
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles.Companion.getHandsStyleConfig
+import nodomain.pacjo.wear.watchface.editor.components.CategorySelectButton
+import nodomain.pacjo.wear.watchface.editor.components.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.editor.screens.BackgroundSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
 import nodomain.pacjo.wear.watchface.editor.screens.HandsStyleSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
-import nodomain.pacjo.wear.watchface.editor.screens.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.utils.BACKGROUND_STYLE_SETTING
-import nodomain.pacjo.wear.watchface.utils.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.HANDS_STYLE_SETTING
-import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview
 
 class WatchFaceConfigActivity : ComponentActivity() {
@@ -124,6 +123,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                     get() = horizontalPagerState.pageCount
                             }
                         }
+
                         LaunchedEffect(horizontalPagerState) {
                             snapshotFlow { horizontalPagerState.currentPage }.collect { page ->
                                 when (page) {
@@ -138,8 +138,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                     )
                                     // set to unused value, to dim whole face
                                     4 -> stateHolder.setHighlightedElement(
-                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING))
+                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id("bullshit element"))
                                     )
+
                                     else -> stateHolder.setHighlightedElement(null)
                                 }
                             }

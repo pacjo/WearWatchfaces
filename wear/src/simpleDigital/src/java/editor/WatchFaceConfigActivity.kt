@@ -41,7 +41,6 @@ import nodomain.pacjo.wear.watchface.editor.components.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.editor.screens.TimeRingSettingsScreen
 import nodomain.pacjo.wear.watchface.editor.components.CategorySelectButton
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
-import nodomain.pacjo.wear.watchface.utils.USELESS_SETTING_USED_FOR_PREVIEW_SETTING
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview
 
 class WatchFaceConfigActivity : ComponentActivity() {
@@ -112,6 +111,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                     get() = horizontalPagerState.pageCount
                             }
                         }
+
                         LaunchedEffect(horizontalPagerState) {
                             snapshotFlow { horizontalPagerState.currentPage }.collect { page ->
                                 when (page) {
@@ -123,8 +123,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                     )
                                     // set to unused value, to dim whole face
                                     3 -> stateHolder.setHighlightedElement(
-                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id(USELESS_SETTING_USED_FOR_PREVIEW_SETTING))
+                                        RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id("bullshit element"))
                                     )
+
                                     else -> stateHolder.setHighlightedElement(null)
                                 }
                             }
