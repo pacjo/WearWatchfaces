@@ -6,7 +6,7 @@ import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.data.watchface.SMOOTH_SECONDS_HAND_DEFAULT
 
@@ -24,7 +24,7 @@ fun createUserStyleSchema(context: Context): UserStyleSchema {
             R.string.colors_style_setting,
             R.string.colors_style_setting_description,
             null,
-            ColorStyleIdAndResourceIds.toOptionList(context),
+            ColorStyle.toOptionList(context),
             WatchFaceLayer.ALL_WATCH_FACE_LAYERS
         )
 

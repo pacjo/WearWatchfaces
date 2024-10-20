@@ -24,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.AnimatedClockType
@@ -150,7 +150,7 @@ class WatchCanvasRenderer(
                             UserStyleSetting.ListUserStyleSetting.ListOption
 
                     newWatchFaceData = newWatchFaceData.copy(
-                        activeColorStyle = ColorStyleIdAndResourceIds.getColorStyleConfig(
+                        activeColorStyle = ColorStyle.getColorStyleConfig(
                             listOption.id.toString()
                         )
                     )

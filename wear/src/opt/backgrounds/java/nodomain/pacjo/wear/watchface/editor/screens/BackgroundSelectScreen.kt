@@ -30,7 +30,7 @@ import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 @Composable
@@ -70,7 +70,7 @@ fun BackgroundSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
                     modifier = Modifier
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colorResource(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)
+                        backgroundColor = colorResource(ColorStyle.AMBIENT.outlineColorId)
                     )
                 ) {
                     Row(

@@ -5,7 +5,7 @@ import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.data.watchface.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
 
 const val COLOR_STYLE_SETTING = "color_style_setting"
@@ -20,7 +20,7 @@ fun createUserStyleSchema(context: Context): UserStyleSchema {
             R.string.colors_style_setting,
             R.string.colors_style_setting_description,
             null,
-            ColorStyleIdAndResourceIds.toOptionList(context),
+            ColorStyle.toOptionList(context),
             WatchFaceLayer.ALL_WATCH_FACE_LAYERS
         )
 

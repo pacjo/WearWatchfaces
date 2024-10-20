@@ -34,7 +34,7 @@ import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles.Companion.getBackgroundStyleConfig
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds.Companion.getColorStyleConfig
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle.Companion.getColorStyleConfig
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles.Companion.getHandsStyleConfig
 import nodomain.pacjo.wear.watchface.editor.screens.BackgroundSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen

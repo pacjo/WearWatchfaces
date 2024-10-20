@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
@@ -22,7 +23,7 @@ import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
@@ -47,24 +48,16 @@ fun HandsStyleSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
                     textAlign = TextAlign.Center
                 )
             }
-            items(HandsStyles.toOptionList(context).size) { index ->
-                val style = HandsStyles.getHandsStyleConfig(
-                    HandsStyles.toOptionList(context)[index].toString())
-
+            items(HandsStyles.entries) { style ->
                 Button(
                     onClick = {
-//                        TODO("put back")
-                        stateHolder.setHandsStyle(
-                            HandsStyles.toOptionList(
-                                context
-                            )[index].toString()
-                        )
+                        stateHolder.setHandsStyle(style.id)
                         navController.popBackStack()
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(context.getColor(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId))
+                        backgroundColor = Color(context.getColor(ColorStyle.AMBIENT.outlineColorId))
                     )
                 ) {
                     Row(

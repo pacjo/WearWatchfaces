@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 
 @Composable
 fun CategorySelectButton(context: Context, text: String, onClick: () -> Unit) {
@@ -26,7 +26,7 @@ fun CategorySelectButton(context: Context, text: String, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .background(
-                    Color(context.getColor(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)),
+                    Color(context.getColor(ColorStyle.AMBIENT.outlineColorId)),
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(horizontal = 8.dp, vertical = 4.dp)

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
@@ -29,7 +30,7 @@ import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import nodomain.pacjo.wear.watchface.R
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 @Composable
@@ -57,24 +58,18 @@ fun ColorSelectScreen(
                     textAlign = TextAlign.Center
                 )
             }
-            items(ColorStyleIdAndResourceIds.toOptionList(context).size) { index ->
-                val style = ColorStyleIdAndResourceIds.getColorStyleConfig(
-                    ColorStyleIdAndResourceIds.toOptionList(context)[index].toString())
 
-                if (style != ColorStyleIdAndResourceIds.AMBIENT) {
+            items(ColorStyle.entries) { style ->
+                if (style != ColorStyle.AMBIENT) {
                     Button(
                         onClick = {
-                            stateHolder.setColorStyle(
-                                ColorStyleIdAndResourceIds.toOptionList(
-                                    context
-                                )[index].toString()
-                            )
+                            stateHolder.setColorStyle(style.id)
                             navController.popBackStack()
                         },
                         modifier = Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = colorResource(ColorStyleIdAndResourceIds.AMBIENT.outlineColorId)
+                            backgroundColor = colorResource(ColorStyle.AMBIENT.outlineColorId)
                         )
                     ) {
                         Row(

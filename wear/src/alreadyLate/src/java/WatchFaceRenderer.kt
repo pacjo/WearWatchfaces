@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import nodomain.pacjo.wear.watchface.data.watchface.BackgroundStyles
-import nodomain.pacjo.wear.watchface.data.watchface.ColorStyleIdAndResourceIds
+import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
@@ -91,7 +91,7 @@ class WatchCanvasRenderer(
                         UserStyleSetting.ListUserStyleSetting.ListOption
 
                     newWatchFaceData = newWatchFaceData.copy(
-                        activeColorStyle = ColorStyleIdAndResourceIds.getColorStyleConfig(
+                        activeColorStyle = ColorStyle.getColorStyleConfig(
                             listOption.id.toString()
                         )
                     )
