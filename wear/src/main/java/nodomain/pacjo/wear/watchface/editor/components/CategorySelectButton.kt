@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
@@ -25,12 +26,10 @@ fun CategorySelectButton(context: Context, text: String, onClick: () -> Unit) {
     ) {
         Box(
             modifier = Modifier
-                .background(
-                    Color(context.getColor(ColorStyle.AMBIENT.outlineColorId)),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .clickable { onClick() },
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color(context.getColor(ColorStyle.AMBIENT.outlineColorId)))
+                .clickable { onClick() }
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(text)
