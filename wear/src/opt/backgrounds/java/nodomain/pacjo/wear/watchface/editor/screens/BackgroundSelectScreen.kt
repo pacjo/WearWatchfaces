@@ -80,7 +80,7 @@ fun BackgroundSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            painter = painterResource(id = style.backgroundDrawableRes),
+                            painter = painterResource(id = style.backgroundDrawableResourceId),
                             contentDescription = stringResource(id = R.string.background_style_preview_description),
                             modifier = Modifier.clip(RoundedCornerShape(8.dp))
                         )

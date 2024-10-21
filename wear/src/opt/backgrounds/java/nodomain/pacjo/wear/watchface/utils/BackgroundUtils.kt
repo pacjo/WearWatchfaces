@@ -12,7 +12,7 @@ fun drawBackground(
     canvas: Canvas,
     bounds: Rect
 ) {
-    val backgroundDrawable = watchFaceData.backgroundStyle.backgroundDrawableRes
+    val backgroundDrawable = watchFaceData.backgroundStyle.backgroundDrawableResourceId
 
     val vectorBackground = VectorDrawableCompat.create(context.resources, backgroundDrawable, null)
     vectorBackground?.bounds = bounds
