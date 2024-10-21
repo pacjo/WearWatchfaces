@@ -1,18 +1,18 @@
 package nodomain.pacjo.wear.watchface.editor.screens
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -78,30 +78,14 @@ fun ColorSelectScreen(
                                 .padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Canvas(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .aspectRatio(1f)
-                            ) {
-                                val colorList = listOf(
-                                    Color(context.getColor(style.primaryColorId)),
-                                    Color(context.getColor(style.secondaryColorId)),
-                                    Color(context.getColor(style.tertiaryColorId))
-                                )
+                            Image(
+                                bitmap = ColorStyle.createPreviewBitmap(context, style).asImageBitmap(),
+                                contentDescription = stringResource(id = R.string.color_style_preview_description),
+                                modifier = Modifier.clip(RoundedCornerShape(8.dp))
+                            )
 
-                                var startAngle = -180f       // 0f is 3 o'clock
-                                val sweepAngles = floatArrayOf(180f, 90f, 90f)
-                                for (i in 0 until 3) {
-                                    drawArc(
-                                        color = colorList[i],
-                                        startAngle = startAngle,
-                                        sweepAngle = sweepAngles[i],
-                                        useCenter = true,
-                                    )
-                                    startAngle += sweepAngles[i]
-                                }
-                            }
                             Spacer(modifier = Modifier.width(8.dp))
+
                             Text(
                                 text = stringResource(style.nameResourceId),
                                 overflow = TextOverflow.Ellipsis,

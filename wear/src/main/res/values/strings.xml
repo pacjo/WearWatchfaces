@@ -5,6 +5,8 @@
     <string name="colors_style_setting">Colors</string>
     <string name="colors_style_setting_description">Allows selecting color scheme</string>
 
+    <string name="color_style_preview_description">Color preview</string>
+
     <!-- Names of watchface style [CHAR LIMIT=20] -->
     <string name="ambient_style_name">Ambient Style</string>
 
@@ -27,6 +29,8 @@
     <!-- ============ Hands style configuration ============ -->
     <string name="hands_style_setting">Hands</string>
     <string name="hands_style_setting_description">Allows selecting hands style</string>
+
+    <string name="hands_style_preview_description">Hands preview</string>
 
     <!-- Names of hands style [CHAR LIMIT=20] -->
     <string name="hands_style1_name">Modern</string>

@@ -84,7 +84,9 @@ fun BackgroundSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHo
                             contentDescription = stringResource(id = R.string.background_style_preview_description),
                             modifier = Modifier.clip(RoundedCornerShape(8.dp))
                         )
+
                         Spacer(modifier = Modifier.width(8.dp))
+
                         Text(
                             text = stringResource(style.nameResourceId),
                             overflow = TextOverflow.Ellipsis,

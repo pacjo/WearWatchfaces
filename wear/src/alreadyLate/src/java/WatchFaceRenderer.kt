@@ -197,10 +197,10 @@ class WatchCanvasRenderer(
         zonedDateTime: ZonedDateTime
     ) {
         val hoursDegrees = ((zonedDateTime.hour + zonedDateTime.minute / 60f) / 12f) * 360
-        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, hoursDegrees)
+        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, hoursDegrees)
 
         val minutesDegrees = ((zonedDateTime.minute + zonedDateTime.second / 60f) / 60f) * 360
-        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, minutesDegrees)
+        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, minutesDegrees)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT) {
             val secondsDegrees = when (watchFaceData.smoothSecondsHand) {
@@ -208,7 +208,7 @@ class WatchCanvasRenderer(
                 else -> ((zonedDateTime.second + zonedDateTime.nano / 1000000000f) / 60f) * 360
             }
 
-            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, secondsDegrees)
+            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, secondsDegrees)
         }
     }
 

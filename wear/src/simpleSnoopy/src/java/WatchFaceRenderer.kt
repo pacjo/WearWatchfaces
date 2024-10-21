@@ -172,10 +172,10 @@ class WatchCanvasRenderer(
     ) {
         // TODO: don't stretch image
         val hoursDegrees = ((zonedDateTime.hour + zonedDateTime.minute / 60f) / 12f) * 360
-        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, hoursDegrees)      // TODO: allow use drawable instead
+        watchFaceData.handsStyle.hourHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, hoursDegrees)      // TODO: allow use drawable instead
 
         val minutesDegrees = ((zonedDateTime.minute + zonedDateTime.second / 60f) / 60f) * 360
-        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, minutesDegrees)      // TODO: allow use drawable instead
+        watchFaceData.handsStyle.minuteHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, minutesDegrees)      // TODO: allow use drawable instead
 
         if (renderParameters.drawMode != DrawMode.AMBIENT) {
             val secondsDegrees = when (watchFaceData.smoothSecondsHand) {
@@ -183,7 +183,7 @@ class WatchCanvasRenderer(
                 else -> ((zonedDateTime.second + zonedDateTime.nano / 1000000000f) / 60f) * 360
             }
 
-            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters, watchFaceColors, secondsDegrees)      // TODO: allow use drawable instead
+            watchFaceData.handsStyle.secondHandDrawFunction?.invoke(canvas, bounds, renderParameters.drawMode, watchFaceColors, secondsDegrees)      // TODO: allow use drawable instead
         }
     }
 

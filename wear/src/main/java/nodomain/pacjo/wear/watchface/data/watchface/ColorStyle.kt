@@ -1,10 +1,14 @@
 package nodomain.pacjo.wear.watchface.data.watchface
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.drawable.Icon
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.graphics.toRectF
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.UserStyleSetting.ListUserStyleSetting
 import nodomain.pacjo.wear.watchface.R
@@ -19,8 +23,7 @@ enum class ColorStyle(
     @ColorRes val secondaryColorId: Int,
     @ColorRes val tertiaryColorId: Int,
     @ColorRes val outlineColorId: Int,
-    @ColorRes val backgroundColorId: Int,
-    @DrawableRes val iconResId: Int?
+    @ColorRes val backgroundColorId: Int
 ) {
     STYLE1(
         id = "style1_id",
@@ -29,8 +32,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style1_secondary,
         tertiaryColorId = R.color.style1_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style1_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE2(
@@ -40,8 +42,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style2_secondary,
         tertiaryColorId = R.color.style2_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style2_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE3(
@@ -51,8 +52,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style3_secondary,
         tertiaryColorId = R.color.style3_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style3_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE4(
@@ -62,8 +62,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style4_secondary,
         tertiaryColorId = R.color.style4_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style4_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE5(
@@ -73,8 +72,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style5_secondary,
         tertiaryColorId = R.color.style5_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style5_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE6(
@@ -84,8 +82,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style6_secondary,
         tertiaryColorId = R.color.style6_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style6_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE7(
@@ -95,8 +92,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style7_secondary,
         tertiaryColorId = R.color.style7_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style7_icon
+        backgroundColorId = R.color.background
     ),
 
     STYLE8(
@@ -106,8 +102,7 @@ enum class ColorStyle(
         secondaryColorId = R.color.style8_secondary,
         tertiaryColorId = R.color.style8_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = R.drawable.color_style8_icon
+        backgroundColorId = R.color.background
     ),
 
     AMBIENT(
@@ -117,11 +112,48 @@ enum class ColorStyle(
         secondaryColorId = R.color.ambient_secondary,
         tertiaryColorId = R.color.ambient_tertiary,
         outlineColorId = R.color.outline,
-        backgroundColorId = R.color.background,
-        iconResId = null
+        backgroundColorId = R.color.background
     );
 
     companion object {
+        /**
+         * Helper method to generate previews on the fly
+         */
+        fun createPreviewBitmap(
+            context: Context,
+            style: ColorStyle
+        ): Bitmap {
+            val width = 100
+            val height = 100
+
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            val bounds = Rect(0, 0, width, height).toRectF()
+
+            val paint = Paint()
+            val colorList = listOf(
+                context.getColor(style.primaryColorId),
+                context.getColor(style.secondaryColorId),
+                context.getColor(style.tertiaryColorId)
+            )
+
+            var startAngle = -180f       // 0f is 3 o'clock
+            val sweepAngles = floatArrayOf(180f, 90f, 90f)
+            for (i in 0 until 3) {
+                canvas.drawArc(
+                    bounds,
+                    startAngle,
+                    sweepAngles[i],
+                    true,
+                    paint.apply { color = colorList[i] }
+                )
+
+                startAngle += sweepAngles[i]
+            }
+
+            return bitmap
+        }
+
         /**
          * Translates the string id to the correct ColorStyleIdAndResourceIds object.
          */
@@ -150,19 +182,19 @@ enum class ColorStyle(
             val colorStyleList = enumValues<ColorStyle>()
 
             return colorStyleList
-                .filter { colorStyle ->
+                .filter { style ->
                     // remove ambient style from the list since it's for internal use only
-                    colorStyle.id != AMBIENT.id
+                    style.id != AMBIENT.id
                 }
-                .map { colorStyle ->
+                .map { style ->
                     ListUserStyleSetting.ListOption(
-                        UserStyleSetting.Option.Id(colorStyle.id),
+                        UserStyleSetting.Option.Id(style.id),
                         context.resources,
-                        colorStyle.nameResourceId,
-                        colorStyle.nameResourceId,
-                        colorStyle.iconResId?.let { Icon.createWithResource(context, colorStyle.iconResId) }
+                        style.nameResourceId,
+                        style.nameResourceId,
+                        Icon.createWithBitmap(createPreviewBitmap(context, style))
                     )
-            }
+                }
         }
     }
 }
