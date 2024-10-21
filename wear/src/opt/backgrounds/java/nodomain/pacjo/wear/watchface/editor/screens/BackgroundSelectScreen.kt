@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.editor.screens
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,7 +34,11 @@ import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 @Composable
-fun BackgroundSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, navController: NavController) {
+fun BackgroundSelectScreen(
+    stateHolder: WatchFaceConfigStateHolder,
+    navController: NavController
+) {
+    val context = LocalContext.current
     val listState = rememberScalingLazyListState()
 
     Scaffold(

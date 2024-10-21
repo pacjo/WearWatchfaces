@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.editor.screens
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +36,11 @@ import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 
 @Composable
-fun HandsStyleSelectScreen(context: Context, stateHolder: WatchFaceConfigStateHolder, navController: NavController) {
+fun HandsStyleSelectScreen(
+    stateHolder: WatchFaceConfigStateHolder,
+   navController: NavController
+) {
+    val context = LocalContext.current
     val listState = rememberScalingLazyListState()
 
     Scaffold (

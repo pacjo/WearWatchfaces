@@ -193,10 +193,10 @@ class WatchFaceConfigActivity : ComponentActivity() {
                     ColorSelectScreen(stateHolder, navController)
                 }
                 composable("hands") {
-                    HandsStyleSelectScreen(context, stateHolder, navController)
+                    HandsStyleSelectScreen(stateHolder, navController)
                 }
                 composable("background") {
-                    BackgroundSelectScreen(context, stateHolder, navController)
+                    BackgroundSelectScreen(stateHolder, navController)
                 }
             }
         }
