@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.utils
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
@@ -14,9 +13,7 @@ import androidx.wear.watchface.ComplicationSlot
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawable
-import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.complications.rendering.ComplicationStyle.Companion.BORDER_STYLE_NONE
-import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.editor.WatchFaceConfigStateHolder
 import java.time.ZonedDateTime
 
@@ -36,23 +33,24 @@ fun drawComplications(
     canvas: Canvas,
     zonedDateTime: ZonedDateTime,
     renderParameters: RenderParameters,
-    complicationSlotsManager: ComplicationSlotsManager
+    complicationSlotsManager: ComplicationSlotsManager,
+    customizeComplication: ((ComplicationSlot) -> Unit)? = null
 ) {
     for ((_, complicationSlot) in complicationSlotsManager.complicationSlots) {
-        if (complicationSlot.enabled)
+        if (complicationSlot.enabled) {
+            // apply additional styling if needed
+            customizeComplication?.invoke(complicationSlot)
+
+            // render
             complicationSlot.render(canvas, zonedDateTime, renderParameters)
+        }
     }
 }
 
-fun ComplicationSlot.hideBorders(
-    context: Context,
-    complication: ComplicationSlot,
-) {
-    ComplicationDrawable.getDrawable(context, R.drawable.complication_drawable)!!.apply {
+fun ComplicationSlot.hideBorders() {
+    (renderer as CanvasComplicationDrawable).drawable.apply {
         activeStyle.borderStyle = BORDER_STYLE_NONE
         ambientStyle.borderStyle = BORDER_STYLE_NONE
-
-        (complication.renderer as CanvasComplicationDrawable).drawable = this
     }
 }
 
