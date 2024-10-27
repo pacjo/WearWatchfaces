@@ -33,15 +33,19 @@
     <string name="hands_style_preview_description">Hands preview</string>
 
     <!-- Names of hands style [CHAR LIMIT=20] -->
-    <string name="hands_style1_name">Modern</string>
+    <string name="hands_style1_name">Minimal</string>
 
-    <string name="hands_style2_name">Stolen</string>
+    <string name="hands_style2_name">Bold</string>
 
-    <string name="hands_style3_name">Stolen filled</string>
+    <string name="hands_style3_name">Bold outline</string>
 
-    <string name="hands_style4_name">Floating</string>
+    <string name="hands_style4_name">Stolen</string>
 
-    <string name="hands_style5_name">Floating filled</string>
+    <string name="hands_style5_name">Stolen filled</string>
+
+    <string name="hands_style6_name">Floating</string>
+
+    <string name="hands_style7_name">Floating filled</string>
 
     <!-- ============ Background style configuration ============ -->
     <string name="background_style_setting">Background</string>

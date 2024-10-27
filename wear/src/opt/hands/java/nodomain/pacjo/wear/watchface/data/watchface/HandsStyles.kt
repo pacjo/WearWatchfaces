@@ -44,32 +44,29 @@ private fun drawSimpleHand(
     width: Float,
     color: Int,
     angle: Float,
-    isFilled: Boolean = false
+    isFilled: Boolean = true
 ) {
     val handPaint = createPaint(
-        color,
-        if (isFilled)
-            Paint.Style.FILL
-        else
-            Paint.Style.STROKE,
-        width
+        color = color,
+        style = if (isFilled) Paint.Style.FILL else Paint.Style.STROKE,
+        strokeWidth = if (!isFilled) 3f else 0f
     )
 
     canvas.rotate(angle, bounds.centerX().toFloat(), bounds.centerY().toFloat())
 
-    canvas.drawLine(
-        bounds.centerX().toFloat(),
-        bounds.centerY() - centerSpacing,
-        bounds.centerX().toFloat(),
-        bounds.centerY() - length,
+    val widthFraction = width / (if (isFilled) 2f else 2.5f)
+
+    canvas.drawRoundRect(
+        bounds.centerX().toFloat() - widthFraction,
+        bounds.centerY().toFloat() - widthFraction - length,
+        bounds.centerX().toFloat() + widthFraction,
+        bounds.centerY().toFloat() + widthFraction - centerSpacing,
+        width,
+        width,
         handPaint
     )
 
-    handPaint.style = Paint.Style.FILL
-
-    canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY() - centerSpacing, width / 2, handPaint)
-    canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY() - length, width / 2, handPaint)
-
+    // TODO: don't know if we need it
     canvas.rotate(-angle, bounds.centerX().toFloat(), bounds.centerY().toFloat())
 }
 
@@ -155,17 +152,21 @@ fun drawSecondsHandStandoff(
     canvas: Canvas,
     bounds: Rect,
     drawMode: DrawMode,
-    watchFaceColors: WatchFaceColorPalette
+    watchFaceColors: WatchFaceColorPalette,
+    radius: Float = CIRCLE_RADIUS
 ) {
     canvas.drawCircle(
         bounds.centerX().toFloat(),
         bounds.centerY().toFloat(),
-        CIRCLE_RADIUS,
+        radius,
         createPaint(
-            if (drawMode == DrawMode.AMBIENT)
-                watchFaceColors.ambientTertiaryColor
-            else
-                watchFaceColors.activeTertiaryColor, Paint.Style.STROKE, HAND_WIDTH_SECOND
+            color = 
+                if (drawMode == DrawMode.AMBIENT)
+                    watchFaceColors.ambientTertiaryColor
+                else
+                    watchFaceColors.activeTertiaryColor,
+            style = Paint.Style.STROKE,
+            strokeWidth = HAND_WIDTH_SECOND
         )
     )
 }
@@ -188,248 +189,362 @@ enum class HandsStyles(
         nameResourceId = R.string.hands_style1_name,
         hourHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.04f,
-                min(bounds.width(), bounds.height()) / 2 * 0.6f,
-                HAND_WIDTH_SIMPLE,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientPrimaryColor
-                else
-                    watchFaceColors.activePrimaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.06f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.6f,
+                width = HAND_WIDTH_SIMPLE * 2f,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientPrimaryColor
+                    else
+                        watchFaceColors.activePrimaryColor,
+                angle = angle
             )
         },
         minuteHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.06f,
-                min(bounds.width(), bounds.height()) / 2 * 0.7f,
-                HAND_WIDTH_SIMPLE - 2f,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientSecondaryColor
-                else
-                    watchFaceColors.activeSecondaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.08f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.7f,
+                width = HAND_WIDTH_SIMPLE,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientSecondaryColor
+                    else
+                        watchFaceColors.activeSecondaryColor,
+                angle = angle
             )
         },
         secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.01f,
-                min(bounds.width(), bounds.height()) / 2 * 0.9f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
+            )
+            drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
+        }
+    ),
+
+    BOLD(
+        id = "style2_hands_id",
+        nameResourceId = R.string.hands_style2_name,
+        hourHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = 0f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                width = HAND_WIDTH_SIMPLE * 6f,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientPrimaryColor
+                    else
+                        watchFaceColors.activePrimaryColor,
+                angle = angle
+            )
+        },
+        minuteHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = 0f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.85f,
+                width = HAND_WIDTH_SIMPLE * 1.5f,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientSecondaryColor
+                    else
+                        watchFaceColors.activeSecondaryColor,
+                angle = angle
+            )
+        },
+        secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
+            )
+            drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
+        }
+    ),
+
+    BOLD_OUTLINE(
+        id = "style3_hands_id",
+        nameResourceId = R.string.hands_style3_name,
+        hourHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = 0f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                width = HAND_WIDTH_SIMPLE * 8f,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientPrimaryColor
+                    else
+                        watchFaceColors.activePrimaryColor,
+                angle = angle,
+                false
+            )
+        },
+        minuteHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = 0f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.85f,
+                width = HAND_WIDTH_SIMPLE * 1.5f,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientSecondaryColor
+                    else
+                        watchFaceColors.activeSecondaryColor,
+                angle = angle
+            )
+        },
+        secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
+            drawSimpleHand(
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
         }
     ),
 
     STOLEN(
-        id = "style2_hands_id",
-        nameResourceId = R.string.hands_style2_name,
+        id = "style4_hands_id",
+        nameResourceId = R.string.hands_style4_name,
         hourHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.5f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                angle = angle,
                 fillMode = HandFillMode.DARKENED
             )
         },
         minuteHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.7f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.7f,
+                angle = angle,
                 fillMode = HandFillMode.DARKENED
             )
         },
         secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.01f,
-                min(bounds.width(), bounds.height()) / 2 * 0.9f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * -0.01f,
-                min(bounds.width(), bounds.height()) / 2 * -0.1f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * -0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * -0.1f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
         }
     ),
 
     STOLEN_FILLED(
-        id = "style3_hands_id",
-        nameResourceId = R.string.hands_style3_name,
+        id = "style5_hands_id",
+        nameResourceId = R.string.hands_style5_name,
         hourHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.5f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                angle = angle,
                 fillMode = HandFillMode.SOLID
             )
         },
         minuteHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.7f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.7f,
+                angle = angle,
                 fillMode = HandFillMode.SOLID
             )
         },
         secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.01f,
-                min(bounds.width(), bounds.height()) / 2 * 0.9f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * -0.01f,
-                min(bounds.width(), bounds.height()) / 2 * -0.1f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * -0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * -0.1f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
         }
     ),
 
     FLOATING(
-        id = "style4_hands_id",
-        nameResourceId = R.string.hands_style4_name,
+        id = "style6_hands_id",
+        nameResourceId = R.string.hands_style6_name,
         hourHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.5f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                angle = angle,
                 drawStandoff = false,
                 fillMode = HandFillMode.DARKENED
             )
         },
         minuteHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.7f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.7f,
+                angle = angle,
                 drawStandoff = false,
                 fillMode = HandFillMode.DARKENED
             )
         },
         secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.01f,
-                min(bounds.width(), bounds.height()) / 2 * 0.9f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * -0.01f,
-                min(bounds.width(), bounds.height()) / 2 * -0.1f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * -0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * -0.1f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
         }
     ),
 
     FLOATING_FILLED(
-        id = "style5_hands_id",
-        nameResourceId = R.string.hands_style5_name,
+        id = "style7_hands_id",
+        nameResourceId = R.string.hands_style7_name,
         hourHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.5f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.5f,
+                angle = angle,
                 drawStandoff = false,
                 fillMode = HandFillMode.SOLID
             )
         },
         minuteHandDrawFunction = { canvas, bounds, _, _, angle ->
             drawStolenHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.7f,
-                angle,
+                canvas = canvas,
+                bounds = bounds,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.7f,
+                angle = angle,
                 drawStandoff = false,
                 fillMode = HandFillMode.SOLID
             )
         },
         secondHandDrawFunction = { canvas, bounds, drawMode, watchFaceColors, angle ->
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * 0.01f,
-                min(bounds.width(), bounds.height()) / 2 * 0.9f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * 0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * 0.9f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSimpleHand(
-                canvas,
-                bounds,
-                min(bounds.width(), bounds.height()) / 2 * -0.01f,
-                min(bounds.width(), bounds.height()) / 2 * -0.1f,
-                HAND_WIDTH_SECOND,
-                if (drawMode == DrawMode.AMBIENT)
-                    watchFaceColors.ambientTertiaryColor
-                else
-                    watchFaceColors.activeTertiaryColor,
-                angle
+                canvas = canvas,
+                bounds = bounds,
+                centerSpacing = min(bounds.width(), bounds.height()) / 2 * -0.01f,
+                length = min(bounds.width(), bounds.height()) / 2 * -0.1f,
+                width = HAND_WIDTH_SECOND,
+                color = 
+                    if (drawMode == DrawMode.AMBIENT)
+                        watchFaceColors.ambientTertiaryColor
+                    else
+                        watchFaceColors.activeTertiaryColor,
+                angle = angle
             )
             drawSecondsHandStandoff(canvas, bounds, drawMode, watchFaceColors)
         }
@@ -443,8 +558,8 @@ enum class HandsStyles(
             context: Context,
             style: HandsStyles
         ): Bitmap {
-            val width = 100
-            val height = 100
+            val width = context.resources.displayMetrics.widthPixels
+            val height = width
 
             val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
@@ -466,6 +581,8 @@ enum class HandsStyles(
         fun getHandsStyleConfig(id: String): HandsStyles {
             return when (id) {
                 MODERN.id -> MODERN
+                BOLD.id -> BOLD
+                BOLD_OUTLINE.id -> BOLD_OUTLINE
                 STOLEN.id -> STOLEN
                 STOLEN_FILLED.id -> STOLEN_FILLED
                 FLOATING.id -> FLOATING
