@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Names of watchfaces [CHAR LIMIT=20] -->
-    <string name="already_late_watch_face_name" translatable="false">Already Late</string>
+    <string name="watch_face_name" translatable="false">Already Late</string>
 
     <!-- Names of background style [CHAR LIMIT=20] -->
     <string name="background_style1_name">Blue</string>

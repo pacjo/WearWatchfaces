@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Names of watchfaces [CHAR LIMIT=20] -->
-    <string name="digital_informer_watch_face_name" translatable="false">Digital Informer</string>
+    <string name="watch_face_name" translatable="false">Digital Informer</string>
 </resources>

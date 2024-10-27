@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Name of the watchface [CHAR LIMIT=20] -->
-    <string name="simple_digital_watch_face_name" translatable="false">Simple Digital</string>
+    <string name="watch_face_name" translatable="false">Simple Digital</string>
 
     <!-- ============ Time ring configuration ============ -->
     <string name="time_ring_setting">Time ring</string>

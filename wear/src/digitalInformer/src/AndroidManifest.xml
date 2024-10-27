@@ -3,7 +3,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/digital_informer_watch_face_name" >
+        android:label="@string/watch_face_name" >
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
@@ -13,7 +13,6 @@
             android:name=".DigitalWatchFaceService"
             android:directBootAware="true"
             android:exported="true"
-            android:label="@string/digital_informer_watch_face_name"
             android:permission="android.permission.BIND_WALLPAPER">
 
             <intent-filter>
