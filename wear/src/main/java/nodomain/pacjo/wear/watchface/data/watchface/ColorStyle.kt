@@ -179,9 +179,9 @@ enum class ColorStyle(
          * options for the user to select a style.
          */
         fun toOptionList(context: Context): List<ListUserStyleSetting.ListOption> {
-            val colorStyleList = enumValues<ColorStyle>()
+            val stylesList = enumValues<ColorStyle>()
 
-            return colorStyleList
+            return stylesList
                 .filter { style ->
                     // remove ambient style from the list since it's for internal use only
                     style.id != AMBIENT.id

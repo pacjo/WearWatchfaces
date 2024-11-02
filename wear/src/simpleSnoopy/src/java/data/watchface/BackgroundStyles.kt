@@ -70,9 +70,9 @@ enum class BackgroundStyles(
          * options for the user to select a style.
          */
         fun toOptionList(context: Context): List<ListUserStyleSetting.ListOption> {
-            val backgroundStylesList = enumValues<BackgroundStyles>()
+            val stylesList = enumValues<BackgroundStyles>()
 
-            return backgroundStylesList.map { style ->
+            return stylesList.map { style ->
                 ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id(style.id),
                     context.resources,

@@ -1,0 +1,7 @@
+<resources>
+    <!-- ============ Background style configuration ============ -->
+    <string name="background_style_setting">Background</string>
+    <string name="background_style_setting_description">Allows selecting background style</string>
+
+    <string name="background_style_preview_description">Background preview</string>
+</resources>

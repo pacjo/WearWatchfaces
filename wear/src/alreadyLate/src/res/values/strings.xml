@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Names of watchfaces [CHAR LIMIT=20] -->
+    <!-- Watchface name [CHAR LIMIT=20] -->
     <string name="watch_face_name" translatable="false">Already Late</string>
 
-    <!-- Names of background style [CHAR LIMIT=20] -->
+    <!-- Names of background styles [CHAR LIMIT=20] -->
     <string name="background_style1_name">Blue</string>
     <string name="background_style2_name">Green</string>
     <string name="background_style3_name">Red</string>
-
-    <!-- ============ Misc configuration ============ -->
-    <string name="misc_smooth_seconds_hand">Smooth seconds hand</string>
-    <string name="misc_smooth_seconds_hand_description">Make seconds hand movement smooth</string>
 </resources>

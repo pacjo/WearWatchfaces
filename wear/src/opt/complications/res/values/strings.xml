@@ -1,0 +1,8 @@
+<resources>
+    <!-- ============ Complication configuration ============ -->
+    <string name="complication_setting">Complications</string>
+
+    <!-- ============ Misc configuration ============ -->
+    <string name="misc_complications_on_aod">Show complications on AOD</string>
+    <string name="misc_complications_on_aod_description">Changes the visibility of complications on AOD</string>
+</resources>

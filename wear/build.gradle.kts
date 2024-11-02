@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "nodomain.pacjo.wear.watchface"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "nodomain.pacjo.wear.watchface"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 10
         versionName = "1.0"
     }
@@ -51,40 +51,61 @@ android {
     // like complications or backgrounds. Most of the code needed to implement them is added
     // to a productFlavour by specifying those directories in `java.srcDirs`
     sourceSets {
-        val complicationsDir = "src/opt/complications/java"
-        val handsDir = "src/opt/hands/java"
-        val backgroundsDir = "src/opt/backgrounds/java"
+        val complicationsDir = "src/opt/complications"
+        val backgroundsDir = "src/opt/backgrounds"
+        val handsDir = "src/opt/hands"
+
+        val javaSuffix = "/java"
+        val resourcesSuffix = "/res"
 
         getByName("simpleDigital") {
             setRoot("src/simpleDigital/src")
 
             java.srcDirs(
-                complicationsDir
+                complicationsDir + javaSuffix
+            )
+            res.srcDirs(
+                complicationsDir + resourcesSuffix
             )
         }
         getByName("digitalInformer") {
             setRoot("src/digitalInformer/src")
 
             java.srcDirs(
-                complicationsDir
+                complicationsDir + javaSuffix
+            )
+            res.srcDirs(
+                complicationsDir + resourcesSuffix
             )
         }
         getByName("alreadyLate") {
             setRoot("src/alreadyLate/src")
 
             java.srcDirs(
-                complicationsDir,
-                handsDir,
-                backgroundsDir
+                complicationsDir + javaSuffix,
+                handsDir + javaSuffix,
+                backgroundsDir + javaSuffix
+            )
+            res.srcDirs(
+                complicationsDir + resourcesSuffix,
+                handsDir + resourcesSuffix,
+                backgroundsDir + resourcesSuffix
             )
         }
         getByName("simpleSnoopy") {
             setRoot("src/simpleSnoopy/src")
 
             java.srcDirs(
-                handsDir,
-                backgroundsDir
+                handsDir + javaSuffix,
+                backgroundsDir + javaSuffix
             )
+            res.srcDirs(
+                handsDir + resourcesSuffix,
+                backgroundsDir + resourcesSuffix
+            )
+        }
+        getByName("fancyShaped") {
+            setRoot("src/fancyShaped/src")
         }
     }
 

@@ -7,7 +7,7 @@
 
     <string name="color_style_preview_description">Color preview</string>
 
-    <!-- Names of watchface style [CHAR LIMIT=20] -->
+    <!-- Names of color styles [CHAR LIMIT=20] -->
     <string name="ambient_style_name">Ambient Style</string>
 
     <string name="style1_name">Retro</string>
@@ -25,38 +25,4 @@
     <string name="style7_name">Azur</string>
 
     <string name="style8_name">Nuance</string>
-
-    <!-- ============ Hands style configuration ============ -->
-    <string name="hands_style_setting">Hands</string>
-    <string name="hands_style_setting_description">Allows selecting hands style</string>
-
-    <string name="hands_style_preview_description">Hands preview</string>
-
-    <!-- Names of hands style [CHAR LIMIT=20] -->
-    <string name="hands_style1_name">Minimal</string>
-
-    <string name="hands_style2_name">Bold</string>
-
-    <string name="hands_style3_name">Bold outline</string>
-
-    <string name="hands_style4_name">Stolen</string>
-
-    <string name="hands_style5_name">Stolen filled</string>
-
-    <string name="hands_style6_name">Floating</string>
-
-    <string name="hands_style7_name">Floating filled</string>
-
-    <!-- ============ Background style configuration ============ -->
-    <string name="background_style_setting">Background</string>
-    <string name="background_style_setting_description">Allows selecting background style</string>
-
-    <string name="background_style_preview_description">Background preview</string>
-
-    <!-- ============ Complication configuration ============ -->
-    <string name="complication_setting">Complications</string>
-
-    <!-- ============ Misc configuration ============ -->
-    <string name="misc_complications_on_aod">Show complications on AOD</string>
-    <string name="misc_complications_on_aod_description">Changes the visibility of complications on AOD</string>
 </resources>
