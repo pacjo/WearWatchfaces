@@ -9,7 +9,7 @@
     <color name="ambient_secondary">#707070</color>
     <color name="ambient_tertiary">#3D3D3D</color>
 
-    <!-- Style 1 - Retro - https://coolors.co/bbdef0-00a6a6-6369d1-f49f0a-34435e -->
+    <!-- Style 1 - Rétro - https://coolors.co/bbdef0-00a6a6-6369d1-f49f0a-34435e -->
     <color name="style1_primary">#F49F0A</color>
     <color name="style1_secondary">#6369D1</color>
     <color name="style1_tertiary">#00A6A6</color>
@@ -29,12 +29,12 @@
     <color name="style4_secondary">#507255</color>
     <color name="style4_tertiary">#6EB257</color>
 
-    <!-- Style 5 - Salmon - https://coolors.co/e8998d-eed2cc-003844-6c9a8b-f0c808 -->
+    <!-- Style 5 - Sables Rosés - https://coolors.co/e8998d-eed2cc-003844-6c9a8b-f0c808 -->
     <color name="style5_primary">#E8998D</color>
     <color name="style5_secondary">#003844</color>
     <color name="style5_tertiary">#EED2CC</color>
 
-    <!-- Style 6 - Hunger Games - https://coolors.co/e36397-bc8da7-5b8c5a-f3a738-f1d9a7 -->
+    <!-- Style 6 - Champ de Blé - https://coolors.co/e36397-bc8da7-5b8c5a-f3a738-f1d9a7 -->
     <color name="style6_primary">#F3A738</color>
     <color name="style6_secondary">#5B8C5A</color>
     <color name="style6_tertiary">#F1D9A7</color>
@@ -48,4 +48,9 @@
     <color name="style8_primary">#FAFAFF</color>
     <color name="style8_secondary">#525252</color>
     <color name="style8_tertiary">#808080</color>
+
+    <!--- Style 8 - Crépuscule - https://coolors.co/ffd700-daa520-8b4513-a0522d-b8860b -->
+    <color name="style9_primary">#FFD700</color>
+    <color name="style9_secondary">#DAA520</color>
+    <color name="style9_tertiary">#A0522D</color>
 </resources>

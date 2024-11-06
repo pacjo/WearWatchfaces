@@ -10,7 +10,7 @@
     <!-- Names of color styles [CHAR LIMIT=20] -->
     <string name="ambient_style_name">Ambient Style</string>
 
-    <string name="style1_name">Retro</string>
+    <string name="style1_name">Rétro</string>
 
     <string name="style2_name">Alessandra</string>
 
@@ -18,11 +18,13 @@
 
     <string name="style4_name">Vis un peu</string>
 
-    <string name="style5_name">Salmon</string>
+    <string name="style5_name">Sables Rosés</string>
 
-    <string name="style6_name">Hunger Games</string>
+    <string name="style6_name">Champ de Blé</string>
 
     <string name="style7_name">Azur</string>
 
     <string name="style8_name">Nuance</string>
+
+    <string name="style9_name">Crépuscule</string>
 </resources>

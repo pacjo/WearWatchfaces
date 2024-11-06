@@ -105,6 +105,16 @@ enum class ColorStyle(
         backgroundColorId = R.color.background
     ),
 
+    STYLE9(
+        id = "style9_id",
+        nameResourceId = R.string.style9_name,
+        primaryColorId = R.color.style9_primary,
+        secondaryColorId = R.color.style9_secondary,
+        tertiaryColorId = R.color.style9_tertiary,
+        outlineColorId = R.color.outline,
+        backgroundColorId = R.color.background
+    ),
+
     AMBIENT(
         id = "ambient_style_id",
         nameResourceId = R.string.ambient_style_name,
@@ -167,6 +177,7 @@ enum class ColorStyle(
                 STYLE6.id -> STYLE6
                 STYLE7.id -> STYLE7
                 STYLE8.id -> STYLE8
+                STYLE9.id -> STYLE9
                 AMBIENT.id -> AMBIENT
 
                 else -> STYLE1
