@@ -1,7 +1,7 @@
 package nodomain.pacjo.wear.watchface.data.watchface
 
-const val DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT = true
-const val SMOOTH_SECONDS_HAND_DEFAULT = true
+import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_DEFAULT
+import nodomain.pacjo.wear.watchface.utils.SMOOTH_SECONDS_HAND_DEFAULT
 
 /**
  * Represents all data needed to render a watch face.

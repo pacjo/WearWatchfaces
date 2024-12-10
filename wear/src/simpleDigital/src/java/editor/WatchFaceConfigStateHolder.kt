@@ -28,8 +28,10 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.yield
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
+import nodomain.pacjo.wear.watchface.utils.FONT_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_CORNER_RADIUS_SETTING
 import nodomain.pacjo.wear.watchface.utils.TIME_RING_WIDTH_SETTING
+import nodomain.pacjo.wear.watchface.utils.USE_CUSTOM_FONT_FOR_COMPLICATIONS_SETTING
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -41,6 +43,8 @@ class WatchFaceConfigStateHolder(
 
     // Keys from Watch Face Data Structure
     private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
+    private lateinit var fontKey: UserStyleSetting.ListUserStyleSetting
+    private lateinit var useCustomFontForComplicationsKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var drawComplicationsInAmbientKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var timeRingWidthKey: UserStyleSetting.DoubleRangeUserStyleSetting
     private lateinit var timeRingCornerRadiusKey: UserStyleSetting.DoubleRangeUserStyleSetting
@@ -80,6 +84,14 @@ class WatchFaceConfigStateHolder(
             when (setting.id.toString()) {
                 COLOR_STYLE_SETTING -> {
                     colorStyleKey = setting as UserStyleSetting.ListUserStyleSetting
+                }
+
+                FONT_SETTING -> {
+                    fontKey = setting as UserStyleSetting.ListUserStyleSetting
+                }
+
+                USE_CUSTOM_FONT_FOR_COMPLICATIONS_SETTING -> {
+                    useCustomFontForComplicationsKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
 
                 DRAW_COMPLICATIONS_IN_AMBIENT_SETTING -> {
@@ -125,22 +137,24 @@ class WatchFaceConfigStateHolder(
         )
 
         val colorStyle =
-            userStyle[colorStyleKey]
-                as UserStyleSetting.ListUserStyleSetting.ListOption
+            userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
+        val font =
+            userStyle[fontKey] as UserStyleSetting.ListUserStyleSetting.ListOption
+        val customFontComplications =
+            userStyle[useCustomFontForComplicationsKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
         val complicationsInAmbient =
-            userStyle[drawComplicationsInAmbientKey]
-                as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+            userStyle[drawComplicationsInAmbientKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
         val timeRingWidth =
-            userStyle[timeRingWidthKey]
-                as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
+            userStyle[timeRingWidthKey] as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
         val timeRingCornerRadius =
-            userStyle[timeRingCornerRadiusKey]
-                as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
+            userStyle[timeRingCornerRadiusKey] as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
 
-        Log.d(TAG, "/new values: $colorStyle, $complicationsInAmbient, $timeRingWidth, $timeRingCornerRadius")
+        Log.d(TAG, "/new values: $colorStyle, $font, $complicationsInAmbient, $timeRingWidth, $timeRingCornerRadius")
 
         return UserStylesAndPreview(
             colorStyleId = colorStyle.id.toString(),
+            fontId = font.id.toString(),
+            customFontComplications = customFontComplications.value,
             complicationsInAmbient = complicationsInAmbient.value,
             timeRingWidth = timeRingWidth.value.toFloat(),
             timeRingCornerRadius = timeRingCornerRadius.value.toFloat(),
@@ -159,26 +173,38 @@ class WatchFaceConfigStateHolder(
         highlightedElementFlow.value = element
     }
 
-    fun setColorStyle(newColorStyleId: String) {
+    private fun setStyle(styleSettingId: UserStyleSetting.Id, newStyleId: String) {
         val userStyleSettingList = editorSession.userStyleSchema.rootUserStyleSettings
 
-        // Loops over all UserStyleSettings (basically the keys in the map) to find the setting for
-        // the color style (which contains all the possible options for that style setting).
+        // Loops over all UserStyleSettings to find the matching setting for the given style ID
         for (userStyleSetting in userStyleSettingList) {
-            if (userStyleSetting.id == UserStyleSetting.Id(COLOR_STYLE_SETTING)) {
-                val colorUserStyleSetting =
-                    userStyleSetting as UserStyleSetting.ListUserStyleSetting
+            if (userStyleSetting.id == styleSettingId) {
+                val listUserStyleSetting = userStyleSetting as UserStyleSetting.ListUserStyleSetting
 
-                // Loops over the UserStyleSetting.Option colors (all possible values for the key)
-                // to find the matching option, and if it exists, sets it as the color style.
-                for (colorOptions in colorUserStyleSetting.options) {
-                    if (colorOptions.id.toString() == newColorStyleId) {
-                        setUserStyleOption(colorStyleKey, colorOptions)
+                // Loops over the UserStyleSetting options to find the matching option
+                for (styleOption in listUserStyleSetting.options) {
+                    if (styleOption.id.toString() == newStyleId) {
+                        setUserStyleOption(listUserStyleSetting, styleOption)
                         return
                     }
                 }
             }
         }
+    }
+
+    fun setColorStyle(newColorStyleId: String) {
+        setStyle(UserStyleSetting.Id(COLOR_STYLE_SETTING), newColorStyleId)
+    }
+
+    fun setFont(newFontId: String) {
+        setStyle(UserStyleSetting.Id(FONT_SETTING), newFontId)
+    }
+
+    fun useCustomFontForComplications(enabled: Boolean) {
+        setUserStyleOption(
+            useCustomFontForComplicationsKey,
+            UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(enabled)
+        )
     }
 
     fun setDrawComplicationsInAmbient(enabled: Boolean) {
@@ -226,6 +252,8 @@ class WatchFaceConfigStateHolder(
 
     data class UserStylesAndPreview(
         val colorStyleId: String,
+        val fontId: String,
+        val customFontComplications: Boolean,
         val complicationsInAmbient: Boolean,
         val timeRingWidth: Float,
         val timeRingCornerRadius: Float,

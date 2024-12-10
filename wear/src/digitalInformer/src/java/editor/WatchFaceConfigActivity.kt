@@ -34,10 +34,12 @@ import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle.Companion.getColorStyleConfig
+import nodomain.pacjo.wear.watchface.data.watchface.Fonts.Companion.getFontConfig
 import nodomain.pacjo.wear.watchface.editor.components.CategorySelectButton
 import nodomain.pacjo.wear.watchface.editor.components.PreferenceSwitch
 import nodomain.pacjo.wear.watchface.editor.screens.ColorSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.ComplicationConfigScreen
+import nodomain.pacjo.wear.watchface.editor.screens.FontSelectScreen
 import nodomain.pacjo.wear.watchface.editor.screens.MiscConfigScreen
 import nodomain.pacjo.wear.watchface.utils.watchFacePreview
 
@@ -70,6 +72,10 @@ class WatchFaceConfigActivity : ComponentActivity() {
                 uiState?.colorStyleId?.let { getColorStyleConfig(it).nameResourceId } ?: R.string.colors_style_setting
             )
 
+            val currentFont = context.resources.getString(
+                uiState?.fontId?.let { getFontConfig(it).nameResourceId } ?: R.string.font_setting
+            )
+
             val navController = rememberSwipeDismissableNavController()
 
             SwipeDismissableNavHost(
@@ -98,7 +104,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
                         }
 
                         // settings pages
-                        val horizontalPagerState = rememberPagerState { 3 }
+                        val horizontalPagerState = rememberPagerState { 4 }
                         val pageIndicatorState: PageIndicatorState = remember {
                             object : PageIndicatorState {
                                 override val pageOffset: Float
@@ -113,11 +119,11 @@ class WatchFaceConfigActivity : ComponentActivity() {
                         LaunchedEffect(horizontalPagerState) {
                             snapshotFlow { horizontalPagerState.currentPage }.collect { page ->
                                 when (page) {
-                                    1 -> stateHolder.setHighlightedElement(
+                                    2 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.AllComplicationSlots
                                     )
                                     // set to unused value, to dim whole face
-                                    2 -> stateHolder.setHighlightedElement(
+                                    3 -> stateHolder.setHighlightedElement(
                                         RenderParameters.HighlightedElement.UserStyle(UserStyleSetting.Id("bullshit element"))
                                     )
 
@@ -145,19 +151,37 @@ class WatchFaceConfigActivity : ComponentActivity() {
                                                 "colors"
                                             )
                                         }
-                                    1 -> ComplicationConfigScreen(stateHolder)
-                                    2 -> MiscConfigScreen(
-                                        listOf {
-                                            PreferenceSwitch(
-                                                text = context.resources.getString(R.string.misc_complications_on_aod),
-                                                value = uiState!!.complicationsInAmbient,
-                                                onCheckedChange = { checked ->
-                                                    stateHolder.setDrawComplicationsInAmbient(
-                                                        checked
-                                                    )
-                                                }
-                                            )
-                                        }
+                                    1 -> CategorySelectButton(context, currentFont) {
+                                        navController.navigate(
+                                            "fonts"
+                                        )
+                                    }
+                                    2 -> ComplicationConfigScreen(stateHolder)
+                                    3 -> MiscConfigScreen(
+                                        listOf(
+                                            {
+                                                PreferenceSwitch(
+                                                    text = context.resources.getString(R.string.misc_complications_on_aod),
+                                                    value = uiState!!.complicationsInAmbient,
+                                                    onCheckedChange = { checked ->
+                                                        stateHolder.setDrawComplicationsInAmbient(
+                                                            checked
+                                                        )
+                                                    }
+                                                )
+                                            },
+                                            {
+                                                PreferenceSwitch(
+                                                    text = context.resources.getString(R.string.font_complications),
+                                                    value = uiState!!.customFontComplications,
+                                                    onCheckedChange = { checked ->
+                                                        stateHolder.useCustomFontForComplications(
+                                                            checked
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        )
                                     )
                                 }
                             }
@@ -166,6 +190,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
                 }
                 composable("colors") {
                     ColorSelectScreen(stateHolder, navController)
+                }
+                composable("fonts") {
+                    FontSelectScreen(stateHolder, navController)
                 }
             }
         }

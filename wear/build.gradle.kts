@@ -52,6 +52,7 @@ android {
     // to a productFlavour by specifying those directories in `java.srcDirs`
     sourceSets {
         val complicationsDir = "src/opt/complications"
+        val fontsDir = "src/opt/fonts"
         val backgroundsDir = "src/opt/backgrounds"
         val handsDir = "src/opt/hands"
 
@@ -62,17 +63,26 @@ android {
             setRoot("src/simpleDigital/src")
 
             java.srcDirs(
-                complicationsDir + javaSuffix
+                complicationsDir + javaSuffix,
+                fontsDir + javaSuffix
             )
             res.srcDirs(
-                complicationsDir + resourcesSuffix
+                complicationsDir + resourcesSuffix,
+                fontsDir + resourcesSuffix
             )
         }
         getByName("digitalInformer") {
             setRoot("src/digitalInformer/src")
 
             java.srcDirs(
-                complicationsDir + javaSuffix
+                complicationsDir + javaSuffix,
+                fontsDir + javaSuffix
+            )
+            res.srcDirs(
+                complicationsDir + resourcesSuffix,
+                fontsDir + resourcesSuffix
+            )
+        }
             )
             res.srcDirs(
                 complicationsDir + resourcesSuffix
@@ -106,6 +116,13 @@ android {
         }
         getByName("fancyShaped") {
             setRoot("src/fancyShaped/src")
+
+            java.srcDirs(
+                fontsDir + javaSuffix
+            )
+            res.srcDirs(
+                fontsDir + resourcesSuffix
+            )
         }
     }
 

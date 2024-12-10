@@ -1,0 +1,23 @@
+<resources>
+    <!-- ============ Fonts configuration ============ -->
+    <string name="font_setting">Fonts</string>
+    <string name="font_setting_description">Allows selecting font</string>
+
+    <string name="font_complications">Custom font complications</string>
+    <string name="font_complications_description">Use custom font for complications</string>
+
+    <string name="font_preview_description">Font preview</string>
+
+    <!-- Names of fonts [CHAR LIMIT=20] -->
+    <string name="font1_name">System default</string>
+
+    <string name="font2_name">Times New Roman</string>
+
+    <string name="font3_name">Comic Sans</string>
+
+    <string name="font4_name">IBM Plex</string>
+
+    <string name="font5_name">Nasalization</string>
+
+    <string name="font6_name">Nothing Dot</string>
+</resources>

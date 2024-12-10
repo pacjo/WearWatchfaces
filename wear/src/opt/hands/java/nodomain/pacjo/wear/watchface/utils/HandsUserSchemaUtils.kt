@@ -5,10 +5,11 @@ import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.R
 import nodomain.pacjo.wear.watchface.data.watchface.HandsStyles
-import nodomain.pacjo.wear.watchface.data.watchface.SMOOTH_SECONDS_HAND_DEFAULT
 
 const val HANDS_STYLE_SETTING = "hands_style_setting"
+
 const val SMOOTH_SECONDS_HAND_SETTING = "smooth_seconds_hand_setting"
+const val SMOOTH_SECONDS_HAND_DEFAULT = true
 
 /**
  * Creates [UserStyleSetting]s for hands configuration.

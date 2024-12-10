@@ -25,16 +25,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import nodomain.pacjo.wear.watchface.data.watchface.ColorStyle
+import nodomain.pacjo.wear.watchface.data.watchface.Fonts
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import nodomain.pacjo.wear.watchface.data.watchface.WatchFaceData
 import nodomain.pacjo.wear.watchface.utils.AnimatedClockType
 import nodomain.pacjo.wear.watchface.utils.COLOR_STYLE_SETTING
 import nodomain.pacjo.wear.watchface.utils.ComplicationConfig
 import nodomain.pacjo.wear.watchface.utils.DRAW_COMPLICATIONS_IN_AMBIENT_SETTING
+import nodomain.pacjo.wear.watchface.utils.FONT_SETTING
+import nodomain.pacjo.wear.watchface.utils.USE_CUSTOM_FONT_FOR_COMPLICATIONS_SETTING
 import nodomain.pacjo.wear.watchface.utils.drawComplications
 import nodomain.pacjo.wear.watchface.utils.drawScrollingFragment
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredBoth
 import nodomain.pacjo.wear.watchface.utils.drawTextCentredVertically
+import nodomain.pacjo.wear.watchface.utils.hideBorders
+import nodomain.pacjo.wear.watchface.utils.setTypeface
 import java.time.ZonedDateTime
 
 // Default for how long each frame is displayed at expected frame rate.
@@ -155,6 +160,24 @@ class WatchCanvasRenderer(
                         )
                     )
                 }
+                FONT_SETTING -> {
+                    val listOption = options.value as
+                            UserStyleSetting.ListUserStyleSetting.ListOption
+
+                    newWatchFaceData = newWatchFaceData.copy(
+                        font = Fonts.getFontConfig(
+                            listOption.id.toString()
+                        )
+                    )
+                }
+                USE_CUSTOM_FONT_FOR_COMPLICATIONS_SETTING -> {
+                    val booleanValue = options.value as
+                            UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+
+                    newWatchFaceData = newWatchFaceData.copy(
+                        useCustomFontForComplications = booleanValue.value
+                    )
+                }
                 DRAW_COMPLICATIONS_IN_AMBIENT_SETTING -> {
                     val booleanValue = options.value as
                             UserStyleSetting.BooleanUserStyleSetting.BooleanOption
@@ -187,8 +210,19 @@ class WatchCanvasRenderer(
         canvas.drawColor(watchFaceColors.backgroundColor)
 
         if (renderParameters.drawMode != DrawMode.AMBIENT || (renderParameters.drawMode == DrawMode.AMBIENT && watchFaceData.drawComplicationsInAmbient)) {
-            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager)
             drawComplicationsBackground(canvas, bounds)
+
+            drawComplications(canvas, zonedDateTime, renderParameters, complicationSlotsManager) { complicationSlot ->
+                complicationSlot.hideBorders()
+                complicationSlot.setTypeface(
+                    context = context,
+                    fontResourceId =
+                        if (watchFaceData.useCustomFontForComplications)
+                            watchFaceData.font.fontResourceId
+                        else
+                            null
+                )
+            }
         }
 
         if (renderParameters.drawMode != DrawMode.AMBIENT)
@@ -240,6 +274,10 @@ class WatchCanvasRenderer(
                         Shader.TileMode.CLAMP
                     )
                 }
+            }
+
+            watchFaceData.font.fontResourceId?.let {
+                typeface = context.resources.getFont(it)
             }
         }
 
@@ -298,6 +336,10 @@ class WatchCanvasRenderer(
                 watchFaceColors.activeSecondaryColor,
                 Shader.TileMode.CLAMP
             )
+
+            watchFaceData.font.fontResourceId?.let {
+                typeface = context.resources.getFont(it)
+            }
         }
 
         // hours
