@@ -1,0 +1,37 @@
+[versions]
+agp = "8.11.1"
+kotlin = "2.2.0"
+jetpackWatchface = "1.3.0-alpha04"
+composeWear = "1.4.1"
+vectorDrawable = "1.2.0"
+
+[libraries]
+androidx-watchface = { group = "androidx.wear.watchface", name = "watchface", version.ref = "jetpackWatchface" }
+
+# complications
+androidx-watchface-complications-data-source = { group = "androidx.wear.watchface", name = "watchface-complications-data-source", version.ref = "jetpackWatchface" }
+androidx-watchface-complications-data-source-ktx = { group = "androidx.wear.watchface", name = "watchface-complications-data-source-ktx", version.ref = "jetpackWatchface" }
+androidx-watchface-complications-rendering = { group = "androidx.wear.watchface", name = "watchface-complications-rendering", version.ref = "jetpackWatchface" }
+
+# watchface style and complication editor
+androidx-watchface-editor = { group = "androidx.wear.watchface", name = "watchface-editor", version.ref = "jetpackWatchface" }
+androidx-watchface-client = { group = "androidx.wear.watchface", name = "watchface-client", version.ref = "jetpackWatchface" }
+
+# Jetpack Compose
+androidx-wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeWear" }
+androidx-wear-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeWear" }
+androidx-wear-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeWear" }
+
+# others
+androidx-vectordrawable = { group = "androidx.vectordrawable", name = "vectordrawable", version.ref = "vectorDrawable" }
+#implementation(kotlin("reflect"))
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+[bundles]
+watchface-complications = ["androidx-watchface-complications-data-source", "androidx-watchface-complications-data-source-ktx", "androidx-watchface-complications-rendering"]
+watchface-editor = ["androidx-watchface-editor", "androidx-watchface-client"]
+jetpack-compose = ["androidx-wear-compose-foundation", "androidx-wear-compose-material", "androidx-wear-compose-navigation"]
