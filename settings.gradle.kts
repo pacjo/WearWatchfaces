@@ -31,3 +31,6 @@ include(":watchfaces:base_analog")
 // :watchfaces:base_digital goes here
 
 include(":watchfaces:dots")
+
+// WatchFaceFormat based watchfaces
+include(":wff:jimball")

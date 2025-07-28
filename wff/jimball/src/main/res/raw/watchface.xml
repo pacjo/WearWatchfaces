@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<WatchFace width="450" height="450">
+    <Metadata key="CLOCK_TYPE" value="DIGITAL" />
+
+    <Scene>
+        <Group x="0" y="0" width="450" height="450" name="background">
+            <!-- TODO: add extra Variant transitions available in WFF 4 -->
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <PartAnimatedImage x="0" y="0" width="450" height="450">
+                <AnimationController play="ON_VISIBLE" repeat="TRUE" resumePlayBack="TRUE" />
+                <AnimatedImage resource="jimball" format="AGIF" />
+            </PartAnimatedImage>
+        </Group>
+
+        <DigitalClock x="150" y="125" width="150" height="200">
+            <!-- two TimeText elements, since a format like `hh\nmm` isn't supported` -->
+            <TimeText x="0" y="0" width="150" height="100" format="hh" align="CENTER">
+                <Font family="balatro" size="100" color="#FF9800" />
+            </TimeText>
+            <TimeText x="0" y="100" width="150" height="100" format="mm" align="CENTER">
+                <Font family="balatro" size="100" color="#FF9800" />
+            </TimeText>
+        </DigitalClock>
+    </Scene>
+</WatchFace>
