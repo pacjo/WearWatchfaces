@@ -1,0 +1,44 @@
+package nodomain.pacjo.wear.watchface.feature.hands.styles
+
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import nodomain.pacjo.wear.watchface.feature.hands.R
+import nodomain.pacjo.wear.watchface.feature.hands.HandStyle
+import java.time.ZonedDateTime
+import kotlin.math.cos
+import kotlin.math.sin
+
+object ClassicHandStyle : HandStyle {
+    override val id: String = "classic"
+    override val displayNameResourceId: Int = R.string.hands_style2_name
+
+    private val hourPaint = Paint().apply { color = Color.DKGRAY; strokeWidth = 8f; isAntiAlias = true; strokeCap = Paint.Cap.ROUND }
+    private val minutePaint = Paint().apply { color = Color.GRAY; strokeWidth = 5f; isAntiAlias = true; strokeCap = Paint.Cap.ROUND }
+    private val secondPaint = Paint().apply { color = Color.LTGRAY; strokeWidth = 3f; isAntiAlias = true; strokeCap = Paint.Cap.ROUND }
+
+    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
+        val seconds = zonedDateTime.second + zonedDateTime.nano / 1_000_000_000f
+        val minutes = zonedDateTime.minute + seconds / 60f
+        val hours = zonedDateTime.hour + minutes / 60f
+
+        fun drawHand(canvas: Canvas, bounds: Rect, angleDegrees: Float, lengthFraction: Float, paint: Paint) {
+            val centerX = bounds.exactCenterX()
+            val centerY = bounds.exactCenterY()
+            val length = centerX * lengthFraction
+            val angleRadians = Math.toRadians(angleDegrees.toDouble() - 180)
+            val endX = centerX + (sin(angleRadians) * length).toFloat()
+            val endY = centerY + (cos(angleRadians) * length).toFloat()
+            canvas.drawLine(centerX, centerY, endX, endY, paint)
+        }
+
+        drawHand(canvas, bounds, hours * 30f, 0.5f, hourPaint)
+        drawHand(canvas, bounds, minutes * 6f, 0.75f, minutePaint)
+        drawHand(canvas, bounds, seconds * 6f, 0.9f, secondPaint)
+    }
+
+    override fun drawPreview(canvas: Canvas, bounds: Rect) {
+        // TODO: implement
+    }
+}

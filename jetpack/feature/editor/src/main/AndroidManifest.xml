@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- we ignore WearStandaloneAppFlag and WearableConfigurationAction since those will be present in the merged manifest -->
+
+    <application>
+
+        <activity
+            android:name=".ui.activities.EditorActivity"
+            android:exported="true"
+            android:taskAffinity="${applicationId}">
+
+            <intent-filter>
+                <action android:name="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>

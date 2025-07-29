@@ -22,15 +22,16 @@ dependencyResolutionManagement {
 rootProject.name = "WearWatchfaces"
 
 // (optional) features)
-include(":feature:base")
-include(":feature:hands")
+include(":jetpack:feature:base")
+include(":jetpack:feature:editor")
+include(":jetpack:feature:hands")
 
 // actual watchfaces
-include(":watchfaces:base")
-include(":watchfaces:base_analog")
-// :watchfaces:base_digital goes here
+include(":jetpack:watchfaces:base")
+include(":jetpack:watchfaces:base_analog")
+// :jetpack:watchfaces:base_digital goes here
 
-include(":watchfaces:dots")
+include(":jetpack:watchfaces:dots")
 
 // WatchFaceFormat based watchfaces
 include(":wff:jimball")
