@@ -8,6 +8,7 @@ import nodomain.pacjo.wear.watchface.feature.hands.R
 import nodomain.pacjo.wear.watchface.feature.hands.HandStyle
 import java.time.ZonedDateTime
 import androidx.core.graphics.withRotation
+import nodomain.pacjo.wear.watchface.feature.hands.utils.getHandsStats
 
 object ModernHandStyle : HandStyle {
     override val id: String = "modern"
@@ -18,15 +19,12 @@ object ModernHandStyle : HandStyle {
     private val secondPaint = Paint().apply { color = Color.YELLOW; isAntiAlias = true }
 
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        // ... (time calculation is the same)
-        val seconds = zonedDateTime.second + zonedDateTime.nano / 1_000_000_000f
-        val minutes = zonedDateTime.minute + seconds / 60f
-        val hours = zonedDateTime.hour + minutes / 60f
-
         val centerX = bounds.exactCenterX()
         val centerY = bounds.exactCenterY()
 
-        canvas.withRotation(hours * 30f, centerX, centerY) {
+        val handsStats = getHandsStats(zonedDateTime)
+
+        canvas.withRotation(handsStats.hoursHandAngle, centerX, centerY) {
             drawRect(
                 centerX - 6f,
                 centerY - (centerX * 0.5f),
@@ -36,7 +34,7 @@ object ModernHandStyle : HandStyle {
             )
         }
 
-        canvas.withRotation(minutes * 6f, centerX, centerY) {
+        canvas.withRotation(handsStats.minutesHandAngle, centerX, centerY) {
             drawRect(
                 centerX - 4f,
                 centerY - (centerX * 0.75f),
@@ -46,7 +44,7 @@ object ModernHandStyle : HandStyle {
             )
         }
 
-        canvas.withRotation(seconds * 6f, centerX, centerY) {
+        canvas.withRotation(handsStats.secondsHandAngle, centerX, centerY) {
             drawRect(
                 centerX - 2f,
                 centerY - (centerX * 0.9f),

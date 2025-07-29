@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import nodomain.pacjo.wear.watchface.feature.hands.R
 import nodomain.pacjo.wear.watchface.feature.hands.HandStyle
+import nodomain.pacjo.wear.watchface.feature.hands.utils.getHandsStats
 import java.time.ZonedDateTime
 import kotlin.math.cos
 import kotlin.math.sin
@@ -19,9 +20,7 @@ object ClassicHandStyle : HandStyle {
     private val secondPaint = Paint().apply { color = Color.LTGRAY; strokeWidth = 3f; isAntiAlias = true; strokeCap = Paint.Cap.ROUND }
 
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        val seconds = zonedDateTime.second + zonedDateTime.nano / 1_000_000_000f
-        val minutes = zonedDateTime.minute + seconds / 60f
-        val hours = zonedDateTime.hour + minutes / 60f
+        val handsStats = getHandsStats(zonedDateTime)
 
         fun drawHand(canvas: Canvas, bounds: Rect, angleDegrees: Float, lengthFraction: Float, paint: Paint) {
             val centerX = bounds.exactCenterX()
@@ -33,9 +32,9 @@ object ClassicHandStyle : HandStyle {
             canvas.drawLine(centerX, centerY, endX, endY, paint)
         }
 
-        drawHand(canvas, bounds, hours * 30f, 0.5f, hourPaint)
-        drawHand(canvas, bounds, minutes * 6f, 0.75f, minutePaint)
-        drawHand(canvas, bounds, seconds * 6f, 0.9f, secondPaint)
+        drawHand(canvas, bounds, -handsStats.hoursHandAngle, 0.5f, hourPaint)
+        drawHand(canvas, bounds, -handsStats.minutesHandAngle, 0.75f, minutePaint)
+        drawHand(canvas, bounds, -handsStats.secondsHandAngle, 0.9f, secondPaint)
     }
 
     override fun drawPreview(canvas: Canvas, bounds: Rect) {
