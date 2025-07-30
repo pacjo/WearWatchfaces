@@ -19,3 +19,7 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] add nav controller to [`EditorActivity`](./jetpack/feature/editor/src/main/java/nodomain/pacjo/wear/watchface/feature/editor/ui/activities/EditorActivity.kt) and make every feature it's separate screen with the main HorizontalPager only highlighting the configured feature
 - [x] fix hands rotation
 - [ ] don't draw seconds hand in ambient
+- [ ] enable minification where possible
+- [ ] separate jetpack and wff based projects by package name
+- [ ] figure out something with `android.service.wallpaper.square_mode` metadata
+- [ ] figure out how to share resources between jetpack and wff

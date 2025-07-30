@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -18,8 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,7 +32,9 @@ import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.CircularProgressIndicator
+import androidx.wear.compose.material.CompactChip
 import androidx.wear.compose.material.HorizontalPageIndicator
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.PageIndicatorState
 import androidx.wear.compose.material.Scaffold
@@ -215,16 +221,21 @@ fun OptionButton(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    Chip(
+    CompactChip(
         onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
         label = { Text(option.id.toString() /* TODO: change to .displayName or similar*/) },
         icon = {
-            // TODO: add
-//            Icon(
-//                bitmap = option.icon.loadDrawable(LocalContext.current)!!.toBitmap().asImageBitmap(),
-//                contentDescription = option.displayName,
-//                modifier = Modifier.size(ChipDefaults.IconSize)
-//            )
+            // TODO: don't like this
+            val iconBitmap = (option as UserStyleSetting.ListUserStyleSetting.ListOption).icon?.loadDrawable(LocalContext.current)?.toBitmap()?.asImageBitmap()
+            Log.d("pacjodebug", "icon: ${option.icon}")
+            iconBitmap?.let {
+                    Icon(
+                        bitmap = it,
+                        contentDescription = option.displayName.toString(),
+                        modifier = Modifier.size(ChipDefaults.IconSize)
+                    )
+                }
         },
         colors = if (isSelected) {
             ChipDefaults.primaryChipColors()

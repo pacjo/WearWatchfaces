@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 import kotlin.math.cos
 import kotlin.math.sin
 
-object ClassicHandStyle : HandStyle {
+object ClassicHandStyle : HandStyle() {
     override val id: String = "classic"
     override val displayNameResourceId: Int = R.string.hands_style2_name
 
@@ -35,9 +35,5 @@ object ClassicHandStyle : HandStyle {
         drawHand(canvas, bounds, -handsStats.hoursHandAngle, 0.5f, hourPaint)
         drawHand(canvas, bounds, -handsStats.minutesHandAngle, 0.75f, minutePaint)
         drawHand(canvas, bounds, -handsStats.secondsHandAngle, 0.9f, secondPaint)
-    }
-
-    override fun drawPreview(canvas: Canvas, bounds: Rect) {
-        // TODO: implement
     }
 }

@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 import androidx.core.graphics.withRotation
 import nodomain.pacjo.wear.watchface.feature.hands.utils.getHandsStats
 
-object ModernHandStyle : HandStyle {
+object ModernHandStyle : HandStyle() {
     override val id: String = "modern"
     override val displayNameResourceId: Int = R.string.hands_style1_name
 
@@ -53,9 +53,5 @@ object ModernHandStyle : HandStyle {
                 secondPaint
             )
         }
-    }
-
-    override fun drawPreview(canvas: Canvas, bounds: Rect) {
-        // TODO: implement
     }
 }
