@@ -16,7 +16,7 @@ abstract class HandStyle : FeatureOption {
     abstract fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
 
     final override fun drawPreview(canvas: Canvas, bounds: Rect) {
-        Log.d("pacjodebug", "preview called")
+        Log.d(TAG, "preview called")
 
         // preview time to set the hour, minute and seconds hands in predetermined positions
         val zonedDateTime = ZonedDateTime.now()
@@ -26,5 +26,9 @@ abstract class HandStyle : FeatureOption {
             .truncatedTo(ChronoUnit.SECONDS)
 
         draw(canvas, bounds, zonedDateTime)
+    }
+
+    companion object {
+        const val TAG = "HandStyle"
     }
 }

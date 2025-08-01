@@ -1,0 +1,7 @@
+<resources>
+    <!-- ============ Background configuration ============ -->
+    <string name="background_setting">Background</string>
+    <string name="background_setting_description">Allows changing watchface background</string>
+
+    <string name="background_preview_description">BAckground preview</string>
+</resources>

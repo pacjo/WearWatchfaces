@@ -23,3 +23,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] separate jetpack and wff based projects by package name
 - [ ] figure out something with `android.service.wallpaper.square_mode` metadata
 - [ ] figure out how to share resources between jetpack and wff
+- [ ] backgrounds should get watch state to be able to react to ambient changes, maybe zonedTimeDate too, context?

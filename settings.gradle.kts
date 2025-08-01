@@ -25,11 +25,12 @@ rootProject.name = "WearWatchfaces"
 include(":jetpack:feature:base")
 include(":jetpack:feature:editor")
 include(":jetpack:feature:hands")
+include(":jetpack:feature:background")
 
 // actual watchfaces
 include(":jetpack:watchfaces:base")
 include(":jetpack:watchfaces:base_analog")
-// :jetpack:watchfaces:base_digital goes here
+include(":jetpack:watchfaces:base_digital")
 
 include(":jetpack:watchfaces:dots")
 

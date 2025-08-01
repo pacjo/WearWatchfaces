@@ -6,9 +6,11 @@ import android.graphics.Rect
 import androidx.annotation.StringRes
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toIcon
+import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.UserStyleSetting.ListUserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
+import kotlinx.coroutines.CoroutineScope
 import kotlin.math.min
 
 /**
@@ -54,11 +56,19 @@ abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
  * Handles the creation of UserStyleSettings automatically based on the provided properties.
  * Implementations just need to provide the abstract properties - no method overrides required.
  */
-abstract class ListFeatureFactory<T : FeatureOption> : FeatureFactory {
-    abstract val featureId: String
-    @get:StringRes abstract val featureDisplayNameResourceId: Int
-    @get:StringRes abstract val featureDescriptionResourceId: Int
-    abstract val options: List<T>
+open class ListFeatureFactory<T : FeatureOption>(
+    private val featureId: String,
+    @StringRes private val featureDisplayNameResourceId: Int,
+    @StringRes private val featureDescriptionResourceId: Int,
+    private val options: List<T>,
+
+    // A lambda that tells the factory how to create the specific feature instance
+    private val featureCreator: (
+        scope: CoroutineScope,
+        repo: CurrentUserStyleRepository,
+        options: List<T>
+    ) -> WatchFaceFeature
+) : FeatureFactory {
 
     final override fun getStyleSettings(context: Context): List<UserStyleSetting> {
         return generateStyleSettings(
@@ -68,6 +78,14 @@ abstract class ListFeatureFactory<T : FeatureOption> : FeatureFactory {
             featureDescriptionResourceId = featureDescriptionResourceId,
             options = options
         )
+    }
+
+    final override fun create(
+        context: Context,
+        coroutineScope: CoroutineScope,
+        currentUserStyleRepository: CurrentUserStyleRepository
+    ): WatchFaceFeature {
+        return featureCreator(coroutineScope, currentUserStyleRepository, options)
     }
 }
 

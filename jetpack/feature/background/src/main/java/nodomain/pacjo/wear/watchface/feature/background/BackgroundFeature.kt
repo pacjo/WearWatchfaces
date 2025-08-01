@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.feature.hands
+package nodomain.pacjo.wear.watchface.feature.background
 
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -13,24 +13,22 @@ import kotlinx.coroutines.flow.stateIn
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
-import nodomain.pacjo.wear.watchface.feature.hands.styles.ClassicHandStyle
-import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
 import java.time.ZonedDateTime
 
-class HandStyleFeature(
+class BackgroundFeature(
     scope: CoroutineScope,
     currentUserStyleRepository: CurrentUserStyleRepository,
-    override val options: List<HandStyle>
-) : ListFeature<HandStyle>(), DrawableFeature {
+    override val options: List<Background>
+) : ListFeature<Background>(), DrawableFeature {
     override val featureId = FEATURE_ID
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
 
-    override val layer = WatchFaceLayer.COMPLICATIONS_OVERLAY
+    override val layer = WatchFaceLayer.BASE
 
     // Public property to expose the currently selected style
-    // TODO: check default code
-    val currentHandStyle: StateFlow<HandStyle> =
+    // TODO: check default code, maybe rename as `current` and handle somewhere else?
+    val currentBackground: StateFlow<Background> =
         currentUserStyleRepository.userStyle.map { userStyle ->
             val styleId = userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
             options.first { it.id == styleId }
@@ -41,31 +39,31 @@ class HandStyleFeature(
         )
 
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        currentHandStyle.value.draw(canvas, bounds, zonedDateTime)
+        currentBackground.value.draw(canvas, bounds)
     }
 
     /**
      * The Factory is a companion object. It's a singleton that knows
-     * how to create an instance of [HandStyleFeature].
+     * how to create an instance of [BackgroundFeature].
      */
     companion object {
-        private const val FEATURE_ID: String = "hand_style"
-        private val FEATURE_DISPLAY_NAME_RESOURCE_ID: Int = R.string.hands_style_setting
-        private val FEATURE_DESCRIPTION_RESOURCE_ID: Int = R.string.hands_style_setting_description
-        private val OPTIONS = listOf(ClassicHandStyle, ModernHandStyle)
+        private const val FEATURE_ID: String = "background"
+        private val FEATURE_DISPLAY_NAME_RESOURCE_ID: Int = R.string.background_setting
+        private val FEATURE_DESCRIPTION_RESOURCE_ID: Int = R.string.background_setting_description
+        private val OPTIONS = listOf<Background>()     // TODO: add
 
         /**
          * The public constructor for this feature's factory.
          * Watch faces will call this to get a factory instance.
          * @param overrideOptions An optional list to use instead of the default.
          */
-        operator fun invoke(overrideOptions: List<HandStyle>? = null) = ListFeatureFactory(
+        operator fun invoke(overrideOptions: List<Background>? = null) = ListFeatureFactory(
             featureId = FEATURE_ID,
             featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID,
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
             featureCreator = { scope, repo, options ->
-                HandStyleFeature(scope, repo, options)
+                BackgroundFeature(scope, repo, options)
             }
         )
     }
