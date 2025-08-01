@@ -6,6 +6,7 @@ import android.graphics.Rect
 import androidx.annotation.StringRes
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toIcon
+import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.UserStyleSetting.ListUserStyleSetting
@@ -83,7 +84,8 @@ open class ListFeatureFactory<T : FeatureOption>(
     final override fun create(
         context: Context,
         coroutineScope: CoroutineScope,
-        currentUserStyleRepository: CurrentUserStyleRepository
+        currentUserStyleRepository: CurrentUserStyleRepository,
+        watchState: WatchState
     ): WatchFaceFeature {
         return featureCreator(coroutineScope, currentUserStyleRepository, options)
     }

@@ -1,6 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.base
 
 import android.content.Context
+import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.coroutines.CoroutineScope
@@ -21,11 +22,13 @@ interface FeatureFactory {
      * @param context The service context.
      * @param coroutineScope The lifecycle scope of the watch face service.
      * @param currentUserStyleRepository The repository for managing user style selections.
+     * @param watchState The watchface state which can be observed
      * @return A fully initialized WatchFaceFeature.
      */
     fun create(
         context: Context,
         coroutineScope: CoroutineScope,
-        currentUserStyleRepository: CurrentUserStyleRepository
+        currentUserStyleRepository: CurrentUserStyleRepository,
+        watchState: WatchState
     ): WatchFaceFeature
 }

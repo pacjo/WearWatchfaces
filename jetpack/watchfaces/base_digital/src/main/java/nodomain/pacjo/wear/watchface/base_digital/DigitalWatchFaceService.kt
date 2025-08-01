@@ -40,7 +40,7 @@ abstract class DigitalWatchFaceService : WatchFaceService() {
 
         // 2. Create the FULL features using the now-available dependencies
         val features = featureFactories.map { factory ->
-            factory.create(this, CoroutineScope(coroutineContext), currentUserStyleRepository)
+            factory.create(this, CoroutineScope(coroutineContext), currentUserStyleRepository, watchState)
         }
 
         // 3. Create the renderer, passing it the list of all active features
