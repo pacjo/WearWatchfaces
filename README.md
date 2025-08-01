@@ -24,3 +24,6 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] figure out something with `android.service.wallpaper.square_mode` metadata
 - [ ] figure out how to share resources between jetpack and wff
 - [ ] backgrounds should get watch state to be able to react to ambient changes, maybe zonedTimeDate too, context?
+- [ ] maybe don't require overriding all methods in `WatchFaceRenderer`? (but we could log it)
+- [ ] add docs to watchfaces
+- [ ] convert BackgroundMusicPlayer to proper feature module

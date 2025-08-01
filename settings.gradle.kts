@@ -33,6 +33,7 @@ include(":jetpack:watchfaces:base_analog")
 include(":jetpack:watchfaces:base_digital")
 
 include(":jetpack:watchfaces:dots")
+include(":jetpack:watchfaces:jimball")
 
 // WatchFaceFormat based watchfaces
 include(":wff:jimball")
