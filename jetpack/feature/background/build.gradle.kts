@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)      // TODO: can this be added automatically on :feature:base dependency, remove from :feature:editor is so
 }
 
 android {
@@ -35,6 +34,6 @@ android {
 }
 
 dependencies {
-    // TODO: we should move compose deps to :feature:editor and depend on it instead
-    api(project(":jetpack:feature:base"))
+    implementation(project(":jetpack:feature:base"))
+    implementation(project(":jetpack:feature:editor"))
 }

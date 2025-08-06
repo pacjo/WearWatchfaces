@@ -41,5 +41,17 @@ android {
 }
 
 dependencies {
-    api(project(":jetpack:feature:base"))
+    implementation(project(":jetpack:feature:base"))
+
+    // TODO: check
+    api(libs.bundles.jetpack.compose)
+    api(platform(libs.androidx.compose.bom))
+    api(libs.androidx.ui)
+    api(libs.androidx.ui.graphics)
+    api(libs.androidx.ui.tooling.preview)
+    api(libs.androidx.wear.compose.material)
+    api(libs.androidx.wear.compose.foundation)
+    api(libs.androidx.wear.tooling.preview)
+    api(libs.androidx.activity.compose)
+    api(libs.androidx.core.splashscreen)
 }
