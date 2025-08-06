@@ -3,5 +3,8 @@
     <string name="background_setting">Background</string>
     <string name="background_setting_description">Allows changing watchface background</string>
 
-    <string name="background_preview_description">BAckground preview</string>
+    <string name="background_preview_description">Background preview</string>
+
+    <string name="static_color_background">Color background</string>
+    <string name="gif_player_background">Animated background</string>
 </resources>

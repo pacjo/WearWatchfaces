@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.graphics.Rect
 import android.graphics.drawable.AnimatedImageDrawable
 import android.os.Build
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
@@ -18,10 +19,11 @@ import java.time.ZonedDateTime
 @RequiresApi(Build.VERSION_CODES.P)
 class GifPlayerBackground(
     val context: Context,
-    @DrawableRes backgroundDrawable: Int
+    @DrawableRes backgroundDrawable: Int,
+    @ColorInt val backgroundClearColor: Int = Color.BLACK
 ) : Background() {
     override val id = "gif_$backgroundDrawable"
-    override val displayNameResourceId = R.string.background_setting      // TODO: change!!!!!
+    override val displayNameResourceId = R.string.gif_player_background
 
     private val animatedDrawable: AnimatedImageDrawable
 
@@ -35,7 +37,7 @@ class GifPlayerBackground(
 
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
         // clear canvas before drawing
-        canvas.drawColor(Color.BLACK)       // TODO: maybe make configurable?
+        canvas.drawColor(backgroundClearColor)
 
         // I'd love to use AnimatedDrawable.draw(Canvas), but it doesn't respect set bounds
         // we extract the bitmap and scale it instead to work around the issue
