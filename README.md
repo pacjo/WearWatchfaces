@@ -34,3 +34,5 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] allow features to implement multiple (e.g. background can be a background and a taplistener)
 - [ ] make drawing from WatchFaceRendererImpl WatchFaceLayer aware
 - [x] unify Analog and Digital WatchFaceService-s and RendererAdapter-s
+- [ ] maybe :jetpack:watchface:base should depend on :jetpack:feature:background?
+- [ ] features should be able to opt out of being user-configurable

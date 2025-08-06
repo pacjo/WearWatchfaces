@@ -39,4 +39,5 @@ android {
 dependencies {
     implementation(project(":jetpack:watchfaces:base_analog"))
     implementation(project(":jetpack:feature:editor"))
+    implementation(project(":jetpack:feature:background"))
 }

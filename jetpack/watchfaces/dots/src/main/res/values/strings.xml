@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dots</string>
+
+    <string name="dots_background">Dots</string>
 </resources>
