@@ -26,4 +26,9 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [x] backgrounds should get watch state to be able to react to ambient changes, maybe zonedTimeDate too, context?
 - [ ] maybe don't require overriding all methods in `WatchFaceRenderer`? (but we could log it)
 - [ ] add docs to watchfaces
+  - [ ] add missing readmes
+  - [ ] add images
+  - [ ] standardize format
 - [ ] convert BackgroundMusicPlayer to proper feature module
+- [ ] add TapListener feature
+- [ ] allow features to implement multiple (e.g. background can be a background and a taplistenet)

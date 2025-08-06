@@ -10,7 +10,6 @@ import androidx.wear.watchface.style.CurrentUserStyleRepository
 import nodomain.pacjo.wear.watchface.base.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
-import nodomain.pacjo.wear.watchface.feature.hands.HandStyleFeature
 import java.time.ZonedDateTime
 
 // Default for how long each frame is displayed at expected frame rate.
