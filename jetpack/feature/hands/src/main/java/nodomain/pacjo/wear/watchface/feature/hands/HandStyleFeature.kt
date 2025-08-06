@@ -2,14 +2,7 @@ package nodomain.pacjo.wear.watchface.feature.hands
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import androidx.wear.watchface.style.CurrentUserStyleRepository
-import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
@@ -18,8 +11,6 @@ import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
 import java.time.ZonedDateTime
 
 class HandStyleFeature(
-    scope: CoroutineScope,
-    currentUserStyleRepository: CurrentUserStyleRepository,
     override val options: List<HandStyle>
 ) : ListFeature<HandStyle>(), DrawableFeature {
     override val featureId = FEATURE_ID
@@ -28,26 +19,10 @@ class HandStyleFeature(
 
     override val layer = WatchFaceLayer.COMPLICATIONS_OVERLAY
 
-    // Public property to expose the currently selected style
-    // TODO: check default code
-    val currentHandStyle: StateFlow<HandStyle> =
-        currentUserStyleRepository.userStyle.map { userStyle ->
-            val styleId = userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
-            options.first { it.id == styleId }
-        }.stateIn(
-            scope,
-            SharingStarted.Eagerly,
-            options.first()
-        )
-
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        currentHandStyle.value.draw(canvas, bounds, zonedDateTime)
+        current.value.draw(canvas, bounds, zonedDateTime)
     }
 
-    /**
-     * The Factory is a companion object. It's a singleton that knows
-     * how to create an instance of [HandStyleFeature].
-     */
     companion object {
         private const val FEATURE_ID: String = "hand_style"
         private val FEATURE_DISPLAY_NAME_RESOURCE_ID: Int = R.string.hands_style_setting
@@ -65,7 +40,7 @@ class HandStyleFeature(
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
             featureCreator = { scope, repo, options ->
-                HandStyleFeature(scope, repo, options)
+                HandStyleFeature(options)
             }
         )
     }

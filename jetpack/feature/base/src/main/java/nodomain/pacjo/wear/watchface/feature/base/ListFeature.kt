@@ -12,6 +12,10 @@ import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.UserStyleSetting.ListUserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlin.math.min
 
 /**
@@ -41,6 +45,26 @@ abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
     @get:StringRes abstract val featureDescriptionResourceId: Int
     abstract val options: List<T>
 
+    lateinit var current: StateFlow<T>
+        private set     // prevent outside modification
+
+    /**
+     * Initialize feature to provide runtime dependencies needed to create the StateFlow for [current].
+     */
+    fun initialize(
+        scope: CoroutineScope,
+        currentUserStyleRepository: CurrentUserStyleRepository
+    ) {
+        current = currentUserStyleRepository.userStyle.map { userStyle ->
+            val styleId = userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
+            options.first { it.id == styleId }
+        }.stateIn(
+            scope,
+            SharingStarted.Eagerly,
+            options.first()
+        )
+    }
+
     final override fun getStyleSettings(context: Context): List<UserStyleSetting> {
         return generateStyleSettings(
             context = context,
@@ -68,7 +92,7 @@ open class ListFeatureFactory<T : FeatureOption>(
         scope: CoroutineScope,
         repo: CurrentUserStyleRepository,
         options: List<T>
-    ) -> WatchFaceFeature
+    ) -> ListFeature<T>
 ) : FeatureFactory {
 
     final override fun getStyleSettings(context: Context): List<UserStyleSetting> {
@@ -87,7 +111,10 @@ open class ListFeatureFactory<T : FeatureOption>(
         currentUserStyleRepository: CurrentUserStyleRepository,
         watchState: WatchState
     ): WatchFaceFeature {
-        return featureCreator(coroutineScope, currentUserStyleRepository, options)
+        val feature = featureCreator(coroutineScope, currentUserStyleRepository, options)
+        feature.initialize(coroutineScope, currentUserStyleRepository)
+
+        return feature
     }
 }
 
