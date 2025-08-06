@@ -9,6 +9,7 @@ import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSchema
 import kotlinx.coroutines.CoroutineScope
+import nodomain.pacjo.wear.watchface.base.RendererAdapter
 import nodomain.pacjo.wear.watchface.base.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 import kotlin.coroutines.coroutineContext
@@ -45,7 +46,7 @@ abstract class AnalogWatchFaceService : WatchFaceService() {
 
         // 3. Create the renderer, passing it the list of all active features
         val customRenderer = createWatchFaceRenderer()
-        val renderer = AnalogRendererAdapter(
+        val renderer = RendererAdapter(
             customRenderer,
             features,
             surfaceHolder,

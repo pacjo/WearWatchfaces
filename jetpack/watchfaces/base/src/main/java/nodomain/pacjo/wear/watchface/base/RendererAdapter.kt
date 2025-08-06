@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base_digital
+package nodomain.pacjo.wear.watchface.base
 
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -7,7 +7,6 @@ import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
-import nodomain.pacjo.wear.watchface.base.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
 import java.time.ZonedDateTime
@@ -19,15 +18,14 @@ private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L       // TODO: should it b
  * A generic Renderer that delegates its drawing calls to a specific
  * implementation of a [WatchFaceRenderer].
  */
-// TODO: maybe unify with AnalogRendererAdapter
-class DigitalRendererAdapter(
+class RendererAdapter(
     private val renderer: WatchFaceRenderer,
     features: List<WatchFaceFeature>,
     surfaceHolder: SurfaceHolder,
     currentUserStyleRepository: CurrentUserStyleRepository,
     watchState: WatchState,
     canvasType: Int = CanvasType.HARDWARE
-) : Renderer.CanvasRenderer2<DigitalRendererAdapter.SimpleSharedAssets>(
+) : Renderer.CanvasRenderer2<RendererAdapter.SimpleSharedAssets>(
     surfaceHolder = surfaceHolder,
     currentUserStyleRepository = currentUserStyleRepository,
     watchState = watchState,
@@ -47,7 +45,12 @@ class DigitalRendererAdapter(
         features.filterIsInstance<DrawableFeature>().sortedBy { it.layer.ordinal }
     }
 
-    override fun render(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime, sharedAssets: SimpleSharedAssets) {
+    override fun render(
+        canvas: Canvas,
+        bounds: Rect,
+        zonedDateTime: ZonedDateTime,
+        sharedAssets: SimpleSharedAssets
+    ) {
         drawableFeatures.forEach { feature ->
             feature.draw(canvas, bounds, zonedDateTime)
         }
@@ -55,7 +58,12 @@ class DigitalRendererAdapter(
         renderer.draw(canvas, bounds, zonedDateTime)
     }
 
-    override fun renderHighlightLayer(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime, sharedAssets: SimpleSharedAssets) {
+    override fun renderHighlightLayer(
+        canvas: Canvas,
+        bounds: Rect,
+        zonedDateTime: ZonedDateTime,
+        sharedAssets: SimpleSharedAssets
+    ) {
         // TODO: figure out how we want to use this
     }
 }
