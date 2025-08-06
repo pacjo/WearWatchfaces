@@ -33,4 +33,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] add TapListener feature
 - [ ] allow features to implement multiple (e.g. background can be a background and a taplistener)
 - [ ] make drawing from WatchFaceRendererImpl WatchFaceLayer aware
-- [ ] unify Analog and Digital WatchFaceService-s and RendererAdapter-s
+- [x] unify Analog and Digital WatchFaceService-s and RendererAdapter-s

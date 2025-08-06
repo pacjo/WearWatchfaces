@@ -7,7 +7,7 @@ import nodomain.pacjo.wear.watchface.feature.hands.HandStyleFeature
 
 class DotsWatchFaceService : AnalogWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return listOf(
+        return super.getFeatureFactories() + listOf(
             HandStyleFeature()
         )
     }
