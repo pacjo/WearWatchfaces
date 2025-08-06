@@ -24,11 +24,13 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] figure out something with `android.service.wallpaper.square_mode` metadata
 - [ ] figure out how to share resources between jetpack and wff
 - [x] backgrounds should get watch state to be able to react to ambient changes, maybe zonedTimeDate too, context?
-- [ ] maybe don't require overriding all methods in `WatchFaceRenderer`? (but we could log it)
+- [x] maybe don't require overriding all methods in `WatchFaceRenderer`? (but we could log it)
 - [ ] add docs to watchfaces
   - [ ] add missing readmes
   - [ ] add images
   - [ ] standardize format
 - [ ] convert BackgroundMusicPlayer to proper feature module
 - [ ] add TapListener feature
-- [ ] allow features to implement multiple (e.g. background can be a background and a taplistenet)
+- [ ] allow features to implement multiple (e.g. background can be a background and a taplistener)
+- [ ] make drawing from WatchFaceRendererImpl WatchFaceLayer aware
+- [ ] unify Analog and Digital WatchFaceService-s and RendererAdapter-s

@@ -10,10 +10,9 @@ import java.time.ZonedDateTime
 import kotlin.math.min
 
 class WatchFaceRendererImpl : WatchFaceRenderer {
-    override fun drawBackground(
+    private fun drawBackground(
         canvas: Canvas,
-        bounds: Rect,
-        zonedDateTime: ZonedDateTime
+        bounds: Rect
     ) {
         canvas.drawColor(Color.WHITE)
 
@@ -42,19 +41,11 @@ class WatchFaceRendererImpl : WatchFaceRenderer {
         }
     }
 
-    override fun drawClock(
+    override fun draw(
         canvas: Canvas,
         bounds: Rect,
         zonedDateTime: ZonedDateTime
     ) {
-        // TODO: implement
-    }
-
-    override fun drawComplications(
-        canvas: Canvas,
-        bounds: Rect,
-        zonedDateTime: ZonedDateTime
-    ) {
-        // TODO: implement
+        drawBackground(canvas, bounds)      // TODO: move to it's own background
     }
 }

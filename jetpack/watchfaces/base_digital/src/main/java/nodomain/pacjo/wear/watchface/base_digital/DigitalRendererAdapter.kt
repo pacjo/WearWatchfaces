@@ -48,15 +48,11 @@ class DigitalRendererAdapter(
     }
 
     override fun render(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime, sharedAssets: SimpleSharedAssets) {
-        renderer.drawBackground(canvas, bounds, zonedDateTime)
-
-        // TODO: would be nice if we could draw something (or just get a callback before/after layers)
         drawableFeatures.forEach { feature ->
             feature.draw(canvas, bounds, zonedDateTime)
         }
 
-        renderer.drawComplications(canvas, bounds, zonedDateTime)
-        renderer.drawClock(canvas, bounds, zonedDateTime)
+        renderer.draw(canvas, bounds, zonedDateTime)
     }
 
     override fun renderHighlightLayer(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime, sharedAssets: SimpleSharedAssets) {

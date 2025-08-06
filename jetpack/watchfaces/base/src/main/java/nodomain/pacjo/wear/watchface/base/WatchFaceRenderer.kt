@@ -7,9 +7,13 @@ import java.time.ZonedDateTime
 /**
  * An interface defining the drawing contract for a watch face.
  */
-// TODO: add docs
 interface WatchFaceRenderer {
-    fun drawBackground(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
-    fun drawClock(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
-    fun drawComplications(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
+    /**
+     * Called on every draw cycle, should draw everything that isn't already handled in optional features.
+     *
+     * @param canvas [Canvas] to draw into
+     * @param bounds rectangular bounds of the given canvas
+     * @param zonedDateTime time which can be used to modify drawing based on current time
+     */
+    fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) { }
 }

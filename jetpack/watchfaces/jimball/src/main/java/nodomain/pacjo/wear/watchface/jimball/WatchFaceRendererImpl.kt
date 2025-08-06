@@ -11,15 +11,7 @@ import androidx.core.graphics.toColorInt
 class WatchFaceRendererImpl(
     private val context: Context
 ) : WatchFaceRenderer {
-    override fun drawBackground(
-        canvas: Canvas,
-        bounds: Rect,
-        zonedDateTime: ZonedDateTime
-    ) {
-        // TODO: draw gif
-    }
-
-    override fun drawClock(
+    override fun draw(
         canvas: Canvas,
         bounds: Rect,
         zonedDateTime: ZonedDateTime
@@ -45,13 +37,5 @@ class WatchFaceRendererImpl(
 
         drawTextCentredBoth(canvas, paint, hour, bounds.exactCenterX(), bounds.exactCenterY() * 0.75f)
         drawTextCentredBoth(canvas, paint, minute, bounds.exactCenterX(), bounds.exactCenterY() * 1.25f)
-    }
-
-    override fun drawComplications(
-        canvas: Canvas,
-        bounds: Rect,
-        zonedDateTime: ZonedDateTime
-    ) {
-        // TODO: implement
     }
 }
