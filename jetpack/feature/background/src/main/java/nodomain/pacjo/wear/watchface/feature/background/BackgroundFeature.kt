@@ -39,7 +39,7 @@ class BackgroundFeature(
         )
 
     override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        currentBackground.value.draw(canvas, bounds)
+        currentBackground.value.draw(canvas, bounds, zonedDateTime)
     }
 
     /**

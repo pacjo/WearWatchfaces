@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.Log
 import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
+import java.time.ZonedDateTime
 
 /**
  * The contract for a specific background.
@@ -11,12 +12,14 @@ import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
  * It also knows how to draw the actual background on the watch face.
  */
 abstract class Background : FeatureOption {
-    abstract fun draw(canvas: Canvas, bounds: Rect)
+    abstract fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
 
     final override fun drawPreview(canvas: Canvas, bounds: Rect) {
         Log.d(TAG, "preview called")
 
-        draw(canvas, bounds)
+        val zonedDateTime = ZonedDateTime.now()
+
+        draw(canvas, bounds, zonedDateTime)
     }
 
     companion object {

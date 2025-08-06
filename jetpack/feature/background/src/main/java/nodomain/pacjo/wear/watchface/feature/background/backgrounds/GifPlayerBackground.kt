@@ -13,6 +13,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.background.R
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.P)
 class GifPlayerBackground(
@@ -32,7 +33,7 @@ class GifPlayerBackground(
         animatedDrawable.start()
     }
 
-    override fun draw(canvas: Canvas, bounds: Rect) {
+    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
         // clear canvas before drawing
         canvas.drawColor(Color.BLACK)       // TODO: maybe make configurable?
 
