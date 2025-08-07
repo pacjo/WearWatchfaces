@@ -24,8 +24,9 @@ rootProject.name = "WearWatchfaces"
 // (optional) features)
 include(":jetpack:feature:base")
 include(":jetpack:feature:editor")
-include(":jetpack:feature:hands")
 include(":jetpack:feature:background")
+include(":jetpack:feature:hands")
+include(":jetpack:feature:cell_grid")
 
 // actual watchfaces
 include(":jetpack:watchfaces:base")
@@ -34,6 +35,7 @@ include(":jetpack:watchfaces:base_digital")
 
 include(":jetpack:watchfaces:dots")
 include(":jetpack:watchfaces:jimball")
+include(":jetpack:watchfaces:snake")
 
 // WatchFaceFormat based watchfaces
 include(":wff:jimball")

@@ -1,0 +1,399 @@
+package nodomain.pacjo.wear.watchface.snake.background
+
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.util.Log
+import nodomain.pacjo.wear.watchface.feature.background.Background
+import nodomain.pacjo.wear.watchface.feature.cell_grid.Vector2d
+import nodomain.pacjo.wear.watchface.feature.cell_grid.forEachPosition
+import nodomain.pacjo.wear.watchface.feature.cell_grid.get
+import nodomain.pacjo.wear.watchface.feature.cell_grid.isInBounds
+import nodomain.pacjo.wear.watchface.feature.cell_grid.setBorder
+import nodomain.pacjo.wear.watchface.snake.R
+import java.time.ZonedDateTime
+import java.util.PriorityQueue
+import kotlin.math.abs
+import kotlin.random.Random
+
+object SnakeBackground : Background() {
+    override val id = "snake"
+    override val displayNameResourceId = R.string.snake_background
+
+    private var game: SnakeGame? = null
+
+    // for updating every set time amount
+    private var lastZonedDateTime = ZonedDateTime.now()
+
+    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
+        // fill background
+        canvas.drawColor(Color.BLACK)
+
+        // create SnakeGame if we don't already have one
+        if (game == null) {
+            game = SnakeGame(bounds, 25)
+        }
+
+        // update it's bounds regardless, it'll do noting if bounds don't change
+        game?.updateBounds(bounds)
+
+        // update grid every 100 milliseconds and only when drawing,
+        // so we don't update the game when watchface isn't visible
+        if (lastZonedDateTime.plusNanos(100_000_000) < zonedDateTime) {
+            game?.update()
+            lastZonedDateTime = zonedDateTime
+        }
+
+        // finally draw
+        game?.draw(canvas)
+    }
+}
+
+class SnakeGame(
+    initialBounds: Rect,
+    val gridSize: Int
+) {
+    private var state = State.PLAYING
+
+    private var grid = Array(gridSize) { Array<CellType>(gridSize) { CellType.NONE } }
+    // format: [head, body, body, ..., body, tail]
+    private var snake = mutableListOf<Vector2d>()
+    private lateinit var snakeDirection: Vector2d
+
+    private lateinit var food: Vector2d
+    private var pathToFood: List<Vector2d>? = null
+
+    private val arrayWidth = grid.size
+    private val arrayHeight = grid[0].size
+
+    private var width: Float = 0f
+    private var height: Float = 0f
+    private var horizontalSpacing: Float = 0f
+    private var verticalSpacing: Float = 0f
+
+    // bound can change at runtime, so we keep track of them
+    var currentBounds: Rect = Rect()
+
+    init {
+        updateBounds(initialBounds)
+
+        if (gridSize % 2 == 0)
+            Log.w(TAG, "Grid size even. $TAG works better with odd grid sizes")
+
+        resetGame()
+    }
+
+    /**
+     * Main game loop.
+     */
+    fun update() {
+        when (state) {
+            State.PLAYING -> {
+                val emptyCellCount = grid.sumOf { row -> row.count { it == CellType.NONE } }
+                if (emptyCellCount == snake.size) {
+                    state = State.WON
+                    Log.i(TAG, "YOU WON! Snake size: ${snake.size}")
+                    return // finish early, skip moving snake
+                }
+
+                if (pathToFood == null) {
+                    state = State.LOST
+                    Log.i(TAG, "GAME OVER! No path to food.")
+                    return // finish early, skip moving snake
+                }
+
+                // If all is well, move the snake
+                moveSnake()
+            }
+
+            // reset otherwise
+            State.WON, State.LOST -> {
+                Log.i(TAG, "Game completed, resetting...")
+                resetGame()
+            }
+        }
+    }
+
+    private fun resetGame() {
+        Log.i(TAG, "Starting new game...")
+
+        // clear old state
+        snake.clear()
+        state = State.PLAYING
+
+        // setup grid border
+        grid.setBorder(CellType.BORDER)
+
+        // set starting snake and food position
+        placeSnake()
+        placeFood()
+
+        // calculate initial path
+        calculatePathToFood()
+    }
+
+    fun draw(canvas: Canvas) {
+//        drawPath(canvas)
+        drawSnake(canvas)
+        drawFood(canvas)
+        drawObstacles(canvas)
+//        drawGridLines(canvas)
+    }
+
+    @Suppress("unused")     // might decide to use it someday
+    private fun drawGridLines(canvas: Canvas) {
+        val linePaint = Paint().apply {
+            color = Color.MAGENTA
+        }
+
+        // horizontal
+        for (lineNumH in 1..arrayWidth) {
+            val lineLevel = lineNumH * horizontalSpacing
+            canvas.drawLine(lineLevel, 0f, lineLevel, height, linePaint)
+        }
+
+        // vertical
+        for (lineNumV in 1..arrayHeight) {
+            val lineLevel = lineNumV * verticalSpacing
+            canvas.drawLine(0f, lineLevel, width, lineLevel, linePaint)
+        }
+    }
+
+    private fun drawObstacles(canvas: Canvas) {
+        grid.forEachPosition { position ->
+            val cell = grid[position]
+            if (cell == CellType.OBSTACLE) {
+                canvas.drawCell(
+                    position,
+                    Paint().apply {
+                        color = Color.WHITE
+                    }
+                )
+            }
+        }
+    }
+
+    private fun drawSnake(canvas: Canvas) {
+        snake.forEach { snakePart ->
+            canvas.drawCell(
+                snakePart,
+                Paint().apply {
+                    color = Color.GREEN
+                }
+            )
+        }
+    }
+
+    private fun drawFood(canvas: Canvas) {
+        // only draw if it exists
+        canvas.drawCell(
+            food,
+            Paint().apply {
+                color = Color.RED
+            }
+        )
+    }
+
+    @Suppress("unused")     // might decide to use it someday
+    private fun drawPath(canvas: Canvas) {
+        pathToFood?.forEach { pathElement ->
+            canvas.drawCell(
+                pathElement,
+                Paint().apply {
+                    color = Color.BLUE
+                    alpha = 100
+                }
+            )
+        }
+    }
+
+    private fun Canvas.drawCell(cellLocation: Vector2d, paint: Paint) {
+        this.drawRect(
+            horizontalSpacing * cellLocation.x,
+            verticalSpacing * cellLocation.y,
+            horizontalSpacing * (cellLocation.x + 1),
+            verticalSpacing * (cellLocation.y + 1),
+            paint
+        )
+    }
+
+    private fun placeSnake() {
+        snakeDirection = SnakeDirection.entries.random().direction
+
+        // starting position
+        val startingSnakeSize = 3
+        val snakeHead = findEmptyPosition { headPosition ->
+            // make sure we can fully extend the snake
+            val tailPosition = headPosition - snakeDirection * startingSnakeSize
+
+            grid.isInBounds(tailPosition) && grid[tailPosition] == CellType.NONE
+        }
+        snake.add(snakeHead)
+
+        (1..startingSnakeSize).forEach { _ ->
+            snake.add(snake.last() - snakeDirection)
+        }
+
+        Log.i(TAG, "Created snake: $snake with direction: $snakeDirection")
+    }
+
+    fun moveSnake() {
+        // path includes the head's current position, so we want the next step.
+        val nextStep = pathToFood!!.getOrNull(1) ?: return // a guard for the end of path
+
+        // add next step as the new head
+        snake.add(0, nextStep)
+
+        // check if the snake ate the food
+        if (nextStep == food) {
+            // don't remove tail (snake grows), just spawn new food
+            placeFood()
+        } else {
+            // remove tail
+            snake.removeAt(snake.lastIndex)
+        }
+
+        // update path
+        calculatePathToFood()
+    }
+
+    private fun placeFood() {
+        food = findEmptyPosition()
+        Log.i(TAG, "Placed food at: $food")
+
+        // after spawning food, calculate the path to it
+        calculatePathToFood()
+    }
+
+    private fun calculatePathToFood() {
+        val snakeHead = snake.first()
+
+        // Define a heuristic - Manhattan distance
+        val heuristic = { node: Vector2d ->
+            abs(node.x - food.x) + abs(node.y - food.y)
+        }
+
+        // Call your corrected aStar function!
+        pathToFood = aStar(snakeHead, food, heuristic)
+    }
+
+    /**
+     * Finds empty position on current [grid].
+     * [extraCheck] lambda can be used for passing additional requirements to the empty position checker
+     * @param extraCheck lambda, which should return true if position is NOT accepted
+     */
+    private fun findEmptyPosition(
+        extraCheck: (Vector2d) -> Boolean = { true }
+    ): Vector2d {
+        var position: Vector2d
+        do {
+            val x = Random.nextInt(arrayWidth)
+            val y = Random.nextInt(arrayHeight)
+            position = Vector2d(x, y)
+        }
+        // keep looping until we find a position which is empty
+        while (snake.contains(position) || grid[position] != CellType.NONE || !extraCheck(position))
+
+        return position
+    }
+
+    /**
+     * Recalculate all spacing and dimension properties based on new bounds.
+     */
+    fun updateBounds(newBounds: Rect) {
+        // Only do the work if the bounds have actually changed.
+        if (newBounds == currentBounds) return
+
+        Log.i(TAG, "Bounds changed, recalculating...")
+        currentBounds.set(newBounds)
+        width = newBounds.width().toFloat()
+        height = newBounds.height().toFloat()
+        horizontalSpacing = width / arrayWidth
+        verticalSpacing = height / arrayHeight
+    }
+
+    // https://en.wikipedia.org/wiki/A*_search_algorithm
+    fun aStar(
+        start: Vector2d,
+        goal: Vector2d,
+        h: (Vector2d) -> Int        // cost function
+    ): List<Vector2d>? {
+        fun reconstructPath(cameFrom: MutableMap<Vector2d, Vector2d>, current: Vector2d): List<Vector2d> {
+            var innerCurrent = current
+            val fullPath = mutableListOf(current)
+            while (innerCurrent in cameFrom.keys) {
+                innerCurrent = cameFrom.getValue(innerCurrent)
+                fullPath.add(0, innerCurrent)
+            }
+            return fullPath
+        }
+
+        val gScore = mutableMapOf<Vector2d, Int>()
+        gScore[start] = 0
+
+        val fScore = mutableMapOf<Vector2d, Int>()
+        fScore[start] = h(start)
+
+        val openSet = PriorityQueue<Vector2d>(compareBy { fScore.getOrDefault(it, Int.MAX_VALUE) })
+        openSet.add(start)      // add starting point
+
+        val cameFrom = mutableMapOf<Vector2d, Vector2d>()
+
+        // exclude the snake's tail, as it will move out of the way
+        val snakeBody = if (snake.size > 1) snake.dropLast(1).toSet() else emptySet()
+
+        while (openSet.isNotEmpty()) {
+            val current = openSet.poll()!!
+
+            if (current == goal)
+                return reconstructPath(cameFrom, current)
+
+            val currentNeighbours = SnakeDirection.entries
+                .map { allowedDirection -> current - allowedDirection.direction }
+                // filter out neighbors that are off-grid
+                .filter { it.x >= 0 && it.x < grid.size && it.y >= 0 && it.y < grid.size }
+                // filter out neighbors that are obstacles
+                .filter { grid[it.y][it.x] == CellType.NONE }
+                // filter out parts of snake to avoid going over them
+                .filter { !snakeBody.contains(it) }
+
+            currentNeighbours.forEach { neighbour ->
+                val tentativeGScore = gScore.getOrDefault(current, Int.MAX_VALUE) + 1       // 1 is the d(current, neighbor)
+                if (tentativeGScore < gScore.getOrDefault(neighbour, Int.MAX_VALUE)) {
+                    cameFrom[neighbour] = current
+                    gScore[neighbour] = tentativeGScore
+                    fScore[neighbour] = tentativeGScore + h(neighbour)
+
+                    if (!openSet.contains(neighbour))
+                        openSet.add(neighbour)
+                }
+            }
+        }
+
+        return null         // failure
+    }
+
+    companion object {
+        const val TAG = "SnakeGame"
+
+        private enum class SnakeDirection(val direction: Vector2d) {
+            UP(Vector2d(0, -1)),
+            DOWN(Vector2d(0, 1)),
+            LEFT(Vector2d(-1, 0)),
+            RIGHT(Vector2d(1, 0))
+        }
+
+        private enum class CellType {
+            NONE,
+            OBSTACLE,
+            BORDER
+        }
+
+        enum class State {
+            PLAYING,
+            WON,
+            LOST
+        }
+    }
+}
