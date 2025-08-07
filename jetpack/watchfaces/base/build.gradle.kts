@@ -10,6 +10,9 @@ android {
     defaultConfig {
         minSdk = 26
 
+        manifestPlaceholders["previewDrawable"] = "@drawable/preview"
+        manifestPlaceholders["previewCircularDrawable"] = "@drawable/preview_circular"
+
         consumerProguardFiles("consumer-rules.pro")
     }
 

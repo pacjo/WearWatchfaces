@@ -35,5 +35,4 @@ android {
 
 dependencies {
     implementation(project(":jetpack:feature:base"))
-    implementation(project(":jetpack:feature:editor"))
 }

@@ -13,6 +13,8 @@ android {
         targetSdk = 36
         versionCode = 10
         versionName = "1.0"
+
+        manifestPlaceholders["watchFaceServiceClassName"] = "$applicationId.DotsWatchFaceService"
     }
 
     buildTypes {

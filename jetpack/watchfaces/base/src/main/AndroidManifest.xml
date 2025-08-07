@@ -3,12 +3,9 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- TODO: move to :features:complications ? -->
-    <uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
-    <uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA_PRIVILEGED" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +14,34 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
+
+        <service
+            android:name="${watchFaceServiceClassName}"
+            android:directBootAware="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_WALLPAPER">
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face" />
+
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="${previewDrawable}" />
+<!--            <meta-data-->
+<!--                android:name="com.google.android.wearable.watchface.preview_circular"-->
+<!--                android:resource="${previewCircularDrawable}" />-->
+
+            <meta-data
+                android:name="android.service.wallpaper.square_mode"
+                android:value="false" />
+
+        </service>
 
     </application>
 
