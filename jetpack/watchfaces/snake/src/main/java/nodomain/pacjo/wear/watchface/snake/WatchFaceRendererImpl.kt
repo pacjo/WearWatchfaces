@@ -1,5 +1,6 @@
 package nodomain.pacjo.wear.watchface.snake
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -7,7 +8,9 @@ import android.graphics.Rect
 import nodomain.pacjo.wear.watchface.base.WatchFaceRenderer
 import java.time.ZonedDateTime
 
-class WatchFaceRendererImpl : WatchFaceRenderer {
+class WatchFaceRendererImpl(
+    private val context: Context
+) : WatchFaceRenderer {
     override fun draw(
         canvas: Canvas,
         bounds: Rect,
@@ -17,7 +20,8 @@ class WatchFaceRendererImpl : WatchFaceRenderer {
         val minute = zonedDateTime.minute.toString().padStart(2, '0')
         val paint = Paint().apply {
             color = Color.WHITE
-            textSize = bounds.width() * 0.225f
+            textSize = bounds.width() * 0.3f
+            typeface = context.resources.getFont(R.font.ibm_mda)
             isAntiAlias = true
             setShadowLayer(5f, 5f, 5f, Color.BLACK)
         }

@@ -18,6 +18,6 @@ class SnakeWatchFaceService : DigitalWatchFaceService() {
     }
 
     override fun createWatchFaceRenderer(): WatchFaceRenderer {
-        return WatchFaceRendererImpl()
+        return WatchFaceRendererImpl(this)
     }
 }

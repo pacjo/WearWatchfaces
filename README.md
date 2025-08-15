@@ -36,3 +36,5 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [x] unify Analog and Digital WatchFaceService-s and RendererAdapter-s
 - [ ] maybe :jetpack:watchface:base should depend on :jetpack:feature:background?
 - [ ] features should be able to opt out of being user-configurable
+- [ ] make :jetpack:watchfaces:snake use new Grid2d class
+- [ ] redo previews
