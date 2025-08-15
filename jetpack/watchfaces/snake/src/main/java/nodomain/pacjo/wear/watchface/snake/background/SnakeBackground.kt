@@ -6,10 +6,8 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.Log
 import nodomain.pacjo.wear.watchface.feature.background.Background
+import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Vector2d
-import nodomain.pacjo.wear.watchface.feature.cell_grid.forEachPosition
-import nodomain.pacjo.wear.watchface.feature.cell_grid.get
-import nodomain.pacjo.wear.watchface.feature.cell_grid.isInBounds
 import nodomain.pacjo.wear.watchface.feature.cell_grid.setBorder
 import nodomain.pacjo.wear.watchface.snake.R
 import java.time.ZonedDateTime
@@ -52,20 +50,17 @@ object SnakeBackground : Background() {
 
 class SnakeGame(
     initialBounds: Rect,
-    val gridSize: Int
+    gridSize: Int
 ) {
     private var state = State.PLAYING
 
-    private var grid = Array(gridSize) { Array<CellType>(gridSize) { CellType.NONE } }
+    private var grid = Grid2d<CellType>(gridSize) { CellType.NONE }
     // format: [head, body, body, ..., body, tail]
     private var snake = mutableListOf<Vector2d>()
     private lateinit var snakeDirection: Vector2d
 
     private lateinit var food: Vector2d
     private var pathToFood: List<Vector2d>? = null
-
-    private val arrayWidth = grid.size
-    private val arrayHeight = grid[0].size
 
     private var width: Float = 0f
     private var height: Float = 0f
@@ -90,7 +85,13 @@ class SnakeGame(
     fun update() {
         when (state) {
             State.PLAYING -> {
-                val emptyCellCount = grid.sumOf { row -> row.count { it == CellType.NONE } }
+                // TODO: emptyCellCount calculation used .sumOf before moving to Grid2d class,
+                //  do something to clean this workaround up
+                var emptyCellCount = 0
+                grid.forEachPosition { position ->
+                    if (grid[position] == CellType.NONE)
+                        emptyCellCount++
+                }
                 if (emptyCellCount == snake.size) {
                     state = State.WON
                     Log.i(TAG, "YOU WON! Snake size: ${snake.size}")
@@ -148,13 +149,13 @@ class SnakeGame(
         }
 
         // horizontal
-        for (lineNumH in 1..arrayWidth) {
+        for (lineNumH in 1..grid.width) {
             val lineLevel = lineNumH * horizontalSpacing
             canvas.drawLine(lineLevel, 0f, lineLevel, height, linePaint)
         }
 
         // vertical
-        for (lineNumV in 1..arrayHeight) {
+        for (lineNumV in 1..grid.height) {
             val lineLevel = lineNumV * verticalSpacing
             canvas.drawLine(0f, lineLevel, width, lineLevel, linePaint)
         }
@@ -288,8 +289,8 @@ class SnakeGame(
     ): Vector2d {
         var position: Vector2d
         do {
-            val x = Random.nextInt(arrayWidth)
-            val y = Random.nextInt(arrayHeight)
+            val x = Random.nextInt(grid.width)
+            val y = Random.nextInt(grid.height)
             position = Vector2d(x, y)
         }
         // keep looping until we find a position which is empty
@@ -309,8 +310,8 @@ class SnakeGame(
         currentBounds.set(newBounds)
         width = newBounds.width().toFloat()
         height = newBounds.height().toFloat()
-        horizontalSpacing = width / arrayWidth
-        verticalSpacing = height / arrayHeight
+        horizontalSpacing = width / grid.width
+        verticalSpacing = height / grid.height
     }
 
     // https://en.wikipedia.org/wiki/A*_search_algorithm
@@ -352,9 +353,9 @@ class SnakeGame(
             val currentNeighbours = SnakeDirection.entries
                 .map { allowedDirection -> current - allowedDirection.direction }
                 // filter out neighbors that are off-grid
-                .filter { it.x >= 0 && it.x < grid.size && it.y >= 0 && it.y < grid.size }
+                .filter { it.x >= 0 && it.x < grid.width && it.y >= 0 && it.y < grid.height }
                 // filter out neighbors that are obstacles
-                .filter { grid[it.y][it.x] == CellType.NONE }
+                .filter { grid[it] == CellType.NONE }
                 // filter out parts of snake to avoid going over them
                 .filter { !snakeBody.contains(it) }
 
