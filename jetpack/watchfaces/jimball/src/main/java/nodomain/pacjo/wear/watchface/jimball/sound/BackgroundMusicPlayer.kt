@@ -9,8 +9,8 @@ import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
-import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
+import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
 
 class BackgroundMusicFeature(
     @RawRes private val soundResource: Int

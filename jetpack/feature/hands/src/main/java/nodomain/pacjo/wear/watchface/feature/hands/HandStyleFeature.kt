@@ -1,14 +1,12 @@
 package nodomain.pacjo.wear.watchface.feature.hands
 
-import android.graphics.Canvas
-import android.graphics.Rect
 import androidx.wear.watchface.style.WatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
-import nodomain.pacjo.wear.watchface.feature.base.ListFeature
-import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
+import nodomain.pacjo.wear.watchface.base.feature.ListFeature
+import nodomain.pacjo.wear.watchface.base.feature.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.hands.styles.ClassicHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
-import java.time.ZonedDateTime
 
 class HandStyleFeature(
     override val options: List<HandStyle>
@@ -19,8 +17,8 @@ class HandStyleFeature(
 
     override val layer = WatchFaceLayer.COMPLICATIONS_OVERLAY
 
-    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        current.value.draw(canvas, bounds, zonedDateTime)
+    override fun draw(renderingContext: RenderingContext) {
+        current.value.draw(renderingContext)
     }
 
     companion object {

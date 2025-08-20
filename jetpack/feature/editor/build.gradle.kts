@@ -41,7 +41,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":jetpack:feature:base"))
+    implementation(project(":jetpack:watchfaces:base"))
+    api(libs.bundles.watchface.editor)      // TODO: keep this here?
 
     // TODO: check
     api(libs.bundles.jetpack.compose)

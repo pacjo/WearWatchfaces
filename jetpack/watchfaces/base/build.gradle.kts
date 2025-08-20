@@ -38,6 +38,4 @@ android {
 
 dependencies {
     api(libs.androidx.watchface)
-
-    api(project(":jetpack:feature:base"))
 }

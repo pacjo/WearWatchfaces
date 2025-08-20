@@ -1,11 +1,9 @@
 package nodomain.pacjo.wear.watchface.feature.background.backgrounds
 
-import android.graphics.Canvas
-import android.graphics.Rect
 import androidx.annotation.ColorInt
-import nodomain.pacjo.wear.watchface.feature.background.R
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
-import java.time.ZonedDateTime
+import nodomain.pacjo.wear.watchface.feature.background.R
 
 class StaticColorBackground(
     @ColorInt val backgroundColor: Int
@@ -13,7 +11,10 @@ class StaticColorBackground(
     override val id: String = "static_color_$backgroundColor"
     override val displayNameResourceId: Int = R.string.static_color_background
 
-    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        canvas.drawColor(backgroundColor)
+    override fun draw(renderingContext: RenderingContext) {
+        renderingContext.ifCanvas { canvas, _, _ ->
+            canvas.drawColor(backgroundColor)
+        }
+        // TODO: support opengl
     }
 }

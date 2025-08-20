@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.feature.base
+package nodomain.pacjo.wear.watchface.base.feature
 
 import android.content.Context
 import androidx.wear.watchface.WatchState
@@ -19,11 +19,13 @@ interface FeatureFactory {
 
     /**
      * Creates an instance of a WatchFaceFeature.
-     * @param context The service context.
-     * @param coroutineScope The lifecycle scope of the watch face service.
-     * @param currentUserStyleRepository The repository for managing user style selections.
-     * @param watchState The watchface state which can be observed
-     * @return A fully initialized WatchFaceFeature.
+     *
+     * @param context service context.
+     * @param coroutineScope lifecycle scope of the watch face service.
+     * @param currentUserStyleRepository repository for managing user style selections.
+     * @param watchState watchface state which can be observed
+     *
+     * @return fully initialized WatchFaceFeature.
      */
     fun create(
         context: Context,

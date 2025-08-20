@@ -1,10 +1,10 @@
 package nodomain.pacjo.wear.watchface.jimball
 
-import nodomain.pacjo.wear.watchface.base.WatchFaceRenderer
+import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base_digital.DigitalWatchFaceService
 import nodomain.pacjo.wear.watchface.feature.background.BackgroundFeature
 import nodomain.pacjo.wear.watchface.feature.background.backgrounds.GifPlayerBackground
-import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
+import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.jimball.sound.BackgroundMusicFeature
 
 class JimballWatchFaceService : DigitalWatchFaceService() {

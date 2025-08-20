@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.feature.base
+package nodomain.pacjo.wear.watchface.base.feature
 
 import android.content.Context
 import android.graphics.Canvas
@@ -16,40 +16,85 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererBackend
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import java.time.ZonedDateTime
 import kotlin.math.min
 
 /**
  * A contract for any option that can be displayed in a ListFeature.
- * It must provide its own ID, name, and a way to draw its preview icon.
+ *
+ * @see ListFeature
+ * @see RenderingContext
  */
 interface FeatureOption {
+    /**
+     * Unique identifier for this option.
+     */
     val id: String
-    @get:StringRes val displayNameResourceId: Int
 
     /**
-     * Draws a preview of this option into the provided canvas.
-     * This is the key to automatic preview generation.
-     * @param canvas The canvas to draw on.
-     * @param bounds The drawing bounds.
+     * String resource ID for the display name shown to users.
      */
-    fun drawPreview(canvas: Canvas, bounds: Rect)
+    @get:StringRes
+    val displayNameResourceId: Int
+
+    /**
+     * Draws a preview of this option for the settings UI.
+     *
+     * @param renderingContext context containing Canvas backend and current time.
+     *
+     * @see RenderingContext
+     * @see RenderingContext.ifCanvas
+     */
+    fun drawPreview(renderingContext: RenderingContext)
 }
 
 /**
- * A specialized [WatchFaceFeature] for presenting a list of options to the user.
- * Implementations only need to provide the abstract properties - no method overrides required.
+ * A specialized WatchFaceFeature for presenting a list of user-selectable options.
+ *
+ * @param T type of FeatureOption this feature manages
+ *
+ * @see FeatureOption
+ * @see DrawableFeature
+ * @see ListFeatureFactory
  */
 abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
+    /**
+     * Unique identifier for this feature in the style system.
+     */
     abstract val featureId: String
-    @get:StringRes abstract val featureDisplayNameResourceId: Int
-    @get:StringRes abstract val featureDescriptionResourceId: Int
+
+    /**
+     * String resource ID for the feature name shown to users.
+     */
+    @get:StringRes
+    abstract val featureDisplayNameResourceId: Int
+
+    /**
+     * String resource ID for the feature description shown to users.
+     */
+    @get:StringRes
+    abstract val featureDescriptionResourceId: Int
+
+    /**
+     * The list of available options for this feature.
+     *
+     * The first option serves as the default when no user preference is saved.
+     */
     abstract val options: List<T>
 
+    /**
+     * StateFlow providing access to the currently selected option.
+     */
     lateinit var current: StateFlow<T>
         private set     // prevent outside modification
 
     /**
-     * Initialize feature to provide runtime dependencies needed to create the StateFlow for [current].
+     * Initialize the feature with runtime dependencies.
+     *
+     * @param scope [CoroutineScope] for managing the [StateFlow] lifecycle
+     * @param currentUserStyleRepository repository providing access to user style preferences
      */
     fun initialize(
         scope: CoroutineScope,
@@ -77,9 +122,12 @@ abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
 }
 
 /**
- * Abstract factory for ListFeature implementations.
- * Handles the creation of UserStyleSettings automatically based on the provided properties.
- * Implementations just need to provide the abstract properties - no method overrides required.
+ * Factory for creating ListFeature implementations with dependency injection.
+ *
+ * @param T type of FeatureOption managed by the created ListFeature
+ *
+ * @see ListFeature
+ * @see FeatureFactory
  */
 open class ListFeatureFactory<T : FeatureOption>(
     private val featureId: String,
@@ -87,7 +135,9 @@ open class ListFeatureFactory<T : FeatureOption>(
     @StringRes private val featureDescriptionResourceId: Int,
     private val options: List<T>,
 
-    // A lambda that tells the factory how to create the specific feature instance
+    /**
+     * Lambda function that creates the specific ListFeature instance.
+     */
     private val featureCreator: (
         scope: CoroutineScope,
         repo: CurrentUserStyleRepository,
@@ -105,6 +155,15 @@ open class ListFeatureFactory<T : FeatureOption>(
         )
     }
 
+    /**
+     * Creates and initializes the ListFeature instance.
+     *
+     * @param context Android context for resource access
+     * @param coroutineScope CoroutineScope for StateFlow management
+     * @param currentUserStyleRepository Repository for style system integration
+     * @param watchState Watch state information (not currently used by ListFeatures)
+     * @return Initialized ListFeature ready for use
+     */
     final override fun create(
         context: Context,
         coroutineScope: CoroutineScope,
@@ -118,10 +177,6 @@ open class ListFeatureFactory<T : FeatureOption>(
     }
 }
 
-/**
- * Internal function to generate style settings for list-based features.
- * Used by both ListFeature and ListFeatureFactory to avoid duplication.
- */
 private fun <T : FeatureOption> generateStyleSettings(
     context: Context,
     featureId: String,
@@ -130,20 +185,30 @@ private fun <T : FeatureOption> generateStyleSettings(
     options: List<T>
 ): List<UserStyleSetting> {
     val settingOptions = options.map { option ->
-        // 1. Create a bitmap for the preview
+        // 1. Create a bitmap for the preview - size limited by Wear OS
         val displayMetrics = context.resources.displayMetrics
-        val maxSize = 400       // enforced by OS
+        val maxSize = 400       // Maximum size enforced by Wear OS
         val width = min(displayMetrics.widthPixels, maxSize)
         val height = min(displayMetrics.heightPixels, maxSize)
 
         val previewBitmap = createBitmap(width, height)
         val canvas = Canvas(previewBitmap)
         val bounds = Rect(0, 0, width, height)
+        val previewTime = ZonedDateTime.now()
 
-        // 2. Ask the option to draw its own preview
-        option.drawPreview(canvas, bounds)
+        // 2. Create Canvas-based RenderingContext for preview generation
+        // Note: Previews currently use Canvas only - OpenGL support planned for future
+        val canvasBackend = object : CanvasRendererBackend {
+            override val canvas = canvas
+            override val bounds = bounds
+            override val zonedDateTime = previewTime
+        }
+        val renderingContext = RenderingContext(canvasBackend, previewTime)
 
-        // 3. Create the ListUserStyleSetting.Option
+        // 3. Ask the option to draw its own preview using the universal rendering system
+        option.drawPreview(renderingContext)
+
+        // 4. Create the ListUserStyleSetting.Option with the generated preview
         ListUserStyleSetting.ListOption(
             UserStyleSetting.Option.Id(option.id),
             context.resources,
@@ -161,7 +226,7 @@ private fun <T : FeatureOption> generateStyleSettings(
             featureDescriptionResourceId,
             icon = null,
             options = settingOptions,
-            WatchFaceLayer.ALL_WATCH_FACE_LAYERS        // TODO: make configurable
+            WatchFaceLayer.ALL_WATCH_FACE_LAYERS        // TODO: make configurable per feature
         )
     )
 }

@@ -14,7 +14,7 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] allow overriding style defaults per watchface (for example when customization is disabled)
 - [ ] add priority to WatchFaceFeature-s to order them consistently in the on watch editor
 - [ ] make all ic_launcher resources specify `adaptive` icon
-- [ ] make jimball play [Funkytown](https://www.youtube.com/watch?v=Z6dqIYKIBSU) (maybe even configurable: **never**, **on_touch**, **always**)
+- [x] make jimball play [Funkytown](https://www.youtube.com/watch?v=Z6dqIYKIBSU) (maybe even configurable: **never**, **on_touch**, **always**)
 - [ ] add jimball gif sources (pixelorama project) and figure out how to manage original sources for WFF based watchfaces
 - [ ] add nav controller to [`EditorActivity`](./jetpack/feature/editor/src/main/java/nodomain/pacjo/wear/watchface/feature/editor/ui/activities/EditorActivity.kt) and make every feature it's separate screen with the main HorizontalPager only highlighting the configured feature
 - [x] fix hands rotation
@@ -36,5 +36,5 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [x] unify Analog and Digital WatchFaceService-s and RendererAdapter-s
 - [ ] maybe :jetpack:watchface:base should depend on :jetpack:feature:background?
 - [ ] features should be able to opt out of being user-configurable
-- [ ] make :jetpack:watchfaces:snake use new Grid2d class
+- [x] make :jetpack:watchfaces:snake use new Grid2d class
 - [ ] redo previews

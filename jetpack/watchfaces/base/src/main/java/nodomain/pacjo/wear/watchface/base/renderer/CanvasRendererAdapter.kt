@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base
+package nodomain.pacjo.wear.watchface.base.renderer
 
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -7,25 +7,20 @@ import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
-import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
-import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
+import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
 import java.time.ZonedDateTime
 
-// Default for how long each frame is displayed at expected frame rate.
-private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L       // TODO: should it be here or in the interface?
+private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
 
-/**
- * A generic Renderer that delegates its drawing calls to a specific
- * implementation of a [WatchFaceRenderer].
- */
-class RendererAdapter(
+class CanvasRendererAdapter(
     private val renderer: WatchFaceRenderer,
     features: List<WatchFaceFeature>,
     surfaceHolder: SurfaceHolder,
     currentUserStyleRepository: CurrentUserStyleRepository,
     watchState: WatchState,
     canvasType: Int = CanvasType.HARDWARE
-) : Renderer.CanvasRenderer2<RendererAdapter.SimpleSharedAssets>(
+) : Renderer.CanvasRenderer2<CanvasRendererAdapter.SimpleSharedAssets>(
     surfaceHolder = surfaceHolder,
     currentUserStyleRepository = currentUserStyleRepository,
     watchState = watchState,
@@ -33,6 +28,7 @@ class RendererAdapter(
     interactiveDrawModeUpdateDelayMillis = FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
 ) {
+
     class SimpleSharedAssets: SharedAssets {
         override fun onDestroy() { }
     }
@@ -51,11 +47,17 @@ class RendererAdapter(
         zonedDateTime: ZonedDateTime,
         sharedAssets: SimpleSharedAssets
     ) {
+        // create Canvas backend for this frame
+        val canvasBackend = CanvasBackendImpl(canvas, bounds, zonedDateTime)
+        val context = RenderingContext(canvasBackend, zonedDateTime)
+
+        // draw features in layer order
         drawableFeatures.forEach { feature ->
-            feature.draw(canvas, bounds, zonedDateTime)
+            feature.draw(context)
         }
 
-        renderer.draw(canvas, bounds, zonedDateTime)
+        // other drawing
+        renderer.draw(context)
     }
 
     override fun renderHighlightLayer(
@@ -64,6 +66,12 @@ class RendererAdapter(
         zonedDateTime: ZonedDateTime,
         sharedAssets: SimpleSharedAssets
     ) {
-        // TODO: figure out how we want to use this
+        // TODO: implement
     }
+
+    private data class CanvasBackendImpl(
+        override val canvas: Canvas,
+        override val bounds: Rect,
+        override val zonedDateTime: ZonedDateTime
+    ) : CanvasRendererBackend
 }

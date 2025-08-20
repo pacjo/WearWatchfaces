@@ -1,12 +1,10 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
-import android.graphics.Canvas
-import android.graphics.Rect
 import androidx.wear.watchface.style.WatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
-import nodomain.pacjo.wear.watchface.feature.base.ListFeature
-import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
-import java.time.ZonedDateTime
+import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
+import nodomain.pacjo.wear.watchface.base.feature.ListFeature
+import nodomain.pacjo.wear.watchface.base.feature.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 
 class BackgroundFeature(
     override val options: List<Background>
@@ -17,8 +15,8 @@ class BackgroundFeature(
 
     override val layer = WatchFaceLayer.BASE
 
-    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        current.value.draw(canvas, bounds, zonedDateTime)
+    override fun draw(renderingContext: RenderingContext) {
+        current.value.draw(renderingContext)
     }
 
     companion object {

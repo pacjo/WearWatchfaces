@@ -1,9 +1,8 @@
 package nodomain.pacjo.wear.watchface.feature.hands
 
-import android.graphics.Canvas
-import android.graphics.Rect
 import android.util.Log
-import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
+import nodomain.pacjo.wear.watchface.base.feature.FeatureOption
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
@@ -13,19 +12,20 @@ import java.time.temporal.ChronoUnit
  * It also knows how to draw the actual hands on the watch face.
  */
 abstract class HandStyle : FeatureOption {
-    abstract fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime)
+    abstract fun draw(renderingContext: RenderingContext)
 
-    final override fun drawPreview(canvas: Canvas, bounds: Rect) {
+    final override fun drawPreview(renderingContext: RenderingContext) {
         Log.d(TAG, "preview called")
 
         // preview time to set the hour, minute and seconds hands in predetermined positions
+        // TODO: figure out how to use this
         val zonedDateTime = ZonedDateTime.now()
             .withHour(10)
             .withMinute(10)
             .withSecond(30)
             .truncatedTo(ChronoUnit.SECONDS)
 
-        draw(canvas, bounds, zonedDateTime)
+        draw(renderingContext)
     }
 
     companion object {

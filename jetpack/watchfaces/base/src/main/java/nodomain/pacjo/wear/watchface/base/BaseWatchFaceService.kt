@@ -9,7 +9,9 @@ import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSchema
 import kotlinx.coroutines.CoroutineScope
-import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
+import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter
+import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
+import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import kotlin.coroutines.coroutineContext
 
 abstract class BaseWatchFaceService : WatchFaceService() {
@@ -41,7 +43,7 @@ abstract class BaseWatchFaceService : WatchFaceService() {
             factory.create(this, CoroutineScope(coroutineContext), currentUserStyleRepository, watchState)
         }
 
-        val renderer = RendererAdapter(
+        val renderer = CanvasRendererAdapter(
             renderer = createWatchFaceRenderer(),
             features = features,
             surfaceHolder = surfaceHolder,

@@ -2,7 +2,7 @@ package nodomain.pacjo.wear.watchface.base_analog
 
 import androidx.wear.watchface.WatchFaceType
 import nodomain.pacjo.wear.watchface.base.BaseWatchFaceService
-import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
+import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.feature.hands.HandStyleFeature
 
 abstract class AnalogWatchFaceService : BaseWatchFaceService() {

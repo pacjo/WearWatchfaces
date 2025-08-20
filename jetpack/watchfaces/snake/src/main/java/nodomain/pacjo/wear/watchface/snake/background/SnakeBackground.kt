@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.Log
+import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Vector2d
@@ -24,27 +25,30 @@ object SnakeBackground : Background() {
     // for updating every set time amount
     private var lastZonedDateTime = ZonedDateTime.now()
 
-    override fun draw(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
-        // fill background
-        canvas.drawColor(Color.BLACK)
+    override fun draw(renderingContext: RenderingContext) {
+        renderingContext.ifCanvas { canvas, bounds, zonedDateTime ->
+            // fill background
+            canvas.drawColor(Color.BLACK)
 
-        // create SnakeGame if we don't already have one
-        if (game == null) {
-            game = SnakeGame(bounds, 25)
+            // create SnakeGame if we don't already have one
+            if (game == null) {
+                game = SnakeGame(bounds, 25)
+            }
+
+            // update it's bounds regardless, it'll do noting if bounds don't change
+            game?.updateBounds(bounds)
+
+            // update grid every 100 milliseconds and only when drawing,
+            // so we don't update the game when watchface isn't visible
+            if (lastZonedDateTime.plusNanos(100_000_000) < zonedDateTime) {
+                game?.update()
+                lastZonedDateTime = zonedDateTime
+            }
+
+            // finally draw
+            game?.draw(canvas)
         }
-
-        // update it's bounds regardless, it'll do noting if bounds don't change
-        game?.updateBounds(bounds)
-
-        // update grid every 100 milliseconds and only when drawing,
-        // so we don't update the game when watchface isn't visible
-        if (lastZonedDateTime.plusNanos(100_000_000) < zonedDateTime) {
-            game?.update()
-            lastZonedDateTime = zonedDateTime
-        }
-
-        // finally draw
-        game?.draw(canvas)
+        // TODO: support opengl
     }
 }
 

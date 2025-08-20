@@ -22,7 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "WearWatchfaces"
 
 // (optional) features)
-include(":jetpack:feature:base")
 include(":jetpack:feature:editor")
 include(":jetpack:feature:background")
 include(":jetpack:feature:hands")
