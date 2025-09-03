@@ -1,0 +1,119 @@
+package nodomain.pacjo.wear.watchface.feature.editor.ui.screens
+
+import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.wear.compose.foundation.pager.HorizontalPager
+import androidx.wear.compose.foundation.pager.rememberPagerState
+import androidx.wear.compose.material.CircularProgressIndicator
+import androidx.wear.compose.material3.AnimatedPage
+import androidx.wear.compose.material3.HorizontalPagerScaffold
+import androidx.wear.watchface.style.UserStyleSetting
+import kotlinx.serialization.Serializable
+import nodomain.pacjo.wear.watchface.feature.editor.EditorStateHolder
+import nodomain.pacjo.wear.watchface.feature.editor.EditorUiState
+import nodomain.pacjo.wear.watchface.feature.editor.UserStylesAndPreview
+import nodomain.pacjo.wear.watchface.feature.editor.ui.activities.EditorActivity
+
+@Serializable
+data object SettingsOverviewScreen
+
+@Composable
+fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolder) {
+    when (uiState) {
+        is EditorUiState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier.Companion.fillMaxSize()
+            )
+        }
+
+        is EditorUiState.Success -> {
+            val userStylesAndPreview = uiState.userStylesAndPreview
+            val schema = uiState.userStylesAndPreview.schema
+
+            val listSettings = remember(schema) {
+                schema.rootUserStyleSettings
+                    .filterIsInstance<UserStyleSetting.ListUserStyleSetting>()
+//                    .filter { it.options.size > 1 }     // hide page if only one option is available // TODO: fix
+            }
+
+            Log.d(EditorActivity.Companion.TAG, "root styles: ${schema.rootUserStyleSettings}")
+            Log.d(EditorActivity.Companion.TAG, "list settings: $listSettings")
+
+            Box(modifier = Modifier.Companion.fillMaxSize()) {
+                // background preview
+                Image(
+                    bitmap = userStylesAndPreview.previewImage.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier.Companion.fillMaxSize()
+                )
+
+                if (listSettings.isNotEmpty()) {
+                    SettingsHorizontalPager(listSettings, userStylesAndPreview, stateHolder)
+                }
+            }
+        }
+
+        is EditorUiState.Error -> {
+            EditorErrorScreen(uiState.exception.message)
+        }
+    }
+}
+
+// TODO: add boolean settings at the end
+@Composable
+private fun SettingsHorizontalPager(
+    listSettings: List<UserStyleSetting.ListUserStyleSetting>,
+    userStylesAndPreview: UserStylesAndPreview,
+    stateHolder: EditorStateHolder
+) {
+    val numberOfPages = listSettings.size + 1
+    val pagerState = rememberPagerState(pageCount = { numberOfPages })
+
+    HorizontalPagerScaffold(
+        pagerState = pagerState
+    ) {
+        HorizontalPager(
+            state = pagerState
+        ) { currentPage ->
+            AnimatedPage(
+                pageIndex = currentPage,
+                pagerState = pagerState
+            ) {
+                // TODO: use AnimatedPage
+                when (currentPage) {
+                    // something like:
+//                    0 -> { /* colors */ }
+//                    1 -> { /* hands */ }
+//                    2 -> { /* complications */ }
+//                    3 -> { /* misc */ }
+
+                    // one of list settings pages
+                    in 0..<listSettings.size -> {
+                        val setting = listSettings[currentPage]
+                        GenericListSettingScreen(
+                            listSetting = setting,
+                            userStyle = userStylesAndPreview.userStyle
+                        ) { optionId ->
+                            stateHolder.setUserStyleOption(setting.id.toString(), optionId)
+                        }
+                    }
+
+                    // last page - complications
+                    numberOfPages - 1 -> {
+                        ComplicationsSettingScreen(
+                            complicationSlotsStateMap = userStylesAndPreview.complicationSlotsStateMap
+                        ) { complicationSlotId ->
+                            stateHolder.openComplicationDataSourceChooser(complicationSlotId)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
