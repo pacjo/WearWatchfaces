@@ -6,6 +6,7 @@ import android.graphics.Rect
 import androidx.annotation.StringRes
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toIcon
+import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
@@ -203,7 +204,7 @@ private fun <T : FeatureOption> generateStyleSettings(
             override val bounds = bounds
             override val zonedDateTime = previewTime
         }
-        val renderingContext = RenderingContext(canvasBackend, previewTime)
+        val renderingContext = RenderingContext(canvasBackend, previewTime, RenderParameters.DEFAULT_INTERACTIVE)
 
         // 3. Ask the option to draw its own preview using the universal rendering system
         option.drawPreview(renderingContext)

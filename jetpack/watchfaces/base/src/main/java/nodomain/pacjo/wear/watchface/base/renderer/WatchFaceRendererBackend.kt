@@ -2,6 +2,7 @@ package nodomain.pacjo.wear.watchface.base.renderer
 
 import android.graphics.Canvas
 import android.graphics.Rect
+import androidx.wear.watchface.RenderParameters
 import java.time.ZonedDateTime
 
 /**
@@ -39,7 +40,8 @@ interface OpenGLRendererBackend : WatchFaceRendererBackend {
  */
 data class RenderingContext(
     val backend: WatchFaceRendererBackend,
-    val zonedDateTime: ZonedDateTime
+    val zonedDateTime: ZonedDateTime,
+    val renderParameters: RenderParameters
 ) {
 
     /**

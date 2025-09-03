@@ -49,7 +49,7 @@ class CanvasRendererAdapter(
     ) {
         // create Canvas backend for this frame
         val canvasBackend = CanvasBackendImpl(canvas, bounds, zonedDateTime)
-        val context = RenderingContext(canvasBackend, zonedDateTime)
+        val context = RenderingContext(canvasBackend, zonedDateTime, renderParameters)
 
         // draw features in layer order
         drawableFeatures.forEach { feature ->

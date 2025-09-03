@@ -43,7 +43,7 @@ class OpenGLRendererAdapter(
     ) {
         // create OpenGL backend for this frame
         val openGLBackend = OpenGLBackendImpl(zonedDateTime)
-        val context = RenderingContext(openGLBackend, zonedDateTime)
+        val context = RenderingContext(openGLBackend, zonedDateTime, renderParameters)
 
         // draw features in layer order
         drawableFeatures.forEach { feature ->
