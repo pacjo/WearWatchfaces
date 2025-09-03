@@ -38,4 +38,5 @@ android {
 
 dependencies {
     api(libs.androidx.watchface)
+    api(libs.bundles.watchface.complications)
 }

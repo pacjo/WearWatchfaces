@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.activity.ComponentActivity
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
+import androidx.wear.watchface.client.ComplicationSlotState
 import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSchema
@@ -25,7 +26,8 @@ sealed class EditorUiState {
 data class UserStylesAndPreview(
     val previewImage: Bitmap,
     val schema: UserStyleSchema,
-    val userStyle: UserStyle
+    val userStyle: UserStyle,
+    val complicationSlotsStateMap: Map<Int, ComplicationSlotState>
 )
 
 class EditorStateHolder(
@@ -56,7 +58,8 @@ class EditorStateHolder(
         return UserStylesAndPreview(
             previewImage = bitmap,
             schema = editorSession.userStyleSchema,
-            userStyle = userStyle
+            userStyle = userStyle,
+            complicationSlotsStateMap = editorSession.complicationSlotsState.value
         )
     }
 
@@ -72,6 +75,12 @@ class EditorStateHolder(
             val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
             mutableUserStyle[setting] = option
             editorSession.userStyle.value = mutableUserStyle.toUserStyle()
+        }
+    }
+
+    fun openComplicationDataSourceChooser(complicationSlotId: Int) {
+        scope.launch(Dispatchers.Main.immediate) {
+            editorSession.openComplicationDataSourceChooser(complicationSlotId)
         }
     }
 }
