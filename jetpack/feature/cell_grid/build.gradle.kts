@@ -32,3 +32,7 @@ android {
         jvmTarget = "11"
     }
 }
+
+dependencies {
+    implementation(libs.androidx.annotation)
+}

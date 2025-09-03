@@ -8,7 +8,9 @@ import android.util.Log
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
+import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Vector2d
+import nodomain.pacjo.wear.watchface.feature.cell_grid.drawCell
 import nodomain.pacjo.wear.watchface.feature.cell_grid.setBorder
 import nodomain.pacjo.wear.watchface.snake.R
 import java.time.ZonedDateTime
@@ -54,22 +56,19 @@ object SnakeBackground : Background() {
 
 class SnakeGame(
     initialBounds: Rect,
-    gridSize: Int
+    val gridSize: Int
 ) {
     private var state = State.PLAYING
 
     private var grid = Grid2d<CellType>(gridSize) { CellType.NONE }
+    private var gridSpec = GridSpec.fromBounds(initialBounds, gridSize)
+
     // format: [head, body, body, ..., body, tail]
     private var snake = mutableListOf<Vector2d>()
     private lateinit var snakeDirection: Vector2d
 
     private lateinit var food: Vector2d
     private var pathToFood: List<Vector2d>? = null
-
-    private var width: Float = 0f
-    private var height: Float = 0f
-    private var horizontalSpacing: Float = 0f
-    private var verticalSpacing: Float = 0f
 
     // bound can change at runtime, so we keep track of them
     var currentBounds: Rect = Rect()
@@ -143,26 +142,7 @@ class SnakeGame(
         drawSnake(canvas)
         drawFood(canvas)
         drawObstacles(canvas)
-//        drawGridLines(canvas)
-    }
-
-    @Suppress("unused")     // might decide to use it someday
-    private fun drawGridLines(canvas: Canvas) {
-        val linePaint = Paint().apply {
-            color = Color.MAGENTA
-        }
-
-        // horizontal
-        for (lineNumH in 1..grid.width) {
-            val lineLevel = lineNumH * horizontalSpacing
-            canvas.drawLine(lineLevel, 0f, lineLevel, height, linePaint)
-        }
-
-        // vertical
-        for (lineNumV in 1..grid.height) {
-            val lineLevel = lineNumV * verticalSpacing
-            canvas.drawLine(0f, lineLevel, width, lineLevel, linePaint)
-        }
+//        canvas.drawGridLines(canvas)
     }
 
     private fun drawObstacles(canvas: Canvas) {
@@ -171,6 +151,8 @@ class SnakeGame(
             if (cell == CellType.OBSTACLE) {
                 canvas.drawCell(
                     position,
+                    gridSpec.horizontalSpacing,
+                    gridSpec.verticalSpacing,
                     Paint().apply {
                         color = Color.WHITE
                     }
@@ -183,6 +165,8 @@ class SnakeGame(
         snake.forEach { snakePart ->
             canvas.drawCell(
                 snakePart,
+                gridSpec.horizontalSpacing,
+                gridSpec.verticalSpacing,
                 Paint().apply {
                     color = Color.GREEN
                 }
@@ -194,6 +178,8 @@ class SnakeGame(
         // only draw if it exists
         canvas.drawCell(
             food,
+            gridSpec.horizontalSpacing,
+            gridSpec.verticalSpacing,
             Paint().apply {
                 color = Color.RED
             }
@@ -205,22 +191,14 @@ class SnakeGame(
         pathToFood?.forEach { pathElement ->
             canvas.drawCell(
                 pathElement,
+                gridSpec.horizontalSpacing,
+                gridSpec.verticalSpacing,
                 Paint().apply {
                     color = Color.BLUE
                     alpha = 100
                 }
             )
         }
-    }
-
-    private fun Canvas.drawCell(cellLocation: Vector2d, paint: Paint) {
-        this.drawRect(
-            horizontalSpacing * cellLocation.x,
-            verticalSpacing * cellLocation.y,
-            horizontalSpacing * (cellLocation.x + 1),
-            verticalSpacing * (cellLocation.y + 1),
-            paint
-        )
     }
 
     private fun placeSnake() {
@@ -312,10 +290,8 @@ class SnakeGame(
 
         Log.i(TAG, "Bounds changed, recalculating...")
         currentBounds.set(newBounds)
-        width = newBounds.width().toFloat()
-        height = newBounds.height().toFloat()
-        horizontalSpacing = width / grid.width
-        verticalSpacing = height / grid.height
+
+        gridSpec = GridSpec.fromBounds(newBounds, gridSize)
     }
 
     // https://en.wikipedia.org/wiki/A*_search_algorithm
