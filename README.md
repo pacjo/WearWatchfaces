@@ -4,8 +4,8 @@
 
 This project contains watchfaces written with both legacy [jetpack libraries](https://developer.android.com/jetpack/androidx/releases/wear-watchface) and newer [WatchFaceFormat](https://developer.android.com/training/wearables/wff).
 
-- legacy watchfaces are available in [`jetpack`](./jetpack)
-- WFF based watchfaces are available in [`wff`](./wff)
+- legacy watchfaces are available in [`jetpack`](./wear/jetpack)
+- WFF based watchfaces are available in [`wff`](./wear/wff)
 
 
 ## TODO:
