@@ -110,16 +110,6 @@ abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
             options.first()
         )
     }
-
-    final override fun getStyleSettings(context: Context): List<UserStyleSetting> {
-        return generateStyleSettings(
-            context = context,
-            featureId = featureId,
-            featureDisplayNameResourceId = featureDisplayNameResourceId,
-            featureDescriptionResourceId = featureDescriptionResourceId,
-            options = options
-        )
-    }
 }
 
 /**

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
 
+// TODO: rename to BackgroundMusicPlayerFeature
 class BackgroundMusicFeature(
     @RawRes private val soundResource: Int
 ) : FeatureFactory {
@@ -53,7 +54,4 @@ class BackgroundMusicPlayer(
             }
         }
     }
-
-    // TODO: (feature not configurable) remove, maybe?
-    override fun getStyleSettings(context: Context) = emptyList<UserStyleSetting>()
 }
