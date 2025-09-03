@@ -1,13 +1,14 @@
 [versions]
-agp = "8.12.1"
+agp = "8.12.2"
 kotlin = "2.2.10"
 jetpackWatchface = "1.3.0-alpha04"
-composeWear = "1.4.1"
+composeWear = "1.5.0"
 vectorDrawable = "1.2.0"
-composeBom = "2025.08.00"
+composeBom = "2025.08.01"
 wearToolingPreview = "1.0.0"
 activityCompose = "1.10.1"
 coreSplashscreen = "1.0.1"
+androidxAnnotation = "1.9.1"
 
 [libraries]
 androidx-watchface = { group = "androidx.wear.watchface", name = "watchface", version.ref = "jetpackWatchface" }
@@ -24,6 +25,7 @@ androidx-watchface-client = { group = "androidx.wear.watchface", name = "watchfa
 # Jetpack Compose
 androidx-wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeWear" }
 androidx-wear-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeWear" }
+androidx-wear-compose-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeWear" }
 androidx-wear-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeWear" }
 
 # others
@@ -36,6 +38,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "androidxAnnotation" }
 
 #implementation(kotlin("reflect"))
 
@@ -48,4 +51,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 [bundles]
 watchface-complications = ["androidx-watchface-complications-data-source", "androidx-watchface-complications-data-source-ktx", "androidx-watchface-complications-rendering"]
 watchface-editor = ["androidx-watchface-editor", "androidx-watchface-client"]
-jetpack-compose = ["androidx-wear-compose-foundation", "androidx-wear-compose-material", "androidx-wear-compose-navigation"]
+jetpack-compose = ["androidx-wear-compose-foundation", "androidx-wear-compose-material", "androidx-wear-compose-material3", "androidx-wear-compose-navigation"]

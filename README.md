@@ -38,3 +38,13 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] features should be able to opt out of being user-configurable
 - [x] make :jetpack:watchfaces:snake use new Grid2d class
 - [ ] redo previews
+- [ ] move :feature:base and :feature:complications related code to ...watchfaces package in base instead of ...watchfaces.base (utils package maybe too?)
+- [ ] maybe :feature:editor should be added automatically if watchface has editable features?
+- [ ] update preview in editor if complications change (or anything else happens
+- [ ] introduce InteractiveFeature interface for TapListener
+- [ ] introduce ConfigurableFeature interface for feature configuration (which should be removed from base feature)
+  - [ ] though how would that work for background?
+- [ ] handle ambient state in DrawableFeatures
+- [ ] features override `getStyleSettings` two times - can we change this?
+- [ ] merge WatchFaceFeature and FeatureFactory once more
+- [ ] check if complications could be further simplified
