@@ -35,6 +35,7 @@ include(":jetpack:watchfaces:base_digital")
 include(":jetpack:watchfaces:dots")
 include(":jetpack:watchfaces:jimball")
 include(":jetpack:watchfaces:snake")
+include(":jetpack:watchfaces:miss_minutes")
 
 // WatchFaceFormat based watchfaces
 include(":wff:jimball")
