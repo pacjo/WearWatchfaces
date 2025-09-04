@@ -1,18 +1,15 @@
 package nodomain.pacjo.wear.watchface.feature.editor.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
+import androidx.wear.compose.material.PositionIndicator
+import androidx.wear.compose.material.Scaffold
+import androidx.wear.compose.material.Vignette
+import androidx.wear.compose.material.VignettePosition
+import androidx.wear.compose.material3.TimeText
+import androidx.wear.compose.material3.timeTextCurvedText
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
 import nodomain.pacjo.wear.watchface.feature.editor.ui.composables.ListOptionEntry
@@ -23,30 +20,26 @@ fun GenericListSettingScreen(
     userStyle: UserStyle,
     onOptionClick: (optionId: String) -> Unit
 ) {
+    val listState = rememberScalingLazyListState()
     val currentOptionId = userStyle[listSetting]?.toString()
 
-    Column(
-        modifier = Modifier.Companion
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
-        horizontalAlignment = Alignment.Companion.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    Scaffold(
+        vignette = {
+            Vignette(vignettePosition = VignettePosition.TopAndBottom)
+        },
+        positionIndicator = {
+            PositionIndicator(scalingLazyListState = listState)
+        },
+        timeText = {
+            TimeText {
+                timeTextCurvedText(listSetting.displayName.toString())
+            }
+        }
     ) {
-        Text(
-            text = listSetting.displayName.toString(),
-            style = MaterialTheme.typography.title3,
-            textAlign = TextAlign.Companion.Center,
-            modifier = Modifier.Companion.padding(bottom = 8.dp)
-        )
-
-        // A scrollable list for all the options of this setting
-        ScalingLazyColumn(
-            modifier = Modifier.Companion.fillMaxSize(),
-            horizontalAlignment = Alignment.Companion.CenterHorizontally
-        ) {
+        ScalingLazyColumn(state = listState) {
             items(listSetting.options) { option ->
                 ListOptionEntry(
-                    option = option,
+                    option = option as UserStyleSetting.ListUserStyleSetting.ListOption,
                     isSelected = option.id.toString() == currentOptionId,
                     onClick = { onOptionClick(option.id.toString()) }
                 )

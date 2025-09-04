@@ -23,7 +23,7 @@ fun ComplicationsSettingScreen(
 ) {
     val density = LocalDensity.current
 
-    Box(modifier = Modifier.Companion.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
         for ((slotId, slotState) in complicationSlotsStateMap) {
             val bounds = slotState.bounds
             val left = with(density) { bounds.left.toDp() }
@@ -33,14 +33,14 @@ fun ComplicationsSettingScreen(
 
             // create clickable area
             Box(
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .offset(left, top)
                     .size((right - left), (bottom - top))
                     .clip(RoundedCornerShape(8.dp))
                     .clickable {
                         onComplicationSlotClick(slotId)
                     }
-                    .background(Color.Companion.Red.copy(alpha = 0.25f))      // TODO: remove
+                    .background(Color.Red.copy(alpha = 0.25f))      // TODO: remove
             )
         }
     }

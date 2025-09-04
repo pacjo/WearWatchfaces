@@ -28,7 +28,7 @@ fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolde
     when (uiState) {
         is EditorUiState.Loading -> {
             CircularProgressIndicator(
-                modifier = Modifier.Companion.fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -42,15 +42,15 @@ fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolde
 //                    .filter { it.options.size > 1 }     // hide page if only one option is available // TODO: fix
             }
 
-            Log.d(EditorActivity.Companion.TAG, "root styles: ${schema.rootUserStyleSettings}")
-            Log.d(EditorActivity.Companion.TAG, "list settings: $listSettings")
+            Log.d(EditorActivity.TAG, "root styles: ${schema.rootUserStyleSettings}")
+            Log.d(EditorActivity.TAG, "list settings: $listSettings")
 
-            Box(modifier = Modifier.Companion.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 // background preview
                 Image(
                     bitmap = userStylesAndPreview.previewImage.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.Companion.fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 if (listSettings.isNotEmpty()) {

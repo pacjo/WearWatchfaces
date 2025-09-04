@@ -1,49 +1,63 @@
 package nodomain.pacjo.wear.watchface.feature.editor.ui.composables
 
-import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.CompactChip
-import androidx.wear.compose.material.Icon
+import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.watchface.style.UserStyleSetting
-import nodomain.pacjo.wear.watchface.feature.editor.ui.activities.EditorActivity
 
 @Composable
 fun ListOptionEntry(
-    option: UserStyleSetting.Option,
+    option: UserStyleSetting.ListUserStyleSetting.ListOption,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    CompactChip(
-        onClick = onClick,
-        modifier = Modifier.Companion.fillMaxWidth(),
-        label = { Text(option.id.toString() /* TODO: change to .displayName or similar*/) },
-        icon = {
-            // TODO: don't like this
-            val iconBitmap =
-                (option as UserStyleSetting.ListUserStyleSetting.ListOption).icon?.loadDrawable(
-                    LocalContext.current
-                )?.toBitmap()?.asImageBitmap()
-            Log.d(EditorActivity.Companion.TAG, "icon: ${option.icon}")
-            iconBitmap?.let {
-                Icon(
-                    bitmap = it,
-                    contentDescription = option.displayName.toString(),
-                    modifier = Modifier.Companion.size(ChipDefaults.IconSize)
+    val bitmap = option.icon?.loadDrawable(LocalContext.current)?.toBitmap()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(32.dp))
+            .background(MaterialTheme.colors.surface)        // TODO: highlight selected option
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 )
+
+                Spacer(Modifier.width(8.dp))
             }
-        },
-        colors = if (isSelected) {
-            ChipDefaults.primaryChipColors()
-        } else {
-            ChipDefaults.secondaryChipColors()
+
+            Text(
+                text = option.displayName.toString(),
+                color = MaterialTheme.colors.onSurface
+            )
         }
-    )
+    }
 }
