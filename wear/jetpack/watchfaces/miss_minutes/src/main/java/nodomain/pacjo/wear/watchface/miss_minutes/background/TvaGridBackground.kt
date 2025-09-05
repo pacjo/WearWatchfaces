@@ -3,16 +3,14 @@ package nodomain.pacjo.wear.watchface.miss_minutes.background
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.ImageDecoder
 import android.graphics.Paint
-import android.graphics.drawable.AnimatedImageDrawable
 import android.os.Build
-import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import androidx.core.graphics.toColorInt
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.base.utils.decodeAnimatedDrawable
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec
@@ -82,21 +80,5 @@ class TvaGridBackground(
             canvas.drawBitmap(scaledAnimationFrameBitmap, bounds.width() * 0.30f, bounds.height() * 0.20f, drawablePaint)
         }
         // TODO: support opengl
-    }
-
-    // TODO: use in other places too
-    private fun decodeAnimatedDrawable(
-        context: Context,
-        @DrawableRes animatedDrawableResId: Int,
-        startAnimation: Boolean = true
-    ): AnimatedImageDrawable {
-        val source = ImageDecoder.createSource(context.resources, animatedDrawableResId)
-        val animatedDrawable = ImageDecoder.decodeDrawable(source) as AnimatedImageDrawable
-
-        // conditionally start animation on init
-        if (startAnimation)
-            animatedDrawable.start()
-
-        return animatedDrawable
     }
 }
