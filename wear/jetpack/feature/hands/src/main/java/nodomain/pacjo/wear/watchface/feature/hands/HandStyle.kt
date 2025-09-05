@@ -18,14 +18,13 @@ abstract class HandStyle : FeatureOption {
         Log.d(TAG, "preview called")
 
         // preview time to set the hour, minute and seconds hands in predetermined positions
-        // TODO: figure out how to use this
         val zonedDateTime = ZonedDateTime.now()
             .withHour(10)
             .withMinute(10)
             .withSecond(30)
             .truncatedTo(ChronoUnit.SECONDS)
 
-        draw(renderingContext)
+        draw(renderingContext.copy(zonedDateTime = zonedDateTime))
     }
 
     companion object {
