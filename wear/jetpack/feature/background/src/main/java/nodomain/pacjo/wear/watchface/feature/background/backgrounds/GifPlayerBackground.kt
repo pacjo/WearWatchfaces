@@ -9,7 +9,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.scale
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.background.R
@@ -41,7 +40,6 @@ class GifPlayerBackground(
             // I'd love to use AnimatedDrawable.draw(Canvas), but it doesn't respect set bounds
             // we extract the bitmap and scale it instead to work around the issue
             val bitmap = animatedDrawable.toBitmap()
-            bitmap.scale(bounds.width(), bounds.height())       // TODO: this might not do anything
             canvas.drawBitmap(bitmap, null, bounds, null)
         }
         // TODO: support opengl
