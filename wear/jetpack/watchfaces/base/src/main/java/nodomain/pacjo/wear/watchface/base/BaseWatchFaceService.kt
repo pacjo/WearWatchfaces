@@ -18,7 +18,10 @@ import kotlin.coroutines.coroutineContext
 abstract class BaseWatchFaceService : WatchFaceService() {
     @WatchFaceTypeIntDef abstract val watchFaceType: Int
     abstract fun getFeatureFactories(): List<FeatureFactory>
-    abstract fun createWatchFaceRenderer(): WatchFaceRenderer
+    open fun createWatchFaceRenderer(): WatchFaceRenderer {
+        // empty renderer by default, since it's possible to make a watchface using only features
+        return object : WatchFaceRenderer { }
+    }
 
     final override fun createUserStyleSchema(): UserStyleSchema {
         val featureFactories = getFeatureFactories()

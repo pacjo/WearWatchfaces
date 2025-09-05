@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.dots
 
-import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base_analog.AnalogWatchFaceService
 import nodomain.pacjo.wear.watchface.dots.background.DotsBackground
 import nodomain.pacjo.wear.watchface.feature.background.BackgroundFeature
@@ -15,9 +14,5 @@ class DotsWatchFaceService : AnalogWatchFaceService() {
               )
             )
         )
-    }
-
-    override fun createWatchFaceRenderer(): WatchFaceRenderer {
-        return WatchFaceRendererImpl()
     }
 }
