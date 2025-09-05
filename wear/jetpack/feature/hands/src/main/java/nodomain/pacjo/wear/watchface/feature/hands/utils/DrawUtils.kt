@@ -22,7 +22,7 @@ fun getHandsStats(zonedDateTime: ZonedDateTime): HandsStats {
         hours = hours,
         minutes = minutes,
         seconds = seconds,
-        hoursHandAngle = hours * 360f / 24f,
+        hoursHandAngle = hours * 360f / 12f,
         minutesHandAngle = minutes * 360f / 60f,
         secondsHandAngle = seconds * 360f / 60f
     )
