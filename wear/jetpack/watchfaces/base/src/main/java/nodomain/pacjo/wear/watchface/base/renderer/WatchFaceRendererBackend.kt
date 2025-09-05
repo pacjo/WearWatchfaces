@@ -19,24 +19,18 @@ interface CanvasRendererBackend : WatchFaceRendererBackend {
 
     /** The rectangular bounds of the drawing area */
     val bounds: Rect
-
-    /** The current time for this rendering frame */
-    val zonedDateTime: ZonedDateTime
 }
 
 /**
  * Backend for OpenGL ES-based rendering operations.
  */
-interface OpenGLRendererBackend : WatchFaceRendererBackend {
-    /** The current time for this rendering frame */
-    val zonedDateTime: ZonedDateTime
-}
+interface OpenGLRendererBackend : WatchFaceRendererBackend
 
 /**
  * A rendering context that provides access to the appropriate backend for drawing operations.
  *
  * @param backend specific rendering backend providing technology-specific context
- * @param zonedDateTime current time for this rendering frame, provided at the top level for convenience
+ * @param zonedDateTime current time for this rendering frame
  */
 data class RenderingContext(
     val backend: WatchFaceRendererBackend,
@@ -68,7 +62,7 @@ data class RenderingContext(
      */
     inline fun ifCanvas(block: (Canvas, Rect, ZonedDateTime) -> Unit) {
         if (backend is CanvasRendererBackend) {
-            block(backend.canvas, backend.bounds, backend.zonedDateTime)
+            block(backend.canvas, backend.bounds, zonedDateTime)
         }
     }
 

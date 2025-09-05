@@ -207,7 +207,6 @@ private fun <T : FeatureOption> generateStyleSettings(
         val canvasBackend = object : CanvasRendererBackend {
             override val canvas = canvas
             override val bounds = bounds
-            override val zonedDateTime = previewTime
         }
         val renderingContext = RenderingContext(canvasBackend, previewTime, RenderParameters.DEFAULT_INTERACTIVE)
 

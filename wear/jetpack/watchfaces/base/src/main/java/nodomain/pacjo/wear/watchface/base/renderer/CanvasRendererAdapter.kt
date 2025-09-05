@@ -48,7 +48,7 @@ class CanvasRendererAdapter(
         sharedAssets: SimpleSharedAssets
     ) {
         // create Canvas backend for this frame
-        val canvasBackend = CanvasBackendImpl(canvas, bounds, zonedDateTime)
+        val canvasBackend = CanvasBackendImpl(canvas, bounds)
         val context = RenderingContext(canvasBackend, zonedDateTime, renderParameters)
 
         // draw features in layer order
@@ -72,6 +72,5 @@ class CanvasRendererAdapter(
     private data class CanvasBackendImpl(
         override val canvas: Canvas,
         override val bounds: Rect,
-        override val zonedDateTime: ZonedDateTime
     ) : CanvasRendererBackend
 }

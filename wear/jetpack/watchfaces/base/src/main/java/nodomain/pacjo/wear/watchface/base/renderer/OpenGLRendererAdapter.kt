@@ -42,7 +42,7 @@ class OpenGLRendererAdapter(
         sharedAssets: SimpleSharedAssets
     ) {
         // create OpenGL backend for this frame
-        val openGLBackend = OpenGLBackendImpl(zonedDateTime)
+        val openGLBackend = OpenGLBackendImpl
         val context = RenderingContext(openGLBackend, zonedDateTime, renderParameters)
 
         // draw features in layer order
@@ -61,7 +61,5 @@ class OpenGLRendererAdapter(
         // TODO: implement
     }
 
-    private data class OpenGLBackendImpl(
-        override val zonedDateTime: ZonedDateTime
-    ) : OpenGLRendererBackend
+    private data object OpenGLBackendImpl : OpenGLRendererBackend
 }
