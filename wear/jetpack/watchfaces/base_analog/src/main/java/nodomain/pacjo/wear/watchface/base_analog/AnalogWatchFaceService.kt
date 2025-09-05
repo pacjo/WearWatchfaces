@@ -8,7 +8,7 @@ import nodomain.pacjo.wear.watchface.feature.hands.HandStyleFeature
 abstract class AnalogWatchFaceService : BaseWatchFaceService() {
     final override val watchFaceType = WatchFaceType.ANALOG
 
-    // provide some share analog features
+    // provide some shared analog features
     override fun getFeatureFactories(): List<FeatureFactory> {
         return listOf(
             HandStyleFeature()
