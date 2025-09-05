@@ -26,6 +26,7 @@ include(":wear:jetpack:feature:editor")
 include(":wear:jetpack:feature:background")
 include(":wear:jetpack:feature:hands")
 include(":wear:jetpack:feature:cell_grid")
+include(":wear:jetpack:feature:digital_clock")
 
 // actual watchfaces
 include(":wear:jetpack:watchfaces:base")

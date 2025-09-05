@@ -48,3 +48,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] features override `getStyleSettings` two times - can we change this?
 - [ ] merge WatchFaceFeature and FeatureFactory once more
 - [ ] check if complications could be further simplified
+- [ ] maybe don't hardcode font size but use `drawTextFillBounds`

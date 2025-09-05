@@ -1,41 +1,52 @@
 package nodomain.pacjo.wear.watchface.snake
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.RectF
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
+import nodomain.pacjo.wear.watchface.feature.digital_clock.utils.Alignment
+import nodomain.pacjo.wear.watchface.feature.digital_clock.utils.drawTextInBounds
 
 class WatchFaceRendererImpl(
     private val context: Context
 ) : WatchFaceRenderer {
     override fun draw(renderingContext: RenderingContext) {
-        renderingContext.ifCanvas { canvasBackend ->
-            val hour = canvasBackend.zonedDateTime.hour.toString().padStart(2, '0')
-            val minute = canvasBackend.zonedDateTime.minute.toString().padStart(2, '0')
+        renderingContext.ifCanvas { canvas, bounds, zonedDateTime ->
+            val hour = zonedDateTime.hour.toString().padStart(2, '0')
+            val minute = zonedDateTime.minute.toString().padStart(2, '0')
             val paint = Paint().apply {
                 color = Color.WHITE
-                textSize = canvasBackend.bounds.width() * 0.3f
+                textSize = bounds.width() * 0.3f
                 typeface = context.resources.getFont(R.font.ibm_mda)
                 isAntiAlias = true
                 setShadowLayer(5f, 5f, 5f, Color.BLACK)
             }
 
-            // TODO: rewrite and move
-            fun drawTextCentredBoth(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
-                val textBounds = Rect()
-
-                paint.getTextBounds(text, 0, text.length, textBounds)
-
-                canvas.drawText(text, cx, cy - textBounds.exactCenterY(), paint.apply {
-                    textAlign = Paint.Align.CENTER
-                })
-            }
-
-            drawTextCentredBoth(canvasBackend.canvas, paint, hour, canvasBackend.bounds.exactCenterX(), canvasBackend.bounds.exactCenterY() * 0.75f)
-            drawTextCentredBoth(canvasBackend.canvas, paint, minute, canvasBackend.bounds.exactCenterX(), canvasBackend.bounds.exactCenterY() * 1.25f)
+            // TODO: convert to single call when multiline is supported
+            canvas.drawTextInBounds(
+                hour,
+                RectF(
+                    bounds.width() * 0f,
+                    bounds.height() * 0.3f,
+                    bounds.width() * 1f,
+                    bounds.height() * 0.45f
+                ),
+                paint,
+                Alignment.CENTER
+            )
+            canvas.drawTextInBounds(
+                minute,
+                RectF(
+                    bounds.width() * 0f,
+                    bounds.height() * 0.55f,
+                    bounds.width() * 1f,
+                    bounds.height() * 0.7f
+                ),
+                paint,
+                Alignment.CENTER
+            )
         }
     }
 }
