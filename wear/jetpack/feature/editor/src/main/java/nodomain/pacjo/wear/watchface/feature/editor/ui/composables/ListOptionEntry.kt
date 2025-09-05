@@ -46,9 +46,7 @@ fun ListOptionEntry(
                 Image(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                    modifier = Modifier.size(32.dp)
                 )
 
                 Spacer(Modifier.width(8.dp))

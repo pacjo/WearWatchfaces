@@ -2,10 +2,12 @@ package nodomain.pacjo.wear.watchface.base.feature
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Path
 import android.graphics.Rect
 import androidx.annotation.StringRes
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toIcon
+import androidx.core.graphics.toRectF
 import androidx.wear.watchface.RenderParameters
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -176,9 +178,8 @@ private fun <T : FeatureOption> generateStyleSettings(
     options: List<T>
 ): List<UserStyleSetting> {
     val settingOptions = options.map { option ->
-        // 1. Create a bitmap for the preview - size limited by Wear OS
         val displayMetrics = context.resources.displayMetrics
-        val maxSize = 400       // Maximum size enforced by Wear OS
+        val maxSize = 400       // maximum size enforced by Wear OS
         val width = min(displayMetrics.widthPixels, maxSize)
         val height = min(displayMetrics.heightPixels, maxSize)
 
@@ -187,8 +188,22 @@ private fun <T : FeatureOption> generateStyleSettings(
         val bounds = Rect(0, 0, width, height)
         val previewTime = ZonedDateTime.now()
 
-        // 2. Create Canvas-based RenderingContext for preview generation
-        // Note: Previews currently use Canvas only - OpenGL support planned for future
+        // clip to screen shape, otherwise just round corners a bit
+        val radiusFraction = if (context.resources.configuration.isScreenRound) {
+            0.5f
+        } else {
+            0.1f
+        }
+        val path = Path()
+        path.addRoundRect(
+            bounds.toRectF(),
+            bounds.width() * radiusFraction,
+            bounds.height() * radiusFraction,
+            Path.Direction.CW
+        )
+        canvas.clipPath(path)
+
+        // prepare RenderingContext - canvas only for now - TODO: add support for opengl
         val canvasBackend = object : CanvasRendererBackend {
             override val canvas = canvas
             override val bounds = bounds
@@ -196,10 +211,9 @@ private fun <T : FeatureOption> generateStyleSettings(
         }
         val renderingContext = RenderingContext(canvasBackend, previewTime, RenderParameters.DEFAULT_INTERACTIVE)
 
-        // 3. Ask the option to draw its own preview using the universal rendering system
+        // actual drawing
         option.drawPreview(renderingContext)
 
-        // 4. Create the ListUserStyleSetting.Option with the generated preview
         ListUserStyleSetting.ListOption(
             UserStyleSetting.Option.Id(option.id),
             context.resources,
