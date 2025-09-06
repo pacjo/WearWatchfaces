@@ -100,7 +100,6 @@ class ComplicationsFeature(
                     defaultDataSourcePolicy = definition.defaultDataSourcePolicy,
                     bounds = definition.toComplicationSlotBounds()
                 )
-                    .setEnabled(definition.isEnabled)
                     .build()
             }
 

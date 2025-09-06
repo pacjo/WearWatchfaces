@@ -39,22 +39,15 @@ data class ComplicationSlotDefinition(
      */
     val defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy,
 
-    // TODO: think about isEnabled and isVisible
-    /**
-     * Whether this complication slot is enabled by default.
-     * Disabled slots won't be visible or interactive.
-     */
-    val isEnabled: Boolean = true,
-
-    /**
-     * Whether this complication slot is initially visible.
-     * Can be used to hide/show complications based on user settings.
-     */
-    val isVisible: Boolean = true,
-
-    // TODO: add docs
     // TODO: make better defaults
+    /**
+     * Default style when watchface is in active state.
+     */
     val activeStyle: ComplicationStyle = ComplicationStyle(),
+
+    /**
+     * Default style when watchface is in ambient state.
+     */
     val ambientStyle: ComplicationStyle = ComplicationStyle()
 ) {
 
