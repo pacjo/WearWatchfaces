@@ -208,10 +208,12 @@ private fun <T : FeatureOption> generateStyleSettings(
             override val canvas = canvas
             override val bounds = bounds
         }
-        val renderingContext = RenderingContext(canvasBackend, previewTime, RenderParameters.DEFAULT_INTERACTIVE)
 
-        // actual drawing
-        option.drawPreview(renderingContext)
+        // actual drawing - TODO: maybe there's a better way
+        GranularWatchFaceLayer.entries.forEach { layer ->
+            val renderingContext = RenderingContext(canvasBackend, previewTime, RenderParameters.DEFAULT_INTERACTIVE, layer)
+            option.drawPreview(renderingContext)
+        }
 
         ListUserStyleSetting.ListOption(
             UserStyleSetting.Option.Id(option.id),

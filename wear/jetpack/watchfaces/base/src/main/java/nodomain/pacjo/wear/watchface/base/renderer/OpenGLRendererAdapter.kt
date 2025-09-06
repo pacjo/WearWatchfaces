@@ -5,6 +5,7 @@ import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
+import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
 import java.time.ZonedDateTime
 
@@ -34,7 +35,7 @@ class OpenGLRendererAdapter(
     }
 
     private val drawableFeatures: List<DrawableFeature> by lazy {
-        features.filterIsInstance<DrawableFeature>().sortedBy { it.layer.ordinal }
+        features.filterIsInstance<DrawableFeature>()
     }
 
     override fun render(
@@ -43,15 +44,18 @@ class OpenGLRendererAdapter(
     ) {
         // create OpenGL backend for this frame
         val openGLBackend = OpenGLBackendImpl
-        val context = RenderingContext(openGLBackend, zonedDateTime, renderParameters)
 
-        // draw features in layer order
-        drawableFeatures.forEach { feature ->
-            feature.draw(context)
+        // draw watchface in layer order
+        GranularWatchFaceLayer.entries.forEach { layer ->
+            val context = RenderingContext(openGLBackend, zonedDateTime, renderParameters, layer)
+            drawableFeatures.filter { it.layer == layer }.forEach { feature ->
+                feature.draw(context)
+            }
+
+            // this *will* by called multiple times (once per layer), so it's important to
+            // handle this in the WatchFaceRenderer.draw(context) implementations
+            renderer.draw(context)
         }
-
-        // other drawing
-        renderer.draw(context)
     }
 
     override fun renderHighlightLayer(

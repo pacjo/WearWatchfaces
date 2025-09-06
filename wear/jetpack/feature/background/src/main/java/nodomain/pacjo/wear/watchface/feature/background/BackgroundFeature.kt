@@ -1,7 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
-import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
+import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.feature.ListFeature
 import nodomain.pacjo.wear.watchface.base.feature.ListFeatureFactory
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
@@ -13,7 +13,7 @@ class BackgroundFeature(
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
 
-    override val layer = WatchFaceLayer.BASE
+    override val layer = GranularWatchFaceLayer.BACKGROUND
 
     override fun draw(renderingContext: RenderingContext) {
         current.value.draw(renderingContext)

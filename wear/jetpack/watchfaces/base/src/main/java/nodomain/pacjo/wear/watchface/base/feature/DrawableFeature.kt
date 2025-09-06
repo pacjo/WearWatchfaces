@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.base.feature
 
-import androidx.wear.watchface.style.WatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 
 /**
@@ -15,7 +14,7 @@ import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
  * - [nodomain.pacjo.wear.watchface.base.renderer.OpenGLRendererAdapter] for OpenGL-based watch faces
  *
  * @see RenderingContext
- * @see WatchFaceLayer
+ * @see GranularWatchFaceLayer
  * @see WatchFaceFeature
  */
 interface DrawableFeature : WatchFaceFeature {
@@ -23,9 +22,9 @@ interface DrawableFeature : WatchFaceFeature {
     /**
      * The layer on which this feature should be drawn.
      *
-     * @see WatchFaceLayer
+     * @see GranularWatchFaceLayer
      */
-    val layer: WatchFaceLayer
+    val layer: GranularWatchFaceLayer
 
     /**
      * This method is called during each frame render cycle and should contain all drawing logic

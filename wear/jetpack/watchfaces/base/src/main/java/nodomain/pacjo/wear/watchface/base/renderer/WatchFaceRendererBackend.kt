@@ -3,6 +3,7 @@ package nodomain.pacjo.wear.watchface.base.renderer
 import android.graphics.Canvas
 import android.graphics.Rect
 import androidx.wear.watchface.RenderParameters
+import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import java.time.ZonedDateTime
 
 /**
@@ -28,14 +29,12 @@ interface OpenGLRendererBackend : WatchFaceRendererBackend
 
 /**
  * A rendering context that provides access to the appropriate backend for drawing operations.
- *
- * @param backend specific rendering backend providing technology-specific context
- * @param zonedDateTime current time for this rendering frame
  */
 data class RenderingContext(
     val backend: WatchFaceRendererBackend,
     val zonedDateTime: ZonedDateTime,
-    val renderParameters: RenderParameters
+    val renderParameters: RenderParameters,
+    val layer: GranularWatchFaceLayer
 ) {
 
     /**

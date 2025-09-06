@@ -10,11 +10,12 @@ import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.complications.rendering.ComplicationStyle
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
-import androidx.wear.watchface.style.WatchFaceLayer
 import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
 import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
+import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.set
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 
 class ComplicationsFeature(
@@ -131,7 +132,7 @@ class ComplicationsFeature(
 
 class Complications : DrawableFeature {
 
-    override val layer: WatchFaceLayer = WatchFaceLayer.COMPLICATIONS
+    override val layer = GranularWatchFaceLayer.COMPLICATIONS
 
     private var complicationSlotsManager: ComplicationSlotsManager? = null
 
