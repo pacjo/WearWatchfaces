@@ -5,7 +5,6 @@ import android.graphics.RectF
 import androidx.core.graphics.toColorInt
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.data.ComplicationType
-import androidx.wear.watchface.complications.rendering.ComplicationStyle
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base_digital.DigitalWatchFaceService
 import nodomain.pacjo.wear.watchface.feature.background.BackgroundFeature
@@ -30,9 +29,7 @@ class MissMinutesWatchFaceService : DigitalWatchFaceService() {
             ComplicationsFeature {
                 val color = "#F5790C".toColorInt()
                 val typeface = this.resources.getFont(R.font.anonymous_pro)
-                val activeStyle = ComplicationStyle().apply {
-                    borderStyle = ComplicationStyle.BORDER_STYLE_NONE
-
+                val activeStyle = ComplicationSlotDefinition.defaultComplicationStyle.apply {
                     backgroundColor = Color.argb(150, 0, 0, 0)      // transparent black
 
                     iconColor = color
