@@ -12,11 +12,11 @@ import nodomain.pacjo.wear.watchface.feature.background.BackgroundFeature
 import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationSlotDefinition
 import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationsFeature
-import nodomain.pacjo.wear.watchface.base.feature.complications.battery
-import nodomain.pacjo.wear.watchface.base.feature.complications.date
-import nodomain.pacjo.wear.watchface.base.feature.complications.general
-import nodomain.pacjo.wear.watchface.base.feature.complications.steps
-import nodomain.pacjo.wear.watchface.base.feature.complications.textOnly
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.battery
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.date
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.general
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.steps
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.textOnly
 import nodomain.pacjo.wear.watchface.miss_minutes.background.TvaGridBackground
 
 class MissMinutesWatchFaceService : DigitalWatchFaceService() {

@@ -5,6 +5,11 @@ import androidx.wear.watchface.complications.ComplicationSlotBounds
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.rendering.ComplicationStyle
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.battery
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.date
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.empty
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.steps
+import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.textOnly
 
 /**
  * A single complication slot with all necessary configuration.
@@ -59,5 +64,92 @@ data class ComplicationSlotDefinition(
      */
     fun toComplicationSlotBounds(): ComplicationSlotBounds {
         return ComplicationSlotBounds(bounds)
+    }
+
+    companion object {
+        /**
+         * Creates a circular complication slot centered at the given position.
+         *
+         * @param id Unique identifier for the slot
+         * @param centerX X coordinate of center (0.0 to 1.0)
+         * @param centerY Y coordinate of center (0.0 to 1.0)
+         * @param width Width as fraction of watch face size
+         * @param height Height as fraction of watch face size
+         * @param supportedTypes List of supported complication types
+         * @param defaultDataSourcePolicy Default data source
+         */
+        fun centered(
+            id: Int,
+            centerX: Float,
+            centerY: Float,
+            width: Float,
+            height: Float,
+            supportedTypes: List<ComplicationType>,
+            defaultDataSourcePolicy: DefaultComplicationDataSourcePolicy = DefaultComplicationDataSourcePolicy.empty()
+        ): ComplicationSlotDefinition {
+            val bounds = RectF(
+                centerX - width,
+                centerY - height,
+                centerX + width,
+                centerY + height
+            )
+
+            return ComplicationSlotDefinition(
+                id = id,
+                bounds = bounds,
+                supportedTypes = supportedTypes,
+                defaultDataSourcePolicy = defaultDataSourcePolicy
+            )
+        }
+
+        // TODO: add bounds square (taking: cx, cy, size) and taking: cx, cy, width, height
+
+        /**
+         * Extension function to easily create a date complication.
+         */
+        fun date(
+            id: Int,
+            bounds: RectF,
+            supportedTypes: List<ComplicationType> = ComplicationType.textOnly() // TODO: check
+        ): ComplicationSlotDefinition {
+            return ComplicationSlotDefinition(
+                id = id,
+                bounds = bounds,
+                supportedTypes = supportedTypes,
+                defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy.date()
+            )
+        }
+
+        /**
+         * Extension function to easily create a battery complication.
+         */
+        fun battery(
+            id: Int,
+            bounds: RectF,
+            supportedTypes: List<ComplicationType> = listOf(ComplicationType.RANGED_VALUE, ComplicationType.SHORT_TEXT, ComplicationType.MONOCHROMATIC_IMAGE) // TODO: check
+        ): ComplicationSlotDefinition {
+            return ComplicationSlotDefinition(
+                id = id,
+                bounds = bounds,
+                supportedTypes = supportedTypes,
+                defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy.battery()
+            )
+        }
+
+        /**
+         * Extension function to easily create a steps complication.
+         */
+        fun steps(
+            id: Int,
+            bounds: RectF,
+            supportedTypes: List<ComplicationType> = listOf(ComplicationType.RANGED_VALUE, ComplicationType.SHORT_TEXT, ComplicationType.MONOCHROMATIC_IMAGE) // TODO: check
+        ): ComplicationSlotDefinition {
+            return ComplicationSlotDefinition(
+                id = id,
+                bounds = bounds,
+                supportedTypes = supportedTypes,
+                defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy.steps()
+            )
+        }
     }
 }
