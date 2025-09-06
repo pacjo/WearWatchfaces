@@ -33,37 +33,6 @@ class ComplicationsFeature(
     ): WatchFaceFeature {
         return Complications()
     }
-}
-
-class Complications : DrawableFeature {
-
-    override val layer: WatchFaceLayer = WatchFaceLayer.COMPLICATIONS
-
-    private var complicationSlotsManager: ComplicationSlotsManager? = null
-
-    /**
-     * Sets the ComplicationSlotsManager for this feature.
-     * This should be called by the WatchFaceService after creating the ComplicationSlotsManager.
-     */
-    fun setComplicationSlotsManager(complicationSlotsManager: ComplicationSlotsManager) {
-        this.complicationSlotsManager = complicationSlotsManager
-    }
-
-    override fun draw(renderingContext: RenderingContext) {
-        // Complications are primarily 2D and work best with Canvas rendering
-        renderingContext.ifCanvas { canvas, bounds, zonedDateTime ->
-            complicationSlotsManager?.let { manager ->
-                manager.complicationSlots.values.forEach { complicationSlot ->
-                    complicationSlot.render(
-                        canvas = canvas,
-                        zonedDateTime = zonedDateTime,
-                        renderParameters = renderingContext.renderParameters
-                    )
-                }
-            }
-        }
-        // TODO: support opengl
-    }
 
     companion object {
         fun createComplicationSlotsManager(
@@ -171,5 +140,36 @@ class Complications : DrawableFeature {
                     feature.setComplicationSlotsManager(complicationSlotsManager)
                 }
         }
+    }
+}
+
+class Complications : DrawableFeature {
+
+    override val layer: WatchFaceLayer = WatchFaceLayer.COMPLICATIONS
+
+    private var complicationSlotsManager: ComplicationSlotsManager? = null
+
+    /**
+     * Sets the ComplicationSlotsManager for this feature.
+     * This should be called by the WatchFaceService after creating the ComplicationSlotsManager.
+     */
+    fun setComplicationSlotsManager(complicationSlotsManager: ComplicationSlotsManager) {
+        this.complicationSlotsManager = complicationSlotsManager
+    }
+
+    override fun draw(renderingContext: RenderingContext) {
+        // Complications are primarily 2D and work best with Canvas rendering
+        renderingContext.ifCanvas { canvas, bounds, zonedDateTime ->
+            complicationSlotsManager?.let { manager ->
+                manager.complicationSlots.values.forEach { complicationSlot ->
+                    complicationSlot.render(
+                        canvas = canvas,
+                        zonedDateTime = zonedDateTime,
+                        renderParameters = renderingContext.renderParameters
+                    )
+                }
+            }
+        }
+        // TODO: support opengl
     }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
-import nodomain.pacjo.wear.watchface.base.feature.complications.Complications
+import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationsFeature
 import kotlin.coroutines.coroutineContext
 
 abstract class BaseWatchFaceService : WatchFaceService() {
@@ -38,7 +38,7 @@ abstract class BaseWatchFaceService : WatchFaceService() {
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager {
         // ignored if no ComplicationsFeature factory is present
-        return Complications.createComplicationSlotsManager(
+        return ComplicationsFeature.createComplicationSlotsManager(
             context = this,
             featureFactories = getFeatureFactories(),
             currentUserStyleRepository = currentUserStyleRepository
@@ -59,7 +59,7 @@ abstract class BaseWatchFaceService : WatchFaceService() {
         }
 
         // connect each complications feature with ComplicationSlotsManager
-        Complications.connectComplicationFeatures(features, complicationSlotsManager)
+        ComplicationsFeature.connectComplicationFeatures(features, complicationSlotsManager)
 
         val renderer = CanvasRendererAdapter(
             renderer = createWatchFaceRenderer(),
