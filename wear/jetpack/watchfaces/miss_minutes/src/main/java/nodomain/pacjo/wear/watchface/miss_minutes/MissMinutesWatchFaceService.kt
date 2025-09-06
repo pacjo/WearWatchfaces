@@ -21,28 +21,27 @@ import nodomain.pacjo.wear.watchface.miss_minutes.background.TvaGridBackground
 
 class MissMinutesWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        // TODO: move somewhere closer to ComplicationFeature
-        val color = "#F5790C".toColorInt()
-        val typeface = this.resources.getFont(R.font.anonymous_pro)
-        val activeStyle = ComplicationStyle().apply {
-            borderStyle = ComplicationStyle.BORDER_STYLE_NONE
-
-            backgroundColor = Color.argb(150, 0, 0, 0)      // transparent black
-
-            iconColor = color
-            textColor = color
-
-            setTitleTypeface(typeface)
-            setTextTypeface(typeface)
-        }
-
         return super.getFeatureFactories() + listOf(
             BackgroundFeature.Companion(
                 listOf(
                     TvaGridBackground(this)
                 )
             ),
-            ComplicationsFeature(
+            ComplicationsFeature {
+                val color = "#F5790C".toColorInt()
+                val typeface = this.resources.getFont(R.font.anonymous_pro)
+                val activeStyle = ComplicationStyle().apply {
+                    borderStyle = ComplicationStyle.BORDER_STYLE_NONE
+
+                    backgroundColor = Color.argb(150, 0, 0, 0)      // transparent black
+
+                    iconColor = color
+                    textColor = color
+
+                    setTitleTypeface(typeface)
+                    setTextTypeface(typeface)
+                }
+
                 listOf(
                     // top non-configurable date
                     ComplicationSlotDefinition(
@@ -69,7 +68,7 @@ class MissMinutesWatchFaceService : DigitalWatchFaceService() {
                         activeStyle = activeStyle
                     )
                 )
-            )
+            }
         )
     }
 

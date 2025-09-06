@@ -20,6 +20,10 @@ class ComplicationsFeature(
     val definitions: List<ComplicationSlotDefinition>
 ) : FeatureFactory {
 
+    constructor(
+        block: () -> List<ComplicationSlotDefinition>
+    ) : this(block())
+
     override fun getStyleSettings(context: Context): List<UserStyleSetting> {
         // TODO: think about it (drawComplicationsInAmbient (bool), ambientComplicationStyle (list) ...)
         return emptyList()
