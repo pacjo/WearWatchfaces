@@ -1,5 +1,6 @@
 package nodomain.pacjo.wear.watchface.base.feature.complications
 
+import android.graphics.Color
 import android.graphics.RectF
 import androidx.wear.watchface.complications.ComplicationSlotBounds
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
@@ -43,7 +44,7 @@ data class ComplicationSlotDefinition(
     /**
      * Default style when watchface is in active state.
      */
-    val activeStyle: ComplicationStyle = ComplicationStyle(),
+    val activeStyle: ComplicationStyle = defaultComplicationStyle,
 
     /**
      * Default style when watchface is in ambient state.
@@ -97,6 +98,12 @@ data class ComplicationSlotDefinition(
                 supportedTypes = supportedTypes,
                 defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy.steps()
             )
+        }
+
+        val defaultComplicationStyle = ComplicationStyle().apply {
+            backgroundColor = Color.TRANSPARENT
+            borderStyle = ComplicationStyle.BORDER_STYLE_NONE
+            rangedValueRingWidth = 4
         }
     }
 }
