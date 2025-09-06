@@ -15,6 +15,7 @@ fun ComplicationType.Companion.general(): List<ComplicationType> = listOf(
     ComplicationType.WEIGHTED_ELEMENTS,
     ComplicationType.RANGED_VALUE,
     ComplicationType.LONG_TEXT,
+    ComplicationType.EMPTY
 )
 
 /**
@@ -26,7 +27,8 @@ fun ComplicationType.Companion.compact(): List<ComplicationType> = listOf(
     ComplicationType.RANGED_VALUE,
     ComplicationType.MONOCHROMATIC_IMAGE,
     ComplicationType.GOAL_PROGRESS,
-    ComplicationType.WEIGHTED_ELEMENTS
+    ComplicationType.WEIGHTED_ELEMENTS,
+    ComplicationType.EMPTY
 )
 
 /**
@@ -34,5 +36,6 @@ fun ComplicationType.Companion.compact(): List<ComplicationType> = listOf(
  */
 fun ComplicationType.Companion.textOnly(): List<ComplicationType> = listOf(
     ComplicationType.SHORT_TEXT,
-    ComplicationType.LONG_TEXT
+    ComplicationType.LONG_TEXT,
+    ComplicationType.EMPTY
 )

@@ -55,12 +55,15 @@ fun DefaultComplicationDataSourcePolicy.Companion.battery(): DefaultComplication
  */
 fun DefaultComplicationDataSourcePolicy.Companion.mediaPlayer(): DefaultComplicationDataSourcePolicy {
     val primaryDataSource = when {
-        // TODO: add providers for wear os 5 and 6
+        // TODO: add providers for wear os 5(.1) and 6
         isAtLeastWearOs4() -> ComponentName(
             "com.google.android.wearable.media.sessions",
             "com.google.android.clockwork.media.complication.ComplicationProviderService"
         )
-        isAtLeastWearOs3() -> TODO("MediaPlayer complication ComponentName for Wear OS 3 is unknown")
+        isAtLeastWearOs3() -> ComponentName(
+            "com.google.android.wearable.sysui",
+            "com.google.android.clockwork.sysui.experiences.media.CurrentMediaProviderService"
+        )
         isAtLeastWearOs2() -> ComponentName(
             "com.google.android.wearable.app",
             "com.google.android.clockwork.home.complications.providers.CurrentMediaProviderService"
@@ -69,7 +72,9 @@ fun DefaultComplicationDataSourcePolicy.Companion.mediaPlayer(): DefaultComplica
     }
 
     return DefaultComplicationDataSourcePolicy(
-        SystemDataSources.DATA_SOURCE_WATCH_BATTERY,
-        ComplicationType.RANGED_VALUE
+        primaryDataSource,
+        ComplicationType.SMALL_IMAGE,
+        SystemDataSources.NO_DATA_SOURCE,
+        ComplicationType.EMPTY
     )
 }
