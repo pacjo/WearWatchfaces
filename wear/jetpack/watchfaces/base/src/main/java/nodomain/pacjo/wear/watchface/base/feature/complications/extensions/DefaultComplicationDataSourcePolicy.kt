@@ -73,5 +73,3 @@ fun DefaultComplicationDataSourcePolicy.Companion.mediaPlayer(): DefaultComplica
         ComplicationType.RANGED_VALUE
     )
 }
-
-// TODO: create DefaultComplicationDataSourcePolicy.Companion.weather()
