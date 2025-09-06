@@ -12,7 +12,7 @@ import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
 abstract class Background : FeatureOption {
     abstract fun draw(renderingContext: RenderingContext)
 
-    final override fun drawPreview(renderingContext: RenderingContext) {
+    override fun drawPreview(renderingContext: RenderingContext) {
         Log.d(TAG, "preview called")
 
         draw(renderingContext)
