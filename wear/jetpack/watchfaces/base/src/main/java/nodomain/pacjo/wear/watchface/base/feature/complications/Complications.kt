@@ -7,6 +7,7 @@ import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawable
 import androidx.wear.watchface.complications.rendering.ComplicationDrawable
+import androidx.wear.watchface.complications.rendering.ComplicationStyle
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
@@ -57,52 +58,34 @@ class ComplicationsFeature(
                 val canvasComplicationFactory =
                     CanvasComplicationFactory { watchState, listener ->
                         val complicationDrawable = ComplicationDrawable(context)
-                        // Apply the custom style from the definition
-                        // TODO: I'd like to do this:
+                        // I'd like to do this:
                         // complicationDrawable.activeStyle = definition.complicationStyle
-                        // but 'var cannot be re-assigned', so: - TODO: maybe use reflection?
-                        complicationDrawable.activeStyle.apply {
-                            backgroundColor = definition.activeStyle.backgroundColor
-                            backgroundDrawable = definition.activeStyle.backgroundDrawable
-                            textColor = definition.activeStyle.textColor
-                            titleColor = definition.activeStyle.titleColor
-                            setTextTypeface(definition.activeStyle.textTypeface)
-                            setTitleTypeface(definition.activeStyle.titleTypeface)
-                            imageColorFilter = definition.activeStyle.imageColorFilter
-                            iconColor = definition.activeStyle.iconColor
-                            textSize = definition.activeStyle.textSize
-                            titleSize = definition.activeStyle.titleSize
-                            borderColor = definition.activeStyle.borderColor
-                            borderStyle = definition.activeStyle.borderStyle
-                            borderDashWidth = definition.activeStyle.borderDashWidth
-                            borderDashGap = definition.activeStyle.borderDashGap
-                            borderRadius = definition.activeStyle.borderRadius
-                            rangedValueRingWidth = definition.activeStyle.rangedValueRingWidth
-                            rangedValuePrimaryColor = definition.activeStyle.rangedValuePrimaryColor
-                            rangedValueSecondaryColor = definition.activeStyle.rangedValueSecondaryColor
-                            highlightColor = definition.activeStyle.highlightColor
+                        // but 'var cannot be re-assigned', so:
+                        fun ComplicationStyle.set(complicationStyle: ComplicationStyle) {
+                            backgroundColor = complicationStyle.backgroundColor
+                            backgroundDrawable = complicationStyle.backgroundDrawable
+                            textColor = complicationStyle.textColor
+                            titleColor = complicationStyle.titleColor
+                            setTextTypeface(complicationStyle.textTypeface)
+                            setTitleTypeface(complicationStyle.titleTypeface)
+                            imageColorFilter = complicationStyle.imageColorFilter
+                            iconColor = complicationStyle.iconColor
+                            textSize = complicationStyle.textSize
+                            titleSize = complicationStyle.titleSize
+                            borderColor = complicationStyle.borderColor
+                            borderStyle = complicationStyle.borderStyle
+                            borderDashWidth = complicationStyle.borderDashWidth
+                            borderDashGap = complicationStyle.borderDashGap
+                            borderRadius = complicationStyle.borderRadius
+                            rangedValueRingWidth = complicationStyle.rangedValueRingWidth
+                            rangedValuePrimaryColor = complicationStyle.rangedValuePrimaryColor
+                            rangedValueSecondaryColor = complicationStyle.rangedValueSecondaryColor
+                            highlightColor = complicationStyle.highlightColor
                         }
-                        complicationDrawable.ambientStyle.apply {
-                            backgroundColor = definition.ambientStyle.backgroundColor
-                            backgroundDrawable = definition.ambientStyle.backgroundDrawable
-                            textColor = definition.ambientStyle.textColor
-                            titleColor = definition.ambientStyle.titleColor
-                            setTextTypeface(definition.ambientStyle.textTypeface)
-                            setTitleTypeface(definition.ambientStyle.titleTypeface)
-                            imageColorFilter = definition.ambientStyle.imageColorFilter
-                            iconColor = definition.ambientStyle.iconColor
-                            textSize = definition.ambientStyle.textSize
-                            titleSize = definition.ambientStyle.titleSize
-                            borderColor = definition.ambientStyle.borderColor
-                            borderStyle = definition.ambientStyle.borderStyle
-                            borderDashWidth = definition.ambientStyle.borderDashWidth
-                            borderDashGap = definition.ambientStyle.borderDashGap
-                            borderRadius = definition.ambientStyle.borderRadius
-                            rangedValueRingWidth = definition.ambientStyle.rangedValueRingWidth
-                            rangedValuePrimaryColor = definition.ambientStyle.rangedValuePrimaryColor
-                            rangedValueSecondaryColor = definition.ambientStyle.rangedValueSecondaryColor
-                            highlightColor = definition.ambientStyle.highlightColor
-                        }
+
+                        complicationDrawable.activeStyle.set(definition.activeStyle)
+                        complicationDrawable.ambientStyle.set(definition.ambientStyle)
+
                         CanvasComplicationDrawable(
                             complicationDrawable,
                             watchState,
