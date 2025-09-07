@@ -12,7 +12,6 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 
 - [ ] use good practises for android libraries -  https://developer.android.com/studio/projects/android-library
 - [ ] allow overriding style defaults per watchface (for example when customization is disabled)
-- [ ] add priority to WatchFaceFeature-s to order them consistently in the on watch editor
 - [ ] make all ic_launcher resources specify `adaptive` icon
 - [x] make jimball play [Funkytown](https://www.youtube.com/watch?v=Z6dqIYKIBSU) (maybe even configurable: **never**, **on_touch**, **always**)
 - [ ] add jimball gif sources (pixelorama project) and figure out how to manage original sources for WFF based watchfaces
@@ -32,7 +31,7 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] convert BackgroundMusicPlayer to proper feature module
 - [ ] add TapListener feature
 - [ ] allow features to implement multiple (e.g. background can be a background and a taplistener)
-- [ ] make drawing from WatchFaceRendererImpl WatchFaceLayer aware
+- [x] make drawing from WatchFaceRendererImpl WatchFaceLayer aware
 - [x] unify Analog and Digital WatchFaceService-s and RendererAdapter-s
 - [ ] maybe :jetpack:watchface:base should depend on :jetpack:feature:background?
 - [ ] features should be able to opt out of being user-configurable
