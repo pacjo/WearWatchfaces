@@ -1,11 +1,9 @@
 package nodomain.pacjo.wear.watchface.feature.digital_clock.utils
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
-import androidx.core.graphics.withClip
 
 data class Alignment(
     val horizontal: Horizontal,
