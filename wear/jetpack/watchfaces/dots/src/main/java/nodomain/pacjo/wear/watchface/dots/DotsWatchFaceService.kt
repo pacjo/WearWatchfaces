@@ -9,9 +9,9 @@ class DotsWatchFaceService : AnalogWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
         return super.getFeatureFactories() + listOf(
             BackgroundFeature.Companion(
-              listOf(
-                  DotsBackground
-              )
+                listOf(
+                    DotsBackground
+                )
             )
         )
     }

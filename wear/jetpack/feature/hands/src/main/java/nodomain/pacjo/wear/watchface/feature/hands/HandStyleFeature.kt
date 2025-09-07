@@ -5,7 +5,8 @@ import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.base.feature.ListFeature
 import nodomain.pacjo.wear.watchface.base.feature.ListFeatureFactory
 import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
-import nodomain.pacjo.wear.watchface.feature.hands.styles.ClassicHandStyle
+import nodomain.pacjo.wear.watchface.feature.hands.styles.BoldHandStyle
+import nodomain.pacjo.wear.watchface.feature.hands.styles.SimpleHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
 
 class HandStyleFeature(
@@ -25,7 +26,12 @@ class HandStyleFeature(
         private const val FEATURE_ID: String = "hand_style"
         private val FEATURE_DISPLAY_NAME_RESOURCE_ID: Int = R.string.hands_style_setting
         private val FEATURE_DESCRIPTION_RESOURCE_ID: Int = R.string.hands_style_setting_description
-        private val OPTIONS = listOf(ClassicHandStyle, ModernHandStyle)
+        private val OPTIONS = listOf(
+            SimpleHandStyle,
+            ModernHandStyle,
+            BoldHandStyle(true),
+            BoldHandStyle(false)
+        )
 
         /**
          * The public constructor for this feature's factory.
