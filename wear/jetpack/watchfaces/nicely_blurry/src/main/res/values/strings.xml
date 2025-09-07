@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Nicely Blurry</string>
+    
+    <string name="blurry_blobs_background">Blurry Blobs</string>
+</resources>
