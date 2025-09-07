@@ -20,7 +20,7 @@ object DotsBackground : Background() {
                 color = Color.BLACK
                 isAntiAlias = true
             }
-            val circleRadius = min(bounds.width(), bounds.height()) * 0.05f
+            val circleRadius = min(bounds.width(), bounds.height()) * 0.065f
             val circleSpacing = circleRadius * 3.2f // center-to-center distance
 
             val extraCircles = 4
