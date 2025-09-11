@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.wear.compose.material.MaterialTheme
@@ -35,9 +36,9 @@ fun ListOptionEntry(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(32.dp))
-            .background(MaterialTheme.colors.surface)        // TODO: highlight selected option
+            .background(MaterialTheme.colors.surface)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -46,7 +47,7 @@ fun ListOptionEntry(
                 Image(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(36.dp)
                 )
 
                 Spacer(Modifier.width(8.dp))
@@ -54,7 +55,8 @@ fun ListOptionEntry(
 
             Text(
                 text = option.displayName.toString(),
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSurface,
+                fontWeight = if (isSelected) FontWeight.Bold else null      // make current setting bold
             )
         }
     }

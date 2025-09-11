@@ -39,8 +39,9 @@ fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolde
             val listSettings = remember(schema) {
                 schema.rootUserStyleSettings
                     .filterIsInstance<UserStyleSetting.ListUserStyleSetting>()
-//                    .filter { it.options.size > 1 }     // hide page if only one option is available // TODO: fix
+                    .filter { it.options.size > 1 }     // hide page if only one option is available
             }
+            val areComplicationsPresent = userStylesAndPreview.complicationSlotsStateMap.isNotEmpty()
 
             Log.d(EditorActivity.TAG, "root styles: ${schema.rootUserStyleSettings}")
             Log.d(EditorActivity.TAG, "list settings: $listSettings")
@@ -53,8 +54,8 @@ fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolde
                     modifier = Modifier.fillMaxSize()
                 )
 
-                if (listSettings.isNotEmpty()) {
-                    SettingsHorizontalPager(listSettings, userStylesAndPreview, stateHolder)
+                if (listSettings.isNotEmpty() || areComplicationsPresent) {
+                    SettingsHorizontalPager(listSettings, userStylesAndPreview, stateHolder, areComplicationsPresent)
                 }
             }
         }
@@ -70,9 +71,10 @@ fun SettingsOverviewScreen(uiState: EditorUiState, stateHolder: EditorStateHolde
 private fun SettingsHorizontalPager(
     listSettings: List<UserStyleSetting.ListUserStyleSetting>,
     userStylesAndPreview: UserStylesAndPreview,
-    stateHolder: EditorStateHolder
+    stateHolder: EditorStateHolder,
+    areComplicationsPresent: Boolean
 ) {
-    val numberOfPages = listSettings.size + 1
+    val numberOfPages = listSettings.size + (if (areComplicationsPresent) 1 else 0)
     val pagerState = rememberPagerState(pageCount = { numberOfPages })
 
     HorizontalPagerScaffold(
@@ -85,7 +87,6 @@ private fun SettingsHorizontalPager(
                 pageIndex = currentPage,
                 pagerState = pagerState
             ) {
-                // TODO: use AnimatedPage
                 when (currentPage) {
                     // something like:
 //                    0 -> { /* colors */ }
