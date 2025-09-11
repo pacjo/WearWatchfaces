@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import nodomain.pacjo.wear.watchface.feature.rendering.CanvasRendererBackend
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import java.time.ZonedDateTime
 import kotlin.math.min
@@ -62,7 +63,10 @@ interface FeatureOption {
  * @see DrawableFeature
  * @see ListFeatureFactory
  */
-abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
+abstract class ListFeature<T : FeatureOption>(
+    private val coroutineScope: CoroutineScope,
+    private val currentUserStyleRepository: CurrentUserStyleRepository
+) : WatchFaceFeature {
     /**
      * Unique identifier for this feature in the style system.
      */
@@ -90,24 +94,13 @@ abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
     /**
      * StateFlow providing access to the currently selected option.
      */
-    lateinit var current: StateFlow<T>
-        private set     // prevent outside modification
-
-    /**
-     * Initialize the feature with runtime dependencies.
-     *
-     * @param scope [CoroutineScope] for managing the [StateFlow] lifecycle
-     * @param currentUserStyleRepository repository providing access to user style preferences
-     */
-    fun initialize(
-        scope: CoroutineScope,
-        currentUserStyleRepository: CurrentUserStyleRepository
-    ) {
-        current = currentUserStyleRepository.userStyle.map { userStyle ->
-            val styleId = userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
+    val current: StateFlow<T> by lazy {
+        currentUserStyleRepository.userStyle.map { userStyle ->
+            val styleId =
+                userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
             options.first { it.id == styleId }
         }.stateIn(
-            scope,
+            coroutineScope,
             SharingStarted.Eagerly,
             options.first()
         )
@@ -163,10 +156,7 @@ open class ListFeatureFactory<T : FeatureOption>(
         currentUserStyleRepository: CurrentUserStyleRepository,
         watchState: WatchState
     ): WatchFaceFeature {
-        val feature = featureCreator(coroutineScope, currentUserStyleRepository, options)
-        feature.initialize(coroutineScope, currentUserStyleRepository)
-
-        return feature
+        return featureCreator(coroutineScope, currentUserStyleRepository, options)
     }
 }
 

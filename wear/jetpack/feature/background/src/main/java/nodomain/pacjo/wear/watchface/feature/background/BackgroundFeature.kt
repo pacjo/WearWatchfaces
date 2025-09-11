@@ -1,5 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
+import androidx.wear.watchface.style.CurrentUserStyleRepository
+import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
@@ -7,8 +9,10 @@ import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 class BackgroundFeature(
+    coroutineScope: CoroutineScope,
+    currentUserStyleRepository: CurrentUserStyleRepository,
     override val options: List<Background>
-) : ListFeature<Background>(), DrawableFeature {
+) : ListFeature<Background>(coroutineScope, currentUserStyleRepository), DrawableFeature {
     override val featureId = FEATURE_ID
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
@@ -20,9 +24,9 @@ class BackgroundFeature(
     }
 
     companion object {
-        private const val FEATURE_ID: String = "background"
-        private val FEATURE_DISPLAY_NAME_RESOURCE_ID: Int = R.string.background_setting
-        private val FEATURE_DESCRIPTION_RESOURCE_ID: Int = R.string.background_setting_description
+        private const val FEATURE_ID = "background"
+        private val FEATURE_DISPLAY_NAME_RESOURCE_ID = R.string.background_setting
+        private val FEATURE_DESCRIPTION_RESOURCE_ID = R.string.background_setting_description
         private val OPTIONS = listOf<Background>()
 
         /**
@@ -36,7 +40,7 @@ class BackgroundFeature(
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
             featureCreator = { scope, repo, options ->
-                BackgroundFeature(options)
+                BackgroundFeature(scope, repo, options)
             }
         )
     }
