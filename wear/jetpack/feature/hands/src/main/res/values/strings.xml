@@ -14,6 +14,8 @@
 
     <string name="hands_bold_outline_name">Bold outline</string>
 
+    <string name="hands_minimal_name">Minimal</string>
+
     <!-- ============ Misc configuration ============ -->
     <string name="misc_smooth_seconds_hand">Smooth seconds hand</string>
     <string name="misc_smooth_seconds_hand_description">Make seconds hand movement smooth</string>
