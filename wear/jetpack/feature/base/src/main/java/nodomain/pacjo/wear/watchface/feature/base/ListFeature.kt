@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base.feature
+package nodomain.pacjo.wear.watchface.feature.base
 
 import android.content.Context
 import android.graphics.Canvas
@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererBackend
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.CanvasRendererBackend
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import java.time.ZonedDateTime
 import kotlin.math.min
 

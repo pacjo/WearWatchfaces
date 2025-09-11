@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base.utils
+package nodomain.pacjo.wear.watchface.feature.rendering.utils
 
 import android.content.Context
 import android.graphics.ImageDecoder

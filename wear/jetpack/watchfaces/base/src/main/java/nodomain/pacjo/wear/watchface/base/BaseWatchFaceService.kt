@@ -11,8 +11,8 @@ import androidx.wear.watchface.style.UserStyleSchema
 import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
-import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationsFeature
+import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 import kotlin.coroutines.coroutineContext
 
 abstract class BaseWatchFaceService : WatchFaceService() {

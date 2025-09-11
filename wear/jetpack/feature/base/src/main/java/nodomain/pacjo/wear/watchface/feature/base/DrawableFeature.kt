@@ -1,6 +1,7 @@
-package nodomain.pacjo.wear.watchface.base.feature
+package nodomain.pacjo.wear.watchface.feature.base
 
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 /**
  * An interface for any WatchFaceFeature that needs to draw content on the watch face. Features
@@ -13,29 +14,29 @@ import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
  * - [nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter] for Canvas-based watch faces
  * - [nodomain.pacjo.wear.watchface.base.renderer.OpenGLRendererAdapter] for OpenGL-based watch faces
  *
- * @see RenderingContext
- * @see GranularWatchFaceLayer
- * @see WatchFaceFeature
+ * @see nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+ * @see nodomain.pacjo.wear.watchface.base.GranularWatchFaceLayer
+ * @see nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
  */
 interface DrawableFeature : WatchFaceFeature {
 
     /**
      * The layer on which this feature should be drawn.
      *
-     * @see GranularWatchFaceLayer
+     * @see nodomain.pacjo.wear.watchface.base.GranularWatchFaceLayer
      */
     val layer: GranularWatchFaceLayer
 
     /**
      * This method is called during each frame render cycle and should contain all drawing logic
-     * for the feature. It receives a [RenderingContext] that provides access to the
+     * for the feature. It receives a [nodomain.pacjo.wear.watchface.base.renderer.RenderingContext] that provides access to the
      * appropriate rendering backend (Canvas or OpenGL) and the current time.
      *
      * @param renderingContext context containing the appropriate backend and current time.
      *
-     * @see RenderingContext
-     * @see RenderingContext.ifCanvas
-     * @see RenderingContext.ifOpenGL
+     * @see nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+     * @see nodomain.pacjo.wear.watchface.base.renderer.RenderingContext.ifCanvas
+     * @see nodomain.pacjo.wear.watchface.base.renderer.RenderingContext.ifOpenGL
      */
     fun draw(renderingContext: RenderingContext)
 }

@@ -1,7 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.background.backgrounds
 
 import androidx.annotation.ColorInt
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.background.R
 

@@ -1,9 +1,8 @@
-package nodomain.pacjo.wear.watchface.base.renderer
+package nodomain.pacjo.wear.watchface.feature.rendering
 
 import android.graphics.Canvas
 import android.graphics.Rect
 import androidx.wear.watchface.RenderParameters
-import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
 import java.time.ZonedDateTime
 
 /**

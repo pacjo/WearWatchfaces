@@ -7,10 +7,10 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
-import nodomain.pacjo.wear.watchface.base.utils.decodeAnimatedDrawable
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.background.R
+import nodomain.pacjo.wear.watchface.feature.rendering.utils.decodeAnimatedDrawable
 
 @RequiresApi(Build.VERSION_CODES.P)
 class GifPlayerBackground(

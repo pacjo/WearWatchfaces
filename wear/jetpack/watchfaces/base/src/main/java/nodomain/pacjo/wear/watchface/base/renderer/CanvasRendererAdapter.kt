@@ -7,9 +7,11 @@ import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
-import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
-import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
+import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.feature.rendering.CanvasRendererBackend
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import java.time.ZonedDateTime
 
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L

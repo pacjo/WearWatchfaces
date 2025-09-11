@@ -34,5 +34,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":wear:jetpack:watchfaces:base"))
+    implementation(project(":wear:jetpack:feature:base"))
 }

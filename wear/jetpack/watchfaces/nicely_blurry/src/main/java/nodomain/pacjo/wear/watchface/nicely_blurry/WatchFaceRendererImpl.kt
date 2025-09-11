@@ -3,10 +3,10 @@ package nodomain.pacjo.wear.watchface.nicely_blurry
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.feature.digital_clock.utils.drawTextInBounds
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 
 class WatchFaceRendererImpl : WatchFaceRenderer {
     override fun draw(renderingContext: RenderingContext) {

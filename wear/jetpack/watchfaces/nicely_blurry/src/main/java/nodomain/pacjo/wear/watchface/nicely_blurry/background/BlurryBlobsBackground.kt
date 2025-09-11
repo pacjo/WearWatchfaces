@@ -3,7 +3,7 @@ package nodomain.pacjo.wear.watchface.nicely_blurry.background
 import android.graphics.BlurMaskFilter
 import android.graphics.Color
 import android.graphics.Paint
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.nicely_blurry.R
 import java.time.ZonedDateTime

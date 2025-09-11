@@ -1,5 +1,7 @@
 package nodomain.pacjo.wear.watchface.base.renderer
 
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+
 /**
  * An interface defining the drawing contract for a watch face.
  */

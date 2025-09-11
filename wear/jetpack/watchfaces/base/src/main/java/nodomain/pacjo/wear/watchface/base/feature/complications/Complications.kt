@@ -10,12 +10,12 @@ import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.coroutines.CoroutineScope
-import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
-import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
-import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.base.feature.WatchFaceFeature
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.set
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
+import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
+import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 class ComplicationsFeature(
     val definitions: List<ComplicationSlotDefinition>

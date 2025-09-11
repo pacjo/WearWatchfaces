@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base.feature
+package nodomain.pacjo.wear.watchface.feature.base
 
 import android.content.Context
 import androidx.wear.watchface.WatchState

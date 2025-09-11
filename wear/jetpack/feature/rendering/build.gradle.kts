@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "nodomain.pacjo.wear.watchface.feature.background"
+    namespace = "nodomain.pacjo.wear.watchface.feature.rendering"
     compileSdk = 36
 
     defaultConfig {
@@ -34,5 +34,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":wear:jetpack:feature:base"))
+    implementation(libs.androidx.watchface.client)
 }

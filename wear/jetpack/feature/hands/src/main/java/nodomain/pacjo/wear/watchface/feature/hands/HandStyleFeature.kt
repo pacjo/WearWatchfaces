@@ -1,13 +1,14 @@
 package nodomain.pacjo.wear.watchface.feature.hands
 
-import nodomain.pacjo.wear.watchface.base.feature.DrawableFeature
-import nodomain.pacjo.wear.watchface.base.feature.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.base.feature.ListFeature
-import nodomain.pacjo.wear.watchface.base.feature.ListFeatureFactory
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
+import kotlinx.coroutines.CoroutineScope
+import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
+import nodomain.pacjo.wear.watchface.feature.base.ListFeature
+import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.hands.styles.BoldHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.SimpleHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
+import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 
 class HandStyleFeature(
     override val options: List<HandStyle>

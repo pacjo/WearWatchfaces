@@ -4,7 +4,6 @@ import android.graphics.Color
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
-import nodomain.pacjo.wear.watchface.base.feature.FeatureFactory
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base_digital.DigitalWatchFaceService
 import nodomain.pacjo.wear.watchface.feature.background.BackgroundFeature
@@ -15,7 +14,8 @@ import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.copy
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.date
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.general
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.mediaPlayer
-import nodomain.pacjo.wear.watchface.base.utils.centeredRectF
+import nodomain.pacjo.wear.watchface.feature.rendering.utils.centeredRectF
+import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 import nodomain.pacjo.wear.watchface.nicely_blurry.background.BlurryBlobsBackground
 
 class NicelyBlurryWatchFaceService : DigitalWatchFaceService() {

@@ -9,8 +9,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import androidx.core.graphics.toColorInt
-import nodomain.pacjo.wear.watchface.base.renderer.RenderingContext
-import nodomain.pacjo.wear.watchface.base.utils.decodeAnimatedDrawable
+import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.feature.rendering.utils.decodeAnimatedDrawable
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec
@@ -63,7 +63,7 @@ class TvaGridBackground(
             // draw TVA logo
             // while we shouldn't probably scale this on every draw call,
             // bounds DO change and it's not that much work
-            val logoScaleFactor = 0.15f
+            val logoScaleFactor = 0.15f         // TODO: scale properly regardless of screen size
             val scaledLogoBitmap = logoBitmap.scale(
                 width = (logoBitmap.width * logoScaleFactor).toInt(),
                 height = (logoBitmap.height * logoScaleFactor).toInt()
@@ -71,7 +71,7 @@ class TvaGridBackground(
             canvas.drawBitmap(scaledLogoBitmap, bounds.width() * 0.33f, bounds.height() * 0.80f, drawablePaint)
 
             // draw Miss Minutes animation
-            val animationScaleFactor = 0.40f
+            val animationScaleFactor = 0.40f            // TODO: scale properly regardless of screen size
             val animationFrameBitmap = animatedDrawable.toBitmap()
             val scaledAnimationFrameBitmap = animationFrameBitmap.scale(
                 width = (bounds.width() * animationScaleFactor).toInt(),

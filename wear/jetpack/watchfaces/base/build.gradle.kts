@@ -39,4 +39,5 @@ android {
 dependencies {
     api(libs.androidx.watchface)
     api(libs.bundles.watchface.complications)
+    api(project(":wear:jetpack:feature:base"))
 }

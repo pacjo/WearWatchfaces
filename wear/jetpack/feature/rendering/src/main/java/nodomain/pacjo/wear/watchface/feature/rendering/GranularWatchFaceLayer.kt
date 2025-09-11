@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base.feature
+package nodomain.pacjo.wear.watchface.feature.rendering
 
 import androidx.wear.watchface.style.WatchFaceLayer
 
