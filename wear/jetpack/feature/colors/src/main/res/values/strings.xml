@@ -1,0 +1,7 @@
+<resources>
+    <!-- ============ Color style configuration ============ -->
+    <string name="color_style_setting">Colors</string>
+    <string name="color_style_setting_description">Allows changing colors used by watchface</string>
+
+    <string name="color_style_preview_description">Colors preview</string>
+</resources>

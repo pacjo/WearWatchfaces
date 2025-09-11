@@ -13,9 +13,31 @@ import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationsFeature
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
+import nodomain.pacjo.wear.watchface.feature.colors.ColorAware
+import nodomain.pacjo.wear.watchface.feature.colors.di.colorModule
+import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import kotlin.coroutines.coroutineContext
 
 abstract class BaseWatchFaceService : WatchFaceService() {
+
+    override fun onCreate() {
+        super.onCreate()
+        if (GlobalContext.getOrNull() == null)
+            startKoin {
+                androidContext(this@BaseWatchFaceService)
+                modules(colorModule)            // TODO: remove from here
+            }
+    }
+
+    override fun onDestroy() {
+        stopKoin()
+        super.onDestroy()
+    }
+
     @WatchFaceTypeIntDef abstract val watchFaceType: Int
     abstract fun getFeatureFactories(): List<FeatureFactory>
     open fun createWatchFaceRenderer(): WatchFaceRenderer {
@@ -51,11 +73,17 @@ abstract class BaseWatchFaceService : WatchFaceService() {
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-        val featureFactories = getFeatureFactories()
+        val coroutineScope = CoroutineScope(coroutineContext)
+        getKoin().declare(coroutineScope)
 
         // create proper/full features using the now available dependencies
-        val features = featureFactories.map { factory ->
-            factory.create(this, CoroutineScope(coroutineContext), currentUserStyleRepository, watchState)
+        val features = getFeatureFactories().map { factory ->
+            factory.create(this, coroutineScope, currentUserStyleRepository, watchState)
+        }
+
+        // color features - TODO: remove from here and make a system to set up features like this and complications
+        features.filterIsInstance<ColorAware>().forEach { source ->
+            getKoin().declare(source)
         }
 
         // connect each complications feature with ComplicationSlotsManager

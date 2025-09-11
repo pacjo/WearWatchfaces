@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,4 +37,9 @@ android {
 dependencies {
     api(libs.androidx.watchface.client)
     api(project(":wear:jetpack:feature:rendering"))
+
+    api(platform(libs.koin.bom))
+    api(libs.koin.android)
+    api(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 }

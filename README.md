@@ -53,3 +53,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] don't include hands feature by default since we might want to customize available hands
 - [ ] static color background options show up as *Color background* in the editor (maybe allow naming?)
 - [ ] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
+- [ ] setup koin annotations
