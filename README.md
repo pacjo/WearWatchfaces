@@ -54,3 +54,5 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] static color background options show up as *Color background* in the editor (maybe allow naming?)
 - [ ] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
 - [ ] setup koin annotations
+- [ ] handle colors better, allow for manually setting hands and complication colors, deriving from main when not set
+- [ ] consider removing empty proguard files from modules
