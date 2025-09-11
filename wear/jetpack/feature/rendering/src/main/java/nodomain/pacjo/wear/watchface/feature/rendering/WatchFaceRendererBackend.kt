@@ -58,7 +58,9 @@ data class RenderingContext(
      *              - bounds: The rectangular drawing area
      *              - zonedDateTime: The current time for this frame
      */
-    inline fun ifCanvas(block: (Canvas, Rect, ZonedDateTime) -> Unit) {
+    inline fun ifCanvas(
+        block: (canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) -> Unit
+    ) {
         if (backend is CanvasRendererBackend) {
             block(backend.canvas, backend.bounds, zonedDateTime)
         }
