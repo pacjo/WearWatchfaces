@@ -53,6 +53,21 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] don't include hands feature by default since we might want to customize available hands
 - [ ] static color background options show up as *Color background* in the editor (maybe allow naming?)
 - [ ] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
-- [ ] setup koin annotations
+- [ ] setup koin annotations. In module `build.gradle.kts` add:
+  ```kt
+  plugins {
+    /* ... */
+    alias(libs.plugins.ksp)
+  }
+  
+  ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+  }
+
+  dependencies {
+      api(libs.koin.annotations)
+      ksp(libs.koin.ksp.compiler)
+  }
+  ```
 - [ ] handle colors better, allow for manually setting hands and complication colors, deriving from main when not set
 - [ ] consider removing empty proguard files from modules

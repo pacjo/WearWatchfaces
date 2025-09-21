@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -28,6 +27,4 @@ dependencies {
 
     api(platform(libs.koin.bom))
     api(libs.koin.android)
-    api(libs.koin.annotations)
-    ksp(libs.koin.ksp.compiler)
 }
