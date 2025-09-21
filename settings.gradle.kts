@@ -41,6 +41,7 @@ include(":wear:jetpack:watchfaces:jimball")
 include(":wear:jetpack:watchfaces:snake")
 include(":wear:jetpack:watchfaces:miss_minutes")
 include(":wear:jetpack:watchfaces:nicely_blurry")
+include(":wear:jetpack:watchfaces:clean_colorful")
 
 // WatchFaceFormat based watchfaces
 include(":wear:wff:jimball")
