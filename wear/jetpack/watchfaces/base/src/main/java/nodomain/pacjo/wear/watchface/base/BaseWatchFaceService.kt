@@ -13,10 +13,9 @@ import nodomain.pacjo.wear.watchface.base.renderer.CanvasRendererAdapter
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
 import nodomain.pacjo.wear.watchface.base.feature.complications.ComplicationsFeature
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
-import nodomain.pacjo.wear.watchface.feature.colors.ColorAware
-import nodomain.pacjo.wear.watchface.feature.colors.di.colorModule
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -26,11 +25,16 @@ abstract class BaseWatchFaceService : WatchFaceService() {
 
     override fun onCreate() {
         super.onCreate()
-        if (GlobalContext.getOrNull() == null)
+        if (GlobalContext.getOrNull() == null) {
+            val featureModules = getFeatureFactories()
+                .flatMap { it.getKoinModules() }
+
             startKoin {
+                androidLogger()
                 androidContext(this@BaseWatchFaceService)
-                modules(colorModule)            // TODO: remove from here
+                modules(featureModules)
             }
+        }
     }
 
     override fun onDestroy() {
@@ -79,11 +83,6 @@ abstract class BaseWatchFaceService : WatchFaceService() {
         // create proper/full features using the now available dependencies
         val features = getFeatureFactories().map { factory ->
             factory.create(this, coroutineScope, currentUserStyleRepository, watchState)
-        }
-
-        // color features - TODO: remove from here and make a system to set up features like this and complications
-        features.filterIsInstance<ColorAware>().forEach { source ->
-            getKoin().declare(source)
         }
 
         // connect each complications feature with ComplicationSlotsManager

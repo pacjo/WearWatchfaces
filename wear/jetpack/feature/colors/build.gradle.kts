@@ -23,4 +23,7 @@ android {
 
 dependencies {
     implementation(project(":wear:jetpack:feature:base"))
+
+    api(platform(libs.koin.bom))
+    api(libs.koin.android)
 }

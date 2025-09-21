@@ -2,6 +2,8 @@ package nodomain.pacjo.wear.watchface.feature.colors
 
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.feature.colors.di.colorModule
+import org.koin.core.context.GlobalContext
 
 class ColorStyleFeature(
     override val options: List<ColorStyle>
@@ -10,7 +12,7 @@ class ColorStyleFeature(
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
 
-    override val colorStyleFlow = current
+    override val colorStyleFlow by lazy { current }
 
     companion object {
         private const val FEATURE_ID = "color_style"
@@ -31,8 +33,13 @@ class ColorStyleFeature(
             featureCreator = { scope, repo, options ->
                 val feature = ColorStyleFeature(options)
                 feature.initialize(scope, repo)
+
+                // register this instance with Koin
+                GlobalContext.get().declare(feature as ColorAware)
+
                 feature
             },
+            koinModules = listOf(colorModule)
         )
     }
 }

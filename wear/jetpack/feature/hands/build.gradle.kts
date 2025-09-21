@@ -23,4 +23,5 @@ android {
 
 dependencies {
     implementation(project(":wear:jetpack:feature:base"))
+    implementation(project(":wear:jetpack:feature:colors"))
 }

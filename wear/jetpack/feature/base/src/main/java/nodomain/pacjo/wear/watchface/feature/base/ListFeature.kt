@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.stateIn
 import nodomain.pacjo.wear.watchface.feature.rendering.CanvasRendererBackend
 import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import org.koin.core.module.Module
 import java.time.ZonedDateTime
 import kotlin.math.min
 
@@ -138,7 +139,9 @@ open class ListFeatureFactory<T : FeatureOption>(
         scope: CoroutineScope,
         repo: CurrentUserStyleRepository,
         options: List<T>
-    ) -> ListFeature<T>
+    ) -> ListFeature<T>,
+
+    private val koinModules: List<Module> = emptyList()
 ) : FeatureFactory {
 
     final override fun getStyleSettings(context: Context): List<UserStyleSetting> {
@@ -170,6 +173,10 @@ open class ListFeatureFactory<T : FeatureOption>(
         feature.initialize(coroutineScope, currentUserStyleRepository)
 
         return feature
+    }
+
+    final override fun getKoinModules(): List<Module> {
+        return koinModules
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.coroutines.CoroutineScope
+import org.koin.core.module.Module
 
 /**
  * A factory responsible for creating a single WatchFaceFeature.
@@ -33,4 +34,10 @@ interface FeatureFactory {
         currentUserStyleRepository: CurrentUserStyleRepository,
         watchState: WatchState
     ): WatchFaceFeature
+
+    /**
+     * Provides optional Koin modules that should be loaded for this feature type.
+     * Called early in the lifecycle, during service setup.
+     */
+    fun getKoinModules(): List<Module> = emptyList()
 }
