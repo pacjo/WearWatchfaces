@@ -1,7 +1,5 @@
 package nodomain.pacjo.wear.watchface.feature.hands
 
-import androidx.wear.watchface.style.CurrentUserStyleRepository
-import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
@@ -12,10 +10,8 @@ import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
 import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 
 class HandStyleFeature(
-    coroutineScope: CoroutineScope,
-    currentUserStyleRepository: CurrentUserStyleRepository,
     override val options: List<HandStyle>
-) : ListFeature<HandStyle>(coroutineScope, currentUserStyleRepository), DrawableFeature {
+) : ListFeature<HandStyle>(), DrawableFeature {
     override val featureId = FEATURE_ID
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
@@ -48,7 +44,7 @@ class HandStyleFeature(
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
             featureCreator = { scope, repo, options ->
-                HandStyleFeature(scope, repo, options)
+                HandStyleFeature(options)
             }
         )
     }

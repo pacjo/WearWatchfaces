@@ -1,7 +1,5 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
-import androidx.wear.watchface.style.CurrentUserStyleRepository
-import kotlinx.coroutines.CoroutineScope
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
@@ -9,10 +7,8 @@ import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 class BackgroundFeature(
-    coroutineScope: CoroutineScope,
-    currentUserStyleRepository: CurrentUserStyleRepository,
     override val options: List<Background>
-) : ListFeature<Background>(coroutineScope, currentUserStyleRepository), DrawableFeature {
+) : ListFeature<Background>(), DrawableFeature {
     override val featureId = FEATURE_ID
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
@@ -40,7 +36,7 @@ class BackgroundFeature(
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
             featureCreator = { scope, repo, options ->
-                BackgroundFeature(scope, repo, options)
+                BackgroundFeature(options)
             }
         )
     }

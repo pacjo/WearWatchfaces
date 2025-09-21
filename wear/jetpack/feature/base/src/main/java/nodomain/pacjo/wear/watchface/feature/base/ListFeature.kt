@@ -63,10 +63,7 @@ interface FeatureOption {
  * @see DrawableFeature
  * @see ListFeatureFactory
  */
-abstract class ListFeature<T : FeatureOption>(
-    private val coroutineScope: CoroutineScope,
-    private val currentUserStyleRepository: CurrentUserStyleRepository
-) : WatchFaceFeature {
+abstract class ListFeature<T : FeatureOption> : WatchFaceFeature {
     /**
      * Unique identifier for this feature in the style system.
      */
@@ -93,14 +90,27 @@ abstract class ListFeature<T : FeatureOption>(
 
     /**
      * StateFlow providing access to the currently selected option.
+     * It is initialized via the initialize() method.
      */
-    val current: StateFlow<T> by lazy {
-        currentUserStyleRepository.userStyle.map { userStyle ->
+    lateinit var current: StateFlow<T>
+        private set // prevent outside modification
+
+    /**
+     * Initialize the feature with runtime dependencies.
+     *
+     * @param scope [CoroutineScope] for managing the [StateFlow] lifecycle
+     * @param currentUserStyleRepository repository providing access to user style preferences
+     */
+    fun initialize(
+        scope: CoroutineScope,
+        currentUserStyleRepository: CurrentUserStyleRepository
+    ) {
+        current = currentUserStyleRepository.userStyle.map { userStyle ->
             val styleId =
                 userStyle[UserStyleSetting.Id(featureId)]?.toString() ?: options.first().id
             options.first { it.id == styleId }
         }.stateIn(
-            coroutineScope,
+            scope,
             SharingStarted.Eagerly,
             options.first()
         )
@@ -156,7 +166,10 @@ open class ListFeatureFactory<T : FeatureOption>(
         currentUserStyleRepository: CurrentUserStyleRepository,
         watchState: WatchState
     ): WatchFaceFeature {
-        return featureCreator(coroutineScope, currentUserStyleRepository, options)
+        val feature = featureCreator(coroutineScope, currentUserStyleRepository, options)
+        feature.initialize(coroutineScope, currentUserStyleRepository)
+
+        return feature
     }
 }
 
