@@ -18,17 +18,21 @@ fun DefaultComplicationDataSourcePolicy.Companion.empty(): DefaultComplicationDa
 /**
  * Creates a default complication data source policy for date complications.
  */
-fun DefaultComplicationDataSourcePolicy.Companion.date(): DefaultComplicationDataSourcePolicy {
+fun DefaultComplicationDataSourcePolicy.Companion.date(
+    overrideType: ComplicationType? = null
+): DefaultComplicationDataSourcePolicy {
     return DefaultComplicationDataSourcePolicy(
         SystemDataSources.DATA_SOURCE_DAY_AND_DATE,
-        ComplicationType.SHORT_TEXT
+        overrideType ?: ComplicationType.SHORT_TEXT
     )
 }
 
 /**
  * Creates a default complication data source policy for step count complications.
  */
-fun DefaultComplicationDataSourcePolicy.Companion.steps(): DefaultComplicationDataSourcePolicy {
+fun DefaultComplicationDataSourcePolicy.Companion.steps(
+    overrideType: ComplicationType? = null
+): DefaultComplicationDataSourcePolicy {
     val slotType = if (isAtLeastWearOs4())
         ComplicationType.GOAL_PROGRESS
     else
@@ -36,17 +40,19 @@ fun DefaultComplicationDataSourcePolicy.Companion.steps(): DefaultComplicationDa
 
     return DefaultComplicationDataSourcePolicy(
         SystemDataSources.DATA_SOURCE_STEP_COUNT,
-        slotType
+        overrideType ?: slotType
     )
 }
 
 /**
  * Creates a default complication data source policy for battery complications.
  */
-fun DefaultComplicationDataSourcePolicy.Companion.battery(): DefaultComplicationDataSourcePolicy {
+fun DefaultComplicationDataSourcePolicy.Companion.battery(
+    overrideType: ComplicationType? = null
+): DefaultComplicationDataSourcePolicy {
     return DefaultComplicationDataSourcePolicy(
         SystemDataSources.DATA_SOURCE_WATCH_BATTERY,
-        ComplicationType.RANGED_VALUE
+        overrideType ?: ComplicationType.RANGED_VALUE
     )
 }
 
