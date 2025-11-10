@@ -7,5 +7,6 @@
 
     <string name="static_color_background">Color background</string>
     <string name="color_aware_background">Dynamic color background</string>
+    <string name="static_image_background">Image background</string>
     <string name="gif_player_background">Animated background</string>
 </resources>
