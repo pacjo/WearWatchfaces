@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.wear.compose.foundation.pager.HorizontalPager
 import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.wear.compose.material.CircularProgressIndicator
-import androidx.wear.compose.material3.AnimatedPage
 import androidx.wear.compose.material3.HorizontalPagerScaffold
 import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.serialization.Serializable
@@ -83,35 +82,30 @@ private fun SettingsHorizontalPager(
         HorizontalPager(
             state = pagerState
         ) { currentPage ->
-            AnimatedPage(
-                pageIndex = currentPage,
-                pagerState = pagerState
-            ) {
-                when (currentPage) {
-                    // something like:
-//                    0 -> { /* colors */ }
-//                    1 -> { /* hands */ }
-//                    2 -> { /* complications */ }
-//                    3 -> { /* misc */ }
+            when (currentPage) {
+                // something like:
+//                0 -> { /* colors */ }
+//                1 -> { /* hands */ }
+//                2 -> { /* complications */ }
+//                3 -> { /* misc */ }
 
-                    // one of list settings pages
-                    in 0..<listSettings.size -> {
-                        val setting = listSettings[currentPage]
-                        GenericListSettingScreen(
-                            listSetting = setting,
-                            userStyle = userStylesAndPreview.userStyle
-                        ) { optionId ->
-                            stateHolder.setUserStyleOption(setting.id.toString(), optionId)
-                        }
+                // one of list settings pages
+                in 0..<listSettings.size -> {
+                    val setting = listSettings[currentPage]
+                    GenericListSettingScreen(
+                        listSetting = setting,
+                        userStyle = userStylesAndPreview.userStyle
+                    ) { optionId ->
+                        stateHolder.setUserStyleOption(setting.id.toString(), optionId)
                     }
+                }
 
-                    // last page - complications
-                    numberOfPages - 1 -> {
-                        ComplicationsSettingScreen(
-                            complicationSlotsStateMap = userStylesAndPreview.complicationSlotsStateMap
-                        ) { complicationSlotId ->
-                            stateHolder.openComplicationDataSourceChooser(complicationSlotId)
-                        }
+                // last page - complications
+                numberOfPages - 1 -> {
+                    ComplicationsSettingScreen(
+                        complicationSlotsStateMap = userStylesAndPreview.complicationSlotsStateMap
+                    ) { complicationSlotId ->
+                        stateHolder.openComplicationDataSourceChooser(complicationSlotId)
                     }
                 }
             }
