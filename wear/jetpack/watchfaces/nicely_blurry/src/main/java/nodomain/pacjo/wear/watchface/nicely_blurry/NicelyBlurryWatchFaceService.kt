@@ -14,7 +14,7 @@ import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.copy
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.date
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.general
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.mediaPlayer
-import nodomain.pacjo.wear.watchface.feature.rendering.utils.centeredRectF
+import nodomain.pacjo.wear.watchface.shared.utils.centeredRectF
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 import nodomain.pacjo.wear.watchface.nicely_blurry.background.BlurryBlobsBackground
 

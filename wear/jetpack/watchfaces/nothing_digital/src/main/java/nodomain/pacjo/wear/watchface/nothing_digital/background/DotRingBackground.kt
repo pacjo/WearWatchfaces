@@ -3,7 +3,7 @@ package nodomain.pacjo.wear.watchface.nothing_digital.background
 import android.graphics.Color
 import android.graphics.Paint
 import nodomain.pacjo.wear.watchface.feature.background.Background
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.nothing_digital.R
 import kotlin.math.PI
 import kotlin.math.cos

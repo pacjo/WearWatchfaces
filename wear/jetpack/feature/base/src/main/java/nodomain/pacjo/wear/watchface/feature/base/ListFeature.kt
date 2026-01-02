@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import nodomain.pacjo.wear.watchface.feature.rendering.CanvasRendererBackend
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.CanvasRendererBackend
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import org.koin.core.module.Module
 import java.time.ZonedDateTime
 import kotlin.math.min

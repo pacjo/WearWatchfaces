@@ -3,6 +3,9 @@
     <string name="overlay_setting">Overlay</string>
     <string name="overlay_setting_description">Allows changing watchface overlay</string>
 
+    <string name="snow_overlay">Snow Overlay</string>
+    <string name="fireworks_overlay">Fireworks Overlay</string>
+
     <!-- ============ Background configuration ============ -->
     <string name="background_setting">Background</string>
     <string name="background_setting_description">Allows changing watchface background</string>

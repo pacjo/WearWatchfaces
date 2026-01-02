@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.feature.digital_clock.utils
+package nodomain.pacjo.wear.watchface.shared.utils
 
 import android.graphics.Canvas
 import android.graphics.Paint

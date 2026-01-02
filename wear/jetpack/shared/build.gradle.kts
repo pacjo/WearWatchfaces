@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "nodomain.pacjo.wear.watchface.feature.rendering"
+    namespace = "nodomain.pacjo.wear.watchface.shared"
     compileSdk = 36
 
     defaultConfig {

@@ -21,14 +21,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "WearWatchfaces"
 
+// shared watchfaces/features code
+include(":wear:jetpack:shared")
+
 // (optional) features)
 include(":wear:jetpack:feature:base")
-include(":wear:jetpack:feature:rendering")
 include(":wear:jetpack:feature:editor")
 include(":wear:jetpack:feature:overlay")
 include(":wear:jetpack:feature:hands")
 include(":wear:jetpack:feature:cell_grid")
-include(":wear:jetpack:feature:digital_clock")
 include(":wear:jetpack:feature:colors")
 
 // actual watchfaces

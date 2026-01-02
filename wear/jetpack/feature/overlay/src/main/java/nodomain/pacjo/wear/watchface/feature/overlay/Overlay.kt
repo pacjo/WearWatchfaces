@@ -2,7 +2,7 @@ package nodomain.pacjo.wear.watchface.feature.overlay
 
 import android.util.Log
 import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 /**
  * The contract for a specific overlay.

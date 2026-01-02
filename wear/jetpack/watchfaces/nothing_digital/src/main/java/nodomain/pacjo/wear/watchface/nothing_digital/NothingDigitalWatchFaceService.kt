@@ -16,7 +16,7 @@ import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.media
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.steps
 import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.textOnly
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
-import nodomain.pacjo.wear.watchface.feature.rendering.utils.centeredRectF
+import nodomain.pacjo.wear.watchface.shared.utils.centeredRectF
 import nodomain.pacjo.wear.watchface.nothing_digital.background.DotRingBackground
 
 class NothingDigitalWatchFaceService : DigitalWatchFaceService() {

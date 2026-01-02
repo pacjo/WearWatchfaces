@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import kotlinx.coroutines.flow.StateFlow
 import nodomain.pacjo.wear.watchface.feature.colors.ColorStyle
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.hands.R
 import nodomain.pacjo.wear.watchface.feature.hands.HandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.utils.drawHands

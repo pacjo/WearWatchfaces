@@ -5,7 +5,7 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.overlay.R
 

@@ -3,7 +3,7 @@ package nodomain.pacjo.wear.watchface.feature.hands.styles
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.wear.watchface.DrawMode
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.hands.HandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.R
 import nodomain.pacjo.wear.watchface.feature.hands.utils.drawHands

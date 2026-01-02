@@ -23,7 +23,7 @@ android {
 
 dependencies {
     api(libs.androidx.watchface.client)
-    api(project(":wear:jetpack:feature:rendering"))
+    api(project(":wear:jetpack:shared"))
 
     api(platform(libs.koin.bom))
     api(libs.koin.android)

@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import nodomain.pacjo.wear.watchface.feature.overlay.Overlay
 import nodomain.pacjo.wear.watchface.feature.overlay.R
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import kotlin.math.sin
 import kotlin.random.Random
 

@@ -43,5 +43,4 @@ dependencies {
     implementation(project(":wear:jetpack:feature:overlay"))
     implementation(project(":wear:jetpack:feature:cell_grid"))
     implementation(project(":wear:jetpack:feature:editor"))
-    implementation(project(":wear:jetpack:feature:digital_clock"))
 }

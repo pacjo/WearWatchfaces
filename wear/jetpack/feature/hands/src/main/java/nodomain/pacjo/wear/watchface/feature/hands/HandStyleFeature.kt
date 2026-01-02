@@ -3,11 +3,11 @@ package nodomain.pacjo.wear.watchface.feature.hands
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.hands.styles.BoldHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.SimpleHandStyle
 import nodomain.pacjo.wear.watchface.feature.hands.styles.ModernHandStyle
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
 
 class HandStyleFeature(
     override val options: List<HandStyle>

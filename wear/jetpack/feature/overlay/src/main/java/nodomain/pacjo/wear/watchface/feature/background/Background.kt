@@ -2,7 +2,7 @@ package nodomain.pacjo.wear.watchface.feature.background
 
 import android.util.Log
 import nodomain.pacjo.wear.watchface.feature.overlay.Overlay
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 /**
  * Very light wrapper around [Overlay], changing only the class tag for logger.

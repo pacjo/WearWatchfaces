@@ -2,11 +2,11 @@ package nodomain.pacjo.wear.watchface.feature.colors
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.RectF
 import android.util.Log
 import androidx.annotation.ColorInt
-import androidx.core.graphics.toRectF
 import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 /**
  * The specific color style.

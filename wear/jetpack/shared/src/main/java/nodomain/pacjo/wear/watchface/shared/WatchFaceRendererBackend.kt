@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.feature.rendering
+package nodomain.pacjo.wear.watchface.shared
 
 import android.graphics.Canvas
 import android.graphics.Rect

@@ -2,7 +2,7 @@ package nodomain.pacjo.wear.watchface.feature.hands
 
 import android.util.Log
 import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 

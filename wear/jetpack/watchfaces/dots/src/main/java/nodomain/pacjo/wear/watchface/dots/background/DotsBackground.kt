@@ -3,7 +3,7 @@ package nodomain.pacjo.wear.watchface.dots.background
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.core.graphics.withRotation
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.dots.R
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import kotlin.math.min

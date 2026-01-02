@@ -14,8 +14,8 @@ import nodomain.pacjo.wear.watchface.base.feature.complications.extensions.set
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 import nodomain.pacjo.wear.watchface.feature.base.WatchFaceFeature
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 class ComplicationsFeature(
     val definitions: List<ComplicationSlotDefinition>

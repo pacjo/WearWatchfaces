@@ -9,8 +9,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import androidx.core.graphics.toColorInt
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
-import nodomain.pacjo.wear.watchface.feature.rendering.utils.decodeAnimatedDrawable
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.utils.decodeAnimatedDrawable
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec

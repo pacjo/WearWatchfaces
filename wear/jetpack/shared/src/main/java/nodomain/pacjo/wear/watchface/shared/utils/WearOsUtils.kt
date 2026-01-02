@@ -1,4 +1,4 @@
-package nodomain.pacjo.wear.watchface.base.utils
+package nodomain.pacjo.wear.watchface.shared.utils
 
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast

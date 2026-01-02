@@ -1,7 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.base
 
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 /**
  * An interface for any WatchFaceFeature that needs to draw content on the watch face. Features

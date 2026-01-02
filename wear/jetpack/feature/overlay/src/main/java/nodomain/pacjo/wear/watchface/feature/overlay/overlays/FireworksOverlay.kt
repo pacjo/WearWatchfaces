@@ -7,8 +7,8 @@ import android.graphics.Rect
 import androidx.core.graphics.ColorUtils
 import nodomain.pacjo.wear.watchface.feature.overlay.Overlay
 import nodomain.pacjo.wear.watchface.feature.overlay.R
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
-import nodomain.pacjo.wear.watchface.feature.rendering.utils.RotatingQueue
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.utils.RotatingQueue
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin

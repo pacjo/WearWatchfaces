@@ -1,7 +1,7 @@
 package nodomain.pacjo.wear.watchface.feature.background.backgrounds
 
 import kotlinx.coroutines.flow.StateFlow
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.colors.ColorStyle
 import nodomain.pacjo.wear.watchface.feature.overlay.R

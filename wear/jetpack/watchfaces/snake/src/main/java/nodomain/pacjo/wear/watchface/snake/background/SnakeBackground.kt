@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.Log
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec

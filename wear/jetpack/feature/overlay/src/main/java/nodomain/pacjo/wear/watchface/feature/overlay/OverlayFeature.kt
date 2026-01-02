@@ -3,8 +3,8 @@ package nodomain.pacjo.wear.watchface.feature.overlay
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 open class OverlayFeature<T : Overlay>(
     override val layer: GranularWatchFaceLayer,

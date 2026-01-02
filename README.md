@@ -52,7 +52,7 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] companion app (full watchface) previews don't work (at least when changing hands)
 - [x] don't include hands feature by default since we might want to customize available hands
 - [ ] static color background options show up as *Color background* in the editor (maybe allow naming?)
-- [ ] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
+- [x] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
 - [ ] setup koin annotations. In module `build.gradle.kts` add:
   ```kt
   plugins {
@@ -72,3 +72,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] handle colors better, allow for manually setting hands and complication colors, deriving from main when not set
 - [ ] consider removing empty proguard files from modules
 - [x] maybe refactor :background to be :overlay (or based on it)?
+- [x] create :jetpack:shared and move :jetpack:feature:rendering there

@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import nodomain.pacjo.wear.watchface.base.renderer.WatchFaceRenderer
-import nodomain.pacjo.wear.watchface.feature.digital_clock.utils.drawTextInBounds
-import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
+import nodomain.pacjo.wear.watchface.shared.utils.drawTextInBounds
+import nodomain.pacjo.wear.watchface.shared.GranularWatchFaceLayer
+import nodomain.pacjo.wear.watchface.shared.RenderingContext
 
 class WatchFaceRendererImpl(
     private val context: Context

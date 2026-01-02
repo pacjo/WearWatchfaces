@@ -4,9 +4,9 @@ import android.content.ComponentName
 import androidx.wear.watchface.complications.DefaultComplicationDataSourcePolicy
 import androidx.wear.watchface.complications.SystemDataSources
 import androidx.wear.watchface.complications.data.ComplicationType
-import nodomain.pacjo.wear.watchface.base.utils.isAtLeastWearOs2
-import nodomain.pacjo.wear.watchface.base.utils.isAtLeastWearOs3
-import nodomain.pacjo.wear.watchface.base.utils.isAtLeastWearOs4
+import nodomain.pacjo.wear.watchface.shared.utils.isAtLeastWearOs2
+import nodomain.pacjo.wear.watchface.shared.utils.isAtLeastWearOs3
+import nodomain.pacjo.wear.watchface.shared.utils.isAtLeastWearOs4
 
 /**
  * Creates a default complication data source policy with system provider fallbacks.
