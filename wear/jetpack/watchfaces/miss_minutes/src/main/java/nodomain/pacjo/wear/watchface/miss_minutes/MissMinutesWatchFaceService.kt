@@ -20,7 +20,7 @@ import nodomain.pacjo.wear.watchface.miss_minutes.background.TvaGridBackground
 
 class MissMinutesWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     TvaGridBackground(this)

@@ -50,7 +50,7 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
 - [ ] clean up HandStyle drawing code
 - [ ] add color styles (and make them available for features too)
 - [ ] companion app (full watchface) previews don't work (at least when changing hands)
-- [ ] don't include hands feature by default since we might want to customize available hands
+- [x] don't include hands feature by default since we might want to customize available hands
 - [ ] static color background options show up as *Color background* in the editor (maybe allow naming?)
 - [ ] figure out what :feature:rendering is supposed to be (it's here to prevent a circular dependency issues in some modules)
 - [ ] setup koin annotations. In module `build.gradle.kts` add:

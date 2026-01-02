@@ -18,7 +18,7 @@ import nodomain.pacjo.wear.watchface.feature.base.FeatureFactory
 
 class BirdsWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     StaticImageBackground(this, R.drawable.bird_1),

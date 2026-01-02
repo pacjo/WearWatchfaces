@@ -8,7 +8,7 @@ import nodomain.pacjo.wear.watchface.snake.background.SnakeBackground
 
 class SnakeWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     SnakeBackground

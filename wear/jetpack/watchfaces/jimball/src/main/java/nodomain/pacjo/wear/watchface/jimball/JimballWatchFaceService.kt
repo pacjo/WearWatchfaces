@@ -9,7 +9,7 @@ import nodomain.pacjo.wear.watchface.jimball.sound.BackgroundMusicPlayerFeature
 
 class JimballWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     GifPlayerBackground(

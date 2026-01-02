@@ -20,7 +20,7 @@ import nodomain.pacjo.wear.watchface.nicely_blurry.background.BlurryBlobsBackgro
 
 class NicelyBlurryWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     BlurryBlobsBackground

@@ -21,7 +21,7 @@ import nodomain.pacjo.wear.watchface.nothing_digital.background.DotRingBackgroun
 
 class NothingDigitalWatchFaceService : DigitalWatchFaceService() {
     override fun getFeatureFactories(): List<FeatureFactory> {
-        return super.getFeatureFactories() + listOf(
+        return listOf(
             BackgroundFeature.Companion(
                 listOf(
                     DotRingBackground
