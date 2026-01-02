@@ -54,7 +54,7 @@ class Grid2d<T>(
     }
 
     fun forEachPosition(
-        action: (Vector2d) -> Unit
+        action: (position: Vector2d) -> Unit
     ) {
         grid.forEachIndexed { y, row ->
             row.forEachIndexed { x, cell ->
