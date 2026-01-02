@@ -1,17 +1,16 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
 import android.util.Log
-import nodomain.pacjo.wear.watchface.feature.base.FeatureOption
+import nodomain.pacjo.wear.watchface.feature.overlay.Overlay
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 /**
- * The contract for a specific background.
- * It is a FeatureOption, so it has an ID and name, and it can draw a preview.
- * It also knows how to draw the actual background on the watch face.
+ * Very light wrapper around [Overlay], changing only the class tag for logger.
+ *
+ * Exists mostly to keep backgrounds and overlays somewhat separate,
+ * even though they are mostly the same thing.
  */
-abstract class Background : FeatureOption {
-    abstract fun draw(renderingContext: RenderingContext)
-
+abstract class Background : Overlay() {
     override fun drawPreview(renderingContext: RenderingContext) {
         Log.d(TAG, "preview called")
 

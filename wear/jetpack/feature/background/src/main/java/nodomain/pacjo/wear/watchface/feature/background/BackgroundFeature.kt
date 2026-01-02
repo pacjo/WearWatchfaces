@@ -1,23 +1,15 @@
 package nodomain.pacjo.wear.watchface.feature.background
 
-import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
-import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
+import nodomain.pacjo.wear.watchface.feature.overlay.OverlayFeature
 import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
-import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 
 class BackgroundFeature(
     override val options: List<Background>
-) : ListFeature<Background>(), DrawableFeature {
+) : OverlayFeature<Background>(GranularWatchFaceLayer.BACKGROUND, options) {
     override val featureId = FEATURE_ID
     override val featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID
     override val featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID
-
-    override val layer = GranularWatchFaceLayer.BACKGROUND
-
-    override fun draw(renderingContext: RenderingContext) {
-        current.value.draw(renderingContext)
-    }
 
     companion object {
         private const val FEATURE_ID = "background"
@@ -30,12 +22,14 @@ class BackgroundFeature(
          * Watch faces will call this to get a factory instance.
          * @param overrideOptions An optional list to use instead of the default.
          */
-        operator fun invoke(overrideOptions: List<Background>? = null) = ListFeatureFactory(
+        operator fun invoke(
+            overrideOptions: List<Background>? = null
+        ) = ListFeatureFactory(
             featureId = FEATURE_ID,
             featureDisplayNameResourceId = FEATURE_DISPLAY_NAME_RESOURCE_ID,
             featureDescriptionResourceId = FEATURE_DESCRIPTION_RESOURCE_ID,
             options = overrideOptions ?: OPTIONS,
-            featureCreator = { scope, repo, options ->
+            featureCreator = { _, _, options ->
                 BackgroundFeature(options)
             }
         )
