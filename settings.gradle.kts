@@ -25,7 +25,7 @@ rootProject.name = "WearWatchfaces"
 include(":wear:jetpack:feature:base")
 include(":wear:jetpack:feature:rendering")
 include(":wear:jetpack:feature:editor")
-include(":wear:jetpack:feature:background")
+include(":wear:jetpack:feature:overlay")
 include(":wear:jetpack:feature:hands")
 include(":wear:jetpack:feature:cell_grid")
 include(":wear:jetpack:feature:digital_clock")

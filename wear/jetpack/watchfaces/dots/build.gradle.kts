@@ -41,5 +41,5 @@ android {
 dependencies {
     implementation(project(":wear:jetpack:watchfaces:base_analog"))
     implementation(project(":wear:jetpack:feature:editor"))
-    implementation(project(":wear:jetpack:feature:background"))
+    implementation(project(":wear:jetpack:feature:overlay"))
 }

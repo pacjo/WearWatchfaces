@@ -3,7 +3,7 @@ package nodomain.pacjo.wear.watchface.feature.background.backgrounds
 import androidx.annotation.ColorInt
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
-import nodomain.pacjo.wear.watchface.feature.background.R
+import nodomain.pacjo.wear.watchface.feature.overlay.R
 
 class StaticColorBackground(
     @ColorInt val backgroundColor: Int

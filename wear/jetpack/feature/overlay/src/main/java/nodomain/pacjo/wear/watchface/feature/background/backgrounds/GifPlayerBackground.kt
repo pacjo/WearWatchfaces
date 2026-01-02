@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
-import nodomain.pacjo.wear.watchface.feature.background.R
+import nodomain.pacjo.wear.watchface.feature.overlay.R
 import nodomain.pacjo.wear.watchface.feature.rendering.utils.decodeAnimatedDrawable
 
 @RequiresApi(Build.VERSION_CODES.P)

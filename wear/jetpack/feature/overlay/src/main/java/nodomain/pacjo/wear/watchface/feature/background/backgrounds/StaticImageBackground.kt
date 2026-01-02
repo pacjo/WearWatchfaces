@@ -7,7 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
 import nodomain.pacjo.wear.watchface.feature.rendering.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
-import nodomain.pacjo.wear.watchface.feature.background.R
+import nodomain.pacjo.wear.watchface.feature.overlay.R
 
 class StaticImageBackground(
     context: Context,

@@ -1,4 +1,8 @@
 <resources>
+    <!-- ============ Overlay configuration ============ -->
+    <string name="overlay_setting">Overlay</string>
+    <string name="overlay_setting_description">Allows changing watchface overlay</string>
+
     <!-- ============ Background configuration ============ -->
     <string name="background_setting">Background</string>
     <string name="background_setting_description">Allows changing watchface background</string>

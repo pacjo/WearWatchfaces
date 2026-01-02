@@ -1,6 +1,5 @@
 package nodomain.pacjo.wear.watchface.feature.overlay
 
-import nodomain.pacjo.wear.watchface.feature.background.R
 import nodomain.pacjo.wear.watchface.feature.base.DrawableFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeature
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "nodomain.pacjo.wear.watchface.feature.background"
+    namespace = "nodomain.pacjo.wear.watchface.feature.overlay"
     compileSdk = 36
 
     defaultConfig {

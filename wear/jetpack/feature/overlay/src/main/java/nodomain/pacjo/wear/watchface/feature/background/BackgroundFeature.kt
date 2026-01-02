@@ -2,6 +2,7 @@ package nodomain.pacjo.wear.watchface.feature.background
 
 import nodomain.pacjo.wear.watchface.feature.base.ListFeatureFactory
 import nodomain.pacjo.wear.watchface.feature.overlay.OverlayFeature
+import nodomain.pacjo.wear.watchface.feature.overlay.R
 import nodomain.pacjo.wear.watchface.feature.rendering.GranularWatchFaceLayer
 
 class BackgroundFeature(

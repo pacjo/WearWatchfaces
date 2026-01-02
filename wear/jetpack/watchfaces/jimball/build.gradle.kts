@@ -40,6 +40,6 @@ android {
 
 dependencies {
     implementation(project(":wear:jetpack:watchfaces:base_digital"))
-    implementation(project(":wear:jetpack:feature:background"))
+    implementation(project(":wear:jetpack:feature:overlay"))
     implementation(project(":wear:jetpack:feature:digital_clock"))
 }

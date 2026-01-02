@@ -71,3 +71,4 @@ This project contains watchfaces written with both legacy [jetpack libraries](ht
   ```
 - [ ] handle colors better, allow for manually setting hands and complication colors, deriving from main when not set
 - [ ] consider removing empty proguard files from modules
+- [x] maybe refactor :background to be :overlay (or based on it)?
