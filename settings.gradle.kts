@@ -45,6 +45,7 @@ include(":wear:jetpack:watchfaces:nicely_blurry")
 include(":wear:jetpack:watchfaces:clean_colorful")
 include(":wear:jetpack:watchfaces:birds")
 include(":wear:jetpack:watchfaces:new_year")
+include(":wear:jetpack:watchfaces:pointy_damascus")
 
 // WatchFaceFormat based watchfaces
 include(":wear:wff:jimball")
