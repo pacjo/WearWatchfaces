@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.annotation.ColorInt
+import nodomain.pacjo.wear.watchface.shared.utils.Vector2
 
 data class GridSpec(
     val width: Float,
@@ -58,7 +59,7 @@ fun <T> Canvas.drawGridLines(
 }
 
 fun Canvas.drawCell(
-    cellLocation: Vector2d,
+    cellLocation: Vector2.Vector2i,
     horizontalSpacing: Float,
     verticalSpacing: Float,
     paint: Paint

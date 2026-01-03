@@ -9,7 +9,7 @@ import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.feature.background.Background
 import nodomain.pacjo.wear.watchface.feature.cell_grid.Grid2d
 import nodomain.pacjo.wear.watchface.feature.cell_grid.GridSpec
-import nodomain.pacjo.wear.watchface.feature.cell_grid.Vector2d
+import nodomain.pacjo.wear.watchface.shared.utils.Vector2.Vector2i
 import nodomain.pacjo.wear.watchface.feature.cell_grid.drawCell
 import nodomain.pacjo.wear.watchface.feature.cell_grid.setBorder
 import nodomain.pacjo.wear.watchface.snake.R
@@ -64,11 +64,11 @@ class SnakeGame(
     private var gridSpec = GridSpec.fromBounds(initialBounds, gridSize)
 
     // format: [head, body, body, ..., body, tail]
-    private var snake = mutableListOf<Vector2d>()
-    private lateinit var snakeDirection: Vector2d
+    private var snake = mutableListOf<Vector2i>()
+    private lateinit var snakeDirection: Vector2i
 
-    private lateinit var food: Vector2d
-    private var pathToFood: List<Vector2d>? = null
+    private lateinit var food: Vector2i
+    private var pathToFood: List<Vector2i>? = null
 
     // bound can change at runtime, so we keep track of them
     var currentBounds: Rect = Rect()
@@ -253,7 +253,7 @@ class SnakeGame(
         val snakeHead = snake.first()
 
         // Define a heuristic - Manhattan distance
-        val heuristic = { node: Vector2d ->
+        val heuristic = { node: Vector2i ->
             abs(node.x - food.x) + abs(node.y - food.y)
         }
 
@@ -267,13 +267,13 @@ class SnakeGame(
      * @param extraCheck lambda, which should return true if position is NOT accepted
      */
     private fun findEmptyPosition(
-        extraCheck: (Vector2d) -> Boolean = { true }
-    ): Vector2d {
-        var position: Vector2d
+        extraCheck: (Vector2i) -> Boolean = { true }
+    ): Vector2i {
+        var position: Vector2i
         do {
             val x = Random.nextInt(grid.width)
             val y = Random.nextInt(grid.height)
-            position = Vector2d(x, y)
+            position = Vector2i(x, y)
         }
         // keep looping until we find a position which is empty
         while (snake.contains(position) || grid[position] != CellType.NONE || !extraCheck(position))
@@ -296,11 +296,11 @@ class SnakeGame(
 
     // https://en.wikipedia.org/wiki/A*_search_algorithm
     fun aStar(
-        start: Vector2d,
-        goal: Vector2d,
-        h: (Vector2d) -> Int        // cost function
-    ): List<Vector2d>? {
-        fun reconstructPath(cameFrom: MutableMap<Vector2d, Vector2d>, current: Vector2d): List<Vector2d> {
+        start: Vector2i,
+        goal: Vector2i,
+        h: (Vector2i) -> Int        // cost function
+    ): List<Vector2i>? {
+        fun reconstructPath(cameFrom: MutableMap<Vector2i, Vector2i>, current: Vector2i): List<Vector2i> {
             var innerCurrent = current
             val fullPath = mutableListOf(current)
             while (innerCurrent in cameFrom.keys) {
@@ -310,16 +310,16 @@ class SnakeGame(
             return fullPath
         }
 
-        val gScore = mutableMapOf<Vector2d, Int>()
+        val gScore = mutableMapOf<Vector2i, Int>()
         gScore[start] = 0
 
-        val fScore = mutableMapOf<Vector2d, Int>()
+        val fScore = mutableMapOf<Vector2i, Int>()
         fScore[start] = h(start)
 
-        val openSet = PriorityQueue<Vector2d>(compareBy { fScore.getOrDefault(it, Int.MAX_VALUE) })
+        val openSet = PriorityQueue<Vector2i>(compareBy { fScore.getOrDefault(it, Int.MAX_VALUE) })
         openSet.add(start)      // add starting point
 
-        val cameFrom = mutableMapOf<Vector2d, Vector2d>()
+        val cameFrom = mutableMapOf<Vector2i, Vector2i>()
 
         // exclude the snake's tail, as it will move out of the way
         val snakeBody = if (snake.size > 1) snake.dropLast(1).toSet() else emptySet()
@@ -358,11 +358,11 @@ class SnakeGame(
     companion object {
         const val TAG = "SnakeGame"
 
-        private enum class SnakeDirection(val direction: Vector2d) {
-            UP(Vector2d(0, -1)),
-            DOWN(Vector2d(0, 1)),
-            LEFT(Vector2d(-1, 0)),
-            RIGHT(Vector2d(1, 0))
+        private enum class SnakeDirection(val direction: Vector2i) {
+            UP(Vector2i(0, -1)),
+            DOWN(Vector2i(0, 1)),
+            LEFT(Vector2i(-1, 0)),
+            RIGHT(Vector2i(1, 0))
         }
 
         private enum class CellType {

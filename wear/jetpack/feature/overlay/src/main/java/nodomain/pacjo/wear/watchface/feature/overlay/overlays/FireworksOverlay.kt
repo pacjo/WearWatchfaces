@@ -9,6 +9,7 @@ import nodomain.pacjo.wear.watchface.feature.overlay.Overlay
 import nodomain.pacjo.wear.watchface.feature.overlay.R
 import nodomain.pacjo.wear.watchface.shared.RenderingContext
 import nodomain.pacjo.wear.watchface.shared.utils.RotatingQueue
+import nodomain.pacjo.wear.watchface.shared.utils.Vector2
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -29,8 +30,8 @@ class FireworksOverlay : Overlay() {
         var x: Float,
         var y: Float
     ) {
-        // trail effect - TODO: move to Vector2d<Float> when that exists
-        private val coordinates = RotatingQueue<Pair<Float, Float>>(5)
+        // trail effect
+        private val coordinates = RotatingQueue<Vector2.Vector2f>(5)
 
         val angle = Random.nextFloat(0f, 2 * PI.toFloat())
         var speed = Random.nextFloat(1f, 10f)
@@ -43,7 +44,7 @@ class FireworksOverlay : Overlay() {
 
         // returns true instance should be destroyed
         fun update(): Boolean {
-            coordinates.add(Pair(x, y))
+            coordinates.add(Vector2.Vector2f(x, y))
 
             speed *= friction
             x += cos(angle) * speed
